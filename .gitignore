@@ -3,6 +3,12 @@ obj/
 node_modules/
 dist/
 .env
-.vs/
+.vscode/*
+!.vscode/
+!.vscode/settings.json
+.vs/*
+!.vs/
+!.vs/VSWorkspaceSettings.json
 .idea/
 *.user
+*.log

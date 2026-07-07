@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunPay", "FunPay", "{EF648D33-DE31-CB74-B438-69D7ABAC1F8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{F02E5F6E-4C10-D1EB-BA84-8C0EEF6F153E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunPay.Backend", "FunPay\backend\FunPay.Backend.csproj", "{40735E90-5F05-420F-B036-2517ADE89831}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40735E90-5F05-420F-B036-2517ADE89831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Debug|x64.Build.0 = Debug|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Debug|x86.Build.0 = Debug|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Release|x64.ActiveCfg = Release|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Release|x64.Build.0 = Release|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Release|x86.ActiveCfg = Release|Any CPU
+		{40735E90-5F05-420F-B036-2517ADE89831}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F02E5F6E-4C10-D1EB-BA84-8C0EEF6F153E} = {EF648D33-DE31-CB74-B438-69D7ABAC1F8C}
+		{40735E90-5F05-420F-B036-2517ADE89831} = {F02E5F6E-4C10-D1EB-BA84-8C0EEF6F153E}
+	EndGlobalSection
+EndGlobal

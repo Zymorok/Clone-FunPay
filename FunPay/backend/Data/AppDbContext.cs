@@ -1,0 +1,243 @@
+﻿using FunPay.Backend.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace FunPay.Backend.Data;
+
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+{
+    public DbSet<User> Users => Set<User>();
+
+    public DbSet<Game> Games => Set<Game>();
+
+    public DbSet<Category> Categories => Set<Category>();
+
+    public DbSet<Product> Products => Set<Product>();
+
+    public DbSet<Order> Orders => Set<Order>();
+
+    public DbSet<Message> Messages => Set<Message>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        ConfigureUsers(modelBuilder);
+        ConfigureGames(modelBuilder);
+        ConfigureCategories(modelBuilder);
+        ConfigureProducts(modelBuilder);
+        ConfigureOrders(modelBuilder);
+        ConfigureMessages(modelBuilder);
+    }
+
+    private static void ConfigureUsers(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.ToTable("Users", table =>
+            {
+                table.HasCheckConstraint("CK_Users_Nick_NotEmpty", "length(btrim(\"Nick\")) > 0");
+                table.HasCheckConstraint("CK_Users_Email_NotEmpty", "length(btrim(\"Email\")) > 0");
+                table.HasCheckConstraint("CK_Users_Nick_Normalized", "\"Nick\" = lower(btrim(\"Nick\"))");
+                table.HasCheckConstraint("CK_Users_Email_Normalized", "\"Email\" = lower(btrim(\"Email\"))");
+            });
+
+            entity.HasKey(user => user.Id);
+
+            entity.Property(user => user.Nick)
+                .HasMaxLength(32)
+                .IsRequired();
+
+            entity.Property(user => user.Email)
+                .HasMaxLength(254)
+                .IsRequired();
+
+            entity.Property(user => user.PasswordHash)
+                .HasMaxLength(500)
+                .IsRequired();
+
+            entity.Property(user => user.Role)
+                .HasConversion<string>()
+                .HasMaxLength(20)
+                .IsRequired();
+
+            entity.Property(user => user.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.Property(user => user.UpdatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.HasIndex(user => user.Nick)
+                .IsUnique();
+
+            entity.HasIndex(user => user.Email)
+                .IsUnique();
+        });
+    }
+
+    private static void ConfigureGames(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Game>(entity =>
+        {
+            entity.ToTable("Games");
+            entity.HasKey(game => game.Id);
+
+            entity.Property(game => game.Name)
+                .HasMaxLength(120)
+                .IsRequired();
+
+            entity.Property(game => game.ImageUrl)
+                .HasMaxLength(500);
+
+            entity.Property(game => game.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.HasIndex(game => game.Name)
+                .IsUnique();
+        });
+    }
+
+    private static void ConfigureCategories(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.ToTable("Categories");
+            entity.HasKey(category => category.Id);
+
+            entity.Property(category => category.Name)
+                .HasMaxLength(80)
+                .IsRequired();
+
+            entity.Property(category => category.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.HasIndex(category => category.Name)
+                .IsUnique();
+        });
+    }
+
+    private static void ConfigureProducts(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.ToTable("Products", table =>
+            {
+                table.HasCheckConstraint("CK_Products_Price_NotNegative", "\"Price\" >= 0");
+            });
+
+            entity.HasKey(product => product.Id);
+
+            entity.Property(product => product.Title)
+                .HasMaxLength(160)
+                .IsRequired();
+
+            entity.Property(product => product.Description)
+                .HasMaxLength(4000)
+                .IsRequired();
+
+            entity.Property(product => product.Price)
+                .HasColumnType("numeric(12,2)")
+                .IsRequired();
+
+            entity.Property(product => product.Status)
+                .HasConversion<string>()
+                .HasMaxLength(20)
+                .IsRequired();
+
+            entity.Property(product => product.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.Property(product => product.UpdatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.HasOne(product => product.Seller)
+                .WithMany(user => user.Products)
+                .HasForeignKey(product => product.SellerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(product => product.Game)
+                .WithMany(game => game.Products)
+                .HasForeignKey(product => product.GameId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(product => product.Category)
+                .WithMany(category => category.Products)
+                .HasForeignKey(product => product.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(product => product.SellerId);
+            entity.HasIndex(product => product.GameId);
+            entity.HasIndex(product => product.CategoryId);
+            entity.HasIndex(product => product.Status);
+        });
+    }
+
+    private static void ConfigureOrders(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.ToTable("Orders");
+            entity.HasKey(order => order.Id);
+
+            entity.Property(order => order.Status)
+                .HasConversion<string>()
+                .HasMaxLength(20)
+                .IsRequired();
+
+            entity.Property(order => order.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.Property(order => order.UpdatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.HasOne(order => order.Product)
+                .WithMany(product => product.Orders)
+                .HasForeignKey(order => order.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(order => order.Buyer)
+                .WithMany(user => user.BuyerOrders)
+                .HasForeignKey(order => order.BuyerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(order => order.Seller)
+                .WithMany(user => user.SellerOrders)
+                .HasForeignKey(order => order.SellerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(order => order.ProductId);
+            entity.HasIndex(order => order.BuyerId);
+            entity.HasIndex(order => order.SellerId);
+            entity.HasIndex(order => order.Status);
+        });
+    }
+
+    private static void ConfigureMessages(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Message>(entity =>
+        {
+            entity.ToTable("Messages");
+            entity.HasKey(message => message.Id);
+
+            entity.Property(message => message.Text)
+                .HasMaxLength(3000)
+                .IsRequired();
+
+            entity.Property(message => message.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            entity.HasOne(message => message.Order)
+                .WithMany(order => order.Messages)
+                .HasForeignKey(message => message.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(message => message.Sender)
+                .WithMany(user => user.Messages)
+                .HasForeignKey(message => message.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(message => message.OrderId);
+            entity.HasIndex(message => message.SenderId);
+            entity.HasIndex(message => message.CreatedAt);
+        });
+    }
+}
