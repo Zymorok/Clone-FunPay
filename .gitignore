@@ -6,6 +6,8 @@ dist/
 .vscode/*
 !.vscode/
 !.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
 .vs/*
 !.vs/
 !.vs/VSWorkspaceSettings.json

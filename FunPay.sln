@@ -3,11 +3,169 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B5F4C4D1-DA31-4A9D-AFFB-1C685F9A75E0}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		docker-compose.yml = docker-compose.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunPay", "FunPay", "{EF648D33-DE31-CB74-B438-69D7ABAC1F8C}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\README.md = FunPay\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{F02E5F6E-4C10-D1EB-BA84-8C0EEF6F153E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunPay.Backend", "FunPay\backend\FunPay.Backend.csproj", "{40735E90-5F05-420F-B036-2517ADE89831}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{A0E59D0E-2012-4F1D-8B84-AD47D9396C89}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\docs\README.md = FunPay\docs\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{4B1C0F7F-9E72-4D92-A957-8D8899A9B0E1}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\docs\api\README.md = FunPay\docs\api\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{9D36B528-18BD-4500-87D2-5008B706A909}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\docs\backend\README.md = FunPay\docs\backend\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{84DAB633-66A0-40BB-B18D-EF35575DBB81}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\docs\database\README.md = FunPay\docs\database\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "frontend", "frontend", "{9A7D7D1A-88C7-4E9B-8A37-10D26B1A1B1C}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\docs\frontend\README.md = FunPay\docs\frontend\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plans", "plans", "{7E9813A1-69CE-4D7E-B082-C9F0F38D103A}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\docs\plans\README.md = FunPay\docs\plans\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{ACD5407C-85DE-4B5E-A971-2CE273F90C7C}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\docs\project\README.md = FunPay\docs\project\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "team", "team", "{F2EF3D9A-A504-4FC5-91F1-1A01B3C6D75A}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\docs\team\README.md = FunPay\docs\team\README.md
+		FunPay\docs\team\VItalii.md = FunPay\docs\team\VItalii.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "frontend", "frontend", "{3F713C23-0E23-4B9B-A4C2-FB4478B2550A}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\index.html = FunPay\frontend\index.html
+		FunPay\frontend\package-lock.json = FunPay\frontend\package-lock.json
+		FunPay\frontend\package.json = FunPay\frontend\package.json
+		FunPay\frontend\tsconfig.json = FunPay\frontend\tsconfig.json
+		FunPay\frontend\tsconfig.node.json = FunPay\frontend\tsconfig.node.json
+		FunPay\frontend\vite.config.ts = FunPay\frontend\vite.config.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{E6D97A5F-05B2-42A4-9421-D21B6F75B4C7}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\public\favicon.svg = FunPay\frontend\public\favicon.svg
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{D398F425-DA37-43E3-8711-D82A8A9AD489}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "website", "website", "{A6459B30-6623-4A89-B827-7B76F9C4DE2B}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\public\assets\website\README.md = FunPay\frontend\public\assets\website\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "animations", "animations", "{C998AF97-1AA8-4FA3-B901-FD95180EF972}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "characters", "characters", "{F096F39E-5129-4956-A43B-0B0E4D60269D}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\public\assets\website\animations\characters\cat_movement.svg = FunPay\frontend\public\assets\website\animations\characters\cat_movement.svg
+		FunPay\frontend\public\assets\website\animations\characters\cute-animal-play-games.svg = FunPay\frontend\public\assets\website\animations\characters\cute-animal-play-games.svg
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "icons", "icons", "{B438062D-8E69-4547-B635-1844D83A44BD}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\public\assets\website\animations\icons\chat.svg = FunPay\frontend\public\assets\website\animations\icons\chat.svg
+		FunPay\frontend\public\assets\website\animations\icons\fast-thunder-yellow.svg = FunPay\frontend\public\assets\website\animations\icons\fast-thunder-yellow.svg
+		FunPay\frontend\public\assets\website\animations\icons\security-safe-data-lock.svg = FunPay\frontend\public\assets\website\animations\icons\security-safe-data-lock.svg
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backgrounds", "backgrounds", "{DF825469-D78C-4284-AE62-9E4C97F7D4B8}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\public\assets\website\backgrounds\.gitkeep = FunPay\frontend\public\assets\website\backgrounds\.gitkeep
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "routes", "routes", "{F05B31DF-A78A-4E78-B91B-F5ED8E6555DE}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\public\assets\website\backgrounds\routes\background_catalog.webm = FunPay\frontend\public\assets\website\backgrounds\routes\background_catalog.webm
+		FunPay\frontend\public\assets\website\backgrounds\routes\background_chat.webm = FunPay\frontend\public\assets\website\backgrounds\routes\background_chat.webm
+		FunPay\frontend\public\assets\website\backgrounds\routes\background_login.webm = FunPay\frontend\public\assets\website\backgrounds\routes\background_login.webm
+		FunPay\frontend\public\assets\website\backgrounds\routes\background_orders.webm = FunPay\frontend\public\assets\website\backgrounds\routes\background_orders.webm
+		FunPay\frontend\public\assets\website\backgrounds\routes\background_support.webm = FunPay\frontend\public\assets\website\backgrounds\routes\background_support.webm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "illustrations", "illustrations", "{A17146D5-B8B4-4329-A7A5-F9DC12725BB1}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\public\assets\website\illustrations\.gitkeep = FunPay\frontend\public\assets\website\illustrations\.gitkeep
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "offers", "offers", "{27AD56E7-D3B5-459D-80FB-EFC0639FF950}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\public\assets\website\offers\assets_albion_online.jpeg = FunPay\frontend\public\assets\website\offers\assets_albion_online.jpeg
+		FunPay\frontend\public\assets\website\offers\assets_counter_strike_2.png = FunPay\frontend\public\assets\website\offers\assets_counter_strike_2.png
+		FunPay\frontend\public\assets\website\offers\assets_dota_2.jpg = FunPay\frontend\public\assets\website\offers\assets_dota_2.jpg
+		FunPay\frontend\public\assets\website\offers\assets_gta_v.jpg = FunPay\frontend\public\assets\website\offers\assets_gta_v.jpg
+		FunPay\frontend\public\assets\website\offers\assets_rust.png = FunPay\frontend\public\assets\website\offers\assets_rust.png
+		FunPay\frontend\public\assets\website\offers\assets_valorant.png = FunPay\frontend\public\assets\website\offers\assets_valorant.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0E1E59E3-F115-4C0B-95E9-B420E4FE3774}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\src\App.tsx = FunPay\frontend\src\App.tsx
+		FunPay\frontend\src\main.tsx = FunPay\frontend\src\main.tsx
+		FunPay\frontend\src\styles.css = FunPay\frontend\src\styles.css
+		FunPay\frontend\src\vite-env.d.ts = FunPay\frontend\src\vite-env.d.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{942A6BC9-9372-437E-9A43-D19A97769C21}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\src\api\authApi.ts = FunPay\frontend\src\api\authApi.ts
+		FunPay\frontend\src\api\orderApi.js = FunPay\frontend\src\api\orderApi.js
+		FunPay\frontend\src\api\productApi.js = FunPay\frontend\src\api\productApi.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{24BE2E08-E573-4E1B-9A9E-B2F7D3B64B4C}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\src\components\LogoMark.tsx = FunPay\frontend\src\components\LogoMark.tsx
+		FunPay\frontend\src\components\MarketPreview.tsx = FunPay\frontend\src\components\MarketPreview.tsx
+		FunPay\frontend\src\components\Navbar.tsx = FunPay\frontend\src\components\Navbar.tsx
+		FunPay\frontend\src\components\ProductCard.jsx = FunPay\frontend\src\components\ProductCard.jsx
+		FunPay\frontend\src\components\ProtectedRoute.jsx = FunPay\frontend\src\components\ProtectedRoute.jsx
+		FunPay\frontend\src\components\ThemeToggle.tsx = FunPay\frontend\src\components\ThemeToggle.tsx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pages", "pages", "{9C27B382-3750-470E-8D40-8646CD17DE3B}"
+	ProjectSection(SolutionItems) = preProject
+		FunPay\frontend\src\pages\Admin.jsx = FunPay\frontend\src\pages\Admin.jsx
+		FunPay\frontend\src\pages\Catalog.jsx = FunPay\frontend\src\pages\Catalog.jsx
+		FunPay\frontend\src\pages\Chat.jsx = FunPay\frontend\src\pages\Chat.jsx
+		FunPay\frontend\src\pages\CreateProduct.jsx = FunPay\frontend\src\pages\CreateProduct.jsx
+		FunPay\frontend\src\pages\Home.jsx = FunPay\frontend\src\pages\Home.jsx
+		FunPay\frontend\src\pages\Login.jsx = FunPay\frontend\src\pages\Login.jsx
+		FunPay\frontend\src\pages\Orders.jsx = FunPay\frontend\src\pages\Orders.jsx
+		FunPay\frontend\src\pages\Product.jsx = FunPay\frontend\src\pages\Product.jsx
+		FunPay\frontend\src\pages\Profile.jsx = FunPay\frontend\src\pages\Profile.jsx
+		FunPay\frontend\src\pages\Register.tsx = FunPay\frontend\src\pages\Register.tsx
+		FunPay\frontend\src\pages\RouteStub.tsx = FunPay\frontend\src\pages\RouteStub.tsx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,5 +196,28 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F02E5F6E-4C10-D1EB-BA84-8C0EEF6F153E} = {EF648D33-DE31-CB74-B438-69D7ABAC1F8C}
 		{40735E90-5F05-420F-B036-2517ADE89831} = {F02E5F6E-4C10-D1EB-BA84-8C0EEF6F153E}
+		{A0E59D0E-2012-4F1D-8B84-AD47D9396C89} = {EF648D33-DE31-CB74-B438-69D7ABAC1F8C}
+		{4B1C0F7F-9E72-4D92-A957-8D8899A9B0E1} = {A0E59D0E-2012-4F1D-8B84-AD47D9396C89}
+		{9D36B528-18BD-4500-87D2-5008B706A909} = {A0E59D0E-2012-4F1D-8B84-AD47D9396C89}
+		{84DAB633-66A0-40BB-B18D-EF35575DBB81} = {A0E59D0E-2012-4F1D-8B84-AD47D9396C89}
+		{9A7D7D1A-88C7-4E9B-8A37-10D26B1A1B1C} = {A0E59D0E-2012-4F1D-8B84-AD47D9396C89}
+		{7E9813A1-69CE-4D7E-B082-C9F0F38D103A} = {A0E59D0E-2012-4F1D-8B84-AD47D9396C89}
+		{ACD5407C-85DE-4B5E-A971-2CE273F90C7C} = {A0E59D0E-2012-4F1D-8B84-AD47D9396C89}
+		{F2EF3D9A-A504-4FC5-91F1-1A01B3C6D75A} = {A0E59D0E-2012-4F1D-8B84-AD47D9396C89}
+		{3F713C23-0E23-4B9B-A4C2-FB4478B2550A} = {EF648D33-DE31-CB74-B438-69D7ABAC1F8C}
+		{E6D97A5F-05B2-42A4-9421-D21B6F75B4C7} = {3F713C23-0E23-4B9B-A4C2-FB4478B2550A}
+		{D398F425-DA37-43E3-8711-D82A8A9AD489} = {E6D97A5F-05B2-42A4-9421-D21B6F75B4C7}
+		{A6459B30-6623-4A89-B827-7B76F9C4DE2B} = {D398F425-DA37-43E3-8711-D82A8A9AD489}
+		{C998AF97-1AA8-4FA3-B901-FD95180EF972} = {A6459B30-6623-4A89-B827-7B76F9C4DE2B}
+		{F096F39E-5129-4956-A43B-0B0E4D60269D} = {C998AF97-1AA8-4FA3-B901-FD95180EF972}
+		{B438062D-8E69-4547-B635-1844D83A44BD} = {C998AF97-1AA8-4FA3-B901-FD95180EF972}
+		{DF825469-D78C-4284-AE62-9E4C97F7D4B8} = {A6459B30-6623-4A89-B827-7B76F9C4DE2B}
+		{F05B31DF-A78A-4E78-B91B-F5ED8E6555DE} = {DF825469-D78C-4284-AE62-9E4C97F7D4B8}
+		{A17146D5-B8B4-4329-A7A5-F9DC12725BB1} = {A6459B30-6623-4A89-B827-7B76F9C4DE2B}
+		{27AD56E7-D3B5-459D-80FB-EFC0639FF950} = {A6459B30-6623-4A89-B827-7B76F9C4DE2B}
+		{0E1E59E3-F115-4C0B-95E9-B420E4FE3774} = {3F713C23-0E23-4B9B-A4C2-FB4478B2550A}
+		{942A6BC9-9372-437E-9A43-D19A97769C21} = {0E1E59E3-F115-4C0B-95E9-B420E4FE3774}
+		{24BE2E08-E573-4E1B-9A9E-B2F7D3B64B4C} = {0E1E59E3-F115-4C0B-95E9-B420E4FE3774}
+		{9C27B382-3750-470E-8D40-8646CD17DE3B} = {0E1E59E3-F115-4C0B-95E9-B420E4FE3774}
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,6 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { ArrowRight, Eye, EyeOff, Loader2, Lock, Mail, User } from "lucide-react";
-import { registerAccount } from "../api/authApi";
+import { checkAuthFieldAvailability, registerAccount } from "../api/authApi";
 import { MarketPreview } from "../components/MarketPreview";
 
 type FormState = {
@@ -10,6 +10,9 @@ type FormState = {
   confirmPassword: string;
 };
 
+type FieldStatus = "idle" | "checking" | "available" | "taken" | "invalid";
+type PasswordStatus = "idle" | "danger" | "warning" | "success";
+
 const emptyForm: FormState = {
   nick: "",
   email: "",
@@ -17,12 +20,170 @@ const emptyForm: FormState = {
   confirmPassword: ""
 };
 
+const cornerCatPath = "/assets/website/animations/characters/cat_movement.svg";
+const availabilityDelayMs = 650;
+const nickPattern = /^[a-z0-9_.-]+$/;
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function fieldClassName(...classes: Array<string | false | null | undefined>) {
+  return classes.filter(Boolean).join(" ");
+}
+
+function getAvailabilityClass(status: FieldStatus) {
+  if (status === "available") {
+    return "field--success";
+  }
+
+  if (status === "taken" || status === "invalid") {
+    return "field--danger";
+  }
+
+  if (status === "checking") {
+    return "field--warning";
+  }
+
+  return "";
+}
+
+function getPasswordClass(status: PasswordStatus) {
+  if (status === "danger") {
+    return "field--danger";
+  }
+
+  if (status === "warning") {
+    return "field--warning";
+  }
+
+  if (status === "success") {
+    return "field--success";
+  }
+
+  return "";
+}
+
+function getPasswordStatus(password: string): PasswordStatus {
+  if (!password) {
+    return "idle";
+  }
+
+  const hasLetter = /[a-zа-яё]/i.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSymbol = /[^a-zа-яё0-9]/i.test(password);
+  const score = [
+    password.length >= 8,
+    password.length >= 12,
+    hasLetter && hasNumber,
+    hasSymbol
+  ].filter(Boolean).length;
+
+  if (password.length < 8 || score <= 1) {
+    return "danger";
+  }
+
+  if (score < 4) {
+    return "warning";
+  }
+
+  return "success";
+}
+
+function getConfirmPasswordStatus(password: string, confirmPassword: string): PasswordStatus {
+  if (!confirmPassword) {
+    return "idle";
+  }
+
+  if (password !== confirmPassword) {
+    return "danger";
+  }
+
+  return getPasswordStatus(password);
+}
+
 export function Register() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [nickAvailability, setNickAvailability] = useState<FieldStatus>("idle");
+  const [emailAvailability, setEmailAvailability] = useState<FieldStatus>("idle");
+
+  const passwordStatus = getPasswordStatus(form.password);
+  const confirmPasswordStatus = getConfirmPasswordStatus(form.password, form.confirmPassword);
+
+  useEffect(() => {
+    const nick = form.nick.trim().toLowerCase();
+
+    if (error) {
+      return;
+    }
+
+    if (message || !nick) {
+      setNickAvailability("idle");
+      return;
+    }
+
+    if (nick.length < 3 || !nickPattern.test(nick)) {
+      setNickAvailability("invalid");
+      return;
+    }
+
+    let controller: AbortController | null = null;
+    const timeoutId = window.setTimeout(() => {
+      controller = new AbortController();
+      setNickAvailability("checking");
+
+      checkAuthFieldAvailability("nick", nick, controller.signal)
+        .then((result) => setNickAvailability(result.available ? "available" : "taken"))
+        .catch(() => {
+          if (!controller?.signal.aborted) {
+            setNickAvailability("idle");
+          }
+        });
+    }, availabilityDelayMs);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller?.abort();
+    };
+  }, [error, form.nick, message]);
+
+  useEffect(() => {
+    const email = form.email.trim().toLowerCase();
+
+    if (error) {
+      return;
+    }
+
+    if (message || !email) {
+      setEmailAvailability("idle");
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      setEmailAvailability("invalid");
+      return;
+    }
+
+    let controller: AbortController | null = null;
+    const timeoutId = window.setTimeout(() => {
+      controller = new AbortController();
+      setEmailAvailability("checking");
+
+      checkAuthFieldAvailability("email", email, controller.signal)
+        .then((result) => setEmailAvailability(result.available ? "available" : "taken"))
+        .catch(() => {
+          if (!controller?.signal.aborted) {
+            setEmailAvailability("idle");
+          }
+        });
+    }, availabilityDelayMs);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller?.abort();
+    };
+  }, [error, form.email, message]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -41,18 +202,47 @@ export function Register() {
       setMessage(`Аккаунт ${user.nick} создан.`);
       setForm({ ...emptyForm, nick: user.nick, email: user.email });
     } catch (exception) {
-      setError(exception instanceof Error ? exception.message : "Не получилось создать аккаунт.");
+      const errorMessage = exception instanceof Error ? exception.message : "Не получилось создать аккаунт.";
+      setError(errorMessage);
+      markFieldError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   }
 
+  function markFieldError(errorMessage: string) {
+    const normalizedError = errorMessage.toLowerCase();
+
+    if (normalizedError.includes("ник") && normalizedError.includes("занят")) {
+      setNickAvailability("taken");
+    }
+
+    if (
+      (normalizedError.includes("почт") || normalizedError.includes("email")) &&
+      normalizedError.includes("занят")
+    ) {
+      setEmailAvailability("taken");
+    }
+  }
+
   function updateField(field: keyof FormState, value: string) {
+    setError(null);
+    setMessage(null);
+
+    if (field === "nick") {
+      setNickAvailability("idle");
+    }
+
+    if (field === "email") {
+      setEmailAvailability("idle");
+    }
+
     setForm((current) => ({ ...current, [field]: value }));
   }
 
   return (
-    <main className="mx-auto grid max-w-[1260px] gap-5 px-4 py-4 sm:px-6 lg:grid-cols-[0.92fr_1.08fr]">
+    <>
+      <main className="mx-auto grid max-w-[1260px] gap-5 px-4 py-4 sm:px-6 lg:grid-cols-[0.92fr_1.08fr]">
       <section className="flex flex-col rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] sm:p-6">
         <div className="mb-4">
           <h1 className="text-[28px] font-extrabold leading-tight tracking-normal text-[var(--text)] sm:text-[30px]">
@@ -74,7 +264,7 @@ export function Register() {
               />
               <input
                 autoComplete="username"
-                className="field"
+                className={fieldClassName("field", getAvailabilityClass(nickAvailability))}
                 maxLength={32}
                 minLength={3}
                 onChange={(event) => updateField("nick", event.target.value)}
@@ -95,7 +285,7 @@ export function Register() {
               />
               <input
                 autoComplete="email"
-                className="field"
+                className={fieldClassName("field", getAvailabilityClass(emailAvailability))}
                 maxLength={254}
                 onChange={(event) => updateField("email", event.target.value)}
                 placeholder="Введите email"
@@ -116,7 +306,7 @@ export function Register() {
               />
               <input
                 autoComplete="new-password"
-                className="field pr-12"
+                className={fieldClassName("field pr-12", getPasswordClass(passwordStatus))}
                 maxLength={100}
                 minLength={8}
                 onChange={(event) => updateField("password", event.target.value)}
@@ -150,7 +340,7 @@ export function Register() {
               />
               <input
                 autoComplete="new-password"
-                className="field pr-12"
+                className={fieldClassName("field pr-12", getPasswordClass(confirmPasswordStatus))}
                 maxLength={100}
                 minLength={8}
                 onChange={(event) => updateField("confirmPassword", event.target.value)}
@@ -197,11 +387,11 @@ export function Register() {
 
           <p className="px-6 text-center text-[11px] leading-5 text-[var(--muted)]">
             Регистрируясь, вы соглашаетесь с нашими{" "}
-            <a className="font-semibold text-[var(--link)] underline underline-offset-2" href="#terms">
+            <a className="font-semibold text-[var(--link)] underline underline-offset-2" href="/terms">
               Условиями использования
             </a>{" "}
             и{" "}
-            <a className="font-semibold text-[var(--link)] underline underline-offset-2" href="#privacy">
+            <a className="font-semibold text-[var(--link)] underline underline-offset-2" href="/privacy">
               Политикой конфиденциальности
             </a>
             .
@@ -210,7 +400,7 @@ export function Register() {
           <div className="-mx-5 mt-auto border-t border-[var(--border)] pt-4 text-center sm:-mx-6">
             <a
               className="inline-flex items-center gap-3 text-sm font-semibold text-[var(--link)] transition hover:text-[var(--accent-strong)]"
-              href="#login"
+              href="/login"
             >
               <span className="text-[var(--text)]">Уже есть аккаунт?</span>
               Войти
@@ -220,7 +410,12 @@ export function Register() {
         </form>
       </section>
 
-      <MarketPreview />
-    </main>
+        <MarketPreview />
+      </main>
+
+      <div className="corner-cat" aria-hidden="true">
+        <img src={cornerCatPath} alt="" draggable="false" />
+      </div>
+    </>
   );
 }

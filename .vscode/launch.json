@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FunPay Backend",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "backend: prepare",
+      "program": "${workspaceFolder}/FunPay/backend/bin/Debug/net10.0/FunPay.Backend.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/FunPay/backend",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5090",
+        "DevFrontend__AutoStart": "true"
+      }
+    },
+    {
+      "name": "FunPay Backend API",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "backend: prepare",
+      "program": "${workspaceFolder}/FunPay/backend/bin/Debug/net10.0/FunPay.Backend.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/FunPay/backend",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5090",
+        "DevFrontend__AutoStart": "false"
+      }
+    },
+    {
+      "name": "FunPay Frontend",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/FunPay/frontend/src",
+      "preLaunchTask": "frontend: dev"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "FunPay Full Stack",
+      "configurations": [
+        "FunPay Backend API",
+        "FunPay Frontend"
+      ],
+      "stopAll": true
+    }
+  ]
+}

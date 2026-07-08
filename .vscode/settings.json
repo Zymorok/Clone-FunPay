@@ -1,10 +1,10 @@
 {
+  "dotnet.defaultSolution": "FunPay.sln",
   "files.exclude": {
     "**/node_modules": true,
     "**/dist": true,
     "**/bin": true,
-    "**/obj": true,
-    "**/*.sln": true
+    "**/obj": true
   },
   "search.exclude": {
     "**/node_modules": true,

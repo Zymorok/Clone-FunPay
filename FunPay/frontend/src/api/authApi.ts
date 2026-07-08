@@ -13,7 +13,30 @@ export type RegisterResponse = {
   createdAt: string;
 };
 
+export type AvailabilityField = "nick" | "email";
+
+export type AvailabilityResponse = {
+  available: boolean;
+  message?: string;
+};
+
 const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:5090";
+
+export async function checkAuthFieldAvailability(
+  field: AvailabilityField,
+  value: string,
+  signal?: AbortSignal
+): Promise<AvailabilityResponse> {
+  const params = new URLSearchParams({ value });
+  const response = await fetch(`${apiUrl}/api/auth/availability/${field}?${params}`, { signal });
+  const data = await readJson(response);
+
+  if (!response.ok) {
+    throw new Error(getErrorMessage(data) ?? "Не получилось проверить поле.");
+  }
+
+  return data as AvailabilityResponse;
+}
 
 export async function registerAccount(payload: RegisterPayload): Promise<RegisterResponse> {
   const response = await fetch(`${apiUrl}/api/auth/register`, {

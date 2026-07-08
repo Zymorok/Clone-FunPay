@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
 using FunPay.Backend.Data;
 using FunPay.Backend.DTOs;
 using FunPay.Backend.Models;
@@ -12,6 +13,8 @@ public class AuthService(
     AppDbContext dbContext,
     IPasswordHasher<User> passwordHasher)
 {
+    private static readonly EmailAddressAttribute EmailAddressValidator = new();
+
     public async Task<RegisterResult> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
         var nick = Normalize(request.Nick);
@@ -71,9 +74,57 @@ public class AuthService(
         });
     }
 
-    private static string Normalize(string value)
+    public async Task<AvailabilityResponse> CheckNickAvailabilityAsync(
+        string? value,
+        CancellationToken cancellationToken)
     {
-        return value.Trim().ToLowerInvariant();
+        var nick = Normalize(value);
+
+        if (nick.Length < 3 || nick.Length > 32 || !IsNickAllowed(nick))
+        {
+            return new AvailabilityResponse
+            {
+                Available = false,
+                Message = "Ник пока не подходит."
+            };
+        }
+
+        var isTaken = await dbContext.Users.AnyAsync(user => user.Nick == nick, cancellationToken);
+
+        return new AvailabilityResponse
+        {
+            Available = !isTaken,
+            Message = isTaken ? "Такой ник уже занят." : "Ник свободен."
+        };
+    }
+
+    public async Task<AvailabilityResponse> CheckEmailAvailabilityAsync(
+        string? value,
+        CancellationToken cancellationToken)
+    {
+        var email = Normalize(value);
+
+        if (email.Length > 254 || !EmailAddressValidator.IsValid(email))
+        {
+            return new AvailabilityResponse
+            {
+                Available = false,
+                Message = "Почта пока не подходит."
+            };
+        }
+
+        var isTaken = await dbContext.Users.AnyAsync(user => user.Email == email, cancellationToken);
+
+        return new AvailabilityResponse
+        {
+            Available = !isTaken,
+            Message = isTaken ? "Такая почта уже занята." : "Почта свободна."
+        };
+    }
+
+    private static string Normalize(string? value)
+    {
+        return (value ?? string.Empty).Trim().ToLowerInvariant();
     }
 
     private static bool IsNickAllowed(string nick)

@@ -1,0 +1,61 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "backend: prepare",
+      "dependsOn": [
+        "postgres: up",
+        "backend: build"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "backend: build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/FunPay/backend/FunPay.Backend.csproj"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    },
+    {
+      "label": "postgres: up",
+      "type": "shell",
+      "command": "docker compose up -d",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "frontend: dev",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$ErrorActionPreference = 'Stop'; try { Invoke-WebRequest -Uri 'http://localhost:5173' -UseBasicParsing -TimeoutSec 1 | Out-Null; Write-Host 'Local: http://localhost:5173/'; while ($true) { Start-Sleep -Seconds 3600 } } catch { npm run dev -- --host localhost --clearScreen false }"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/FunPay/frontend"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "a^"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Local:\\s+http://localhost:5173/"
+        }
+      }
+    }
+  ]
+}

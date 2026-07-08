@@ -46,8 +46,31 @@ const offers = [
     type: "Ключ",
     price: "799 ₽",
     rating: "4.7 · 67"
+  },
+  {
+    image: "/assets/website/offers/assets_albion_online.jpeg",
+    title: "Albion Online",
+    type: "Серебро",
+    price: "1 250 ₽",
+    rating: "4.9 · 142"
+  },
+  {
+    image: "/assets/website/offers/assets_dota_2.jpg",
+    title: "Dota 2",
+    type: "Калибровка",
+    price: "890 ₽",
+    rating: "4.8 · 101"
+  },
+  {
+    image: "/assets/website/offers/assets_gta_v.jpg",
+    title: "GTA V",
+    type: "Аккаунт",
+    price: "699 ₽",
+    rating: "4.7 · 74"
   }
 ];
+
+const carouselOffers = [...offers, ...offers];
 
 export function MarketPreview() {
   return (
@@ -78,36 +101,38 @@ export function MarketPreview() {
 
       <div className="mt-6 border-t border-[var(--border)] pt-5">
         <h2 className="text-lg font-extrabold text-[var(--text)]">Популярные предложения</h2>
-        <div className="mt-4 grid grid-cols-3 gap-3">
-          {offers.map((offer) => (
-            <article
-              className="relative flex aspect-[1.35] min-h-[134px] flex-col justify-end overflow-hidden rounded-lg border border-[var(--border)] p-3 text-white shadow-sm"
-              key={offer.title}
-            >
-              <img
-                alt=""
-                className="absolute inset-0 size-full object-cover"
-                draggable="false"
-                src={offer.image}
-              />
-              <span className="absolute inset-0 bg-[var(--offer-overlay)]" />
-              <h3 className="relative text-sm font-extrabold leading-tight">{offer.title}</h3>
-              <p className="relative text-xs leading-4 text-white/82">{offer.type}</p>
-              <div className="relative mt-3 flex items-center justify-between gap-2">
-                <span className="text-sm font-extrabold">{offer.price}</span>
-                <span className="inline-flex items-center gap-1 text-[11px] text-white/82">
-                  <Star size={11} fill="currentColor" aria-hidden="true" />
-                  {offer.rating}
-                </span>
-              </div>
-            </article>
-          ))}
+        <div className="offer-carousel mt-4" aria-label="Популярные предложения">
+          <div className="offer-track">
+            {carouselOffers.map((offer, index) => (
+              <article
+                className="offer-card relative flex aspect-[1.35] min-h-[134px] flex-col justify-end overflow-hidden rounded-lg border border-[var(--border)] p-3 text-white shadow-sm"
+                key={`${offer.title}-${index}`}
+              >
+                <img
+                  alt=""
+                  className="absolute inset-0 size-full object-cover"
+                  draggable="false"
+                  src={offer.image}
+                />
+                <span className="absolute inset-0 bg-[var(--offer-overlay)]" />
+                <h3 className="relative text-sm font-extrabold leading-tight">{offer.title}</h3>
+                <p className="relative text-xs leading-4 text-white/82">{offer.type}</p>
+                <div className="relative mt-3 flex items-center justify-between gap-2">
+                  <span className="text-sm font-extrabold">{offer.price}</span>
+                  <span className="inline-flex items-center gap-1 text-[11px] text-white/82">
+                    <Star size={11} fill="currentColor" aria-hidden="true" />
+                    {offer.rating}
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
 
       <a
         className="mt-4 inline-flex h-10 w-full items-center justify-center gap-3 rounded-lg border border-[var(--border)] text-sm font-extrabold text-[var(--link)] transition hover:border-[var(--accent)] hover:text-[var(--accent-strong)]"
-        href="#catalog"
+        href="/catalog"
       >
         Перейти в каталог
         <ArrowRight size={17} aria-hidden="true" />

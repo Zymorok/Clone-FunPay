@@ -8,6 +8,22 @@ namespace FunPay.Backend.Controllers;
 [Route("api/auth")]
 public class AuthController(AuthService authService) : ControllerBase
 {
+    [HttpGet("availability/nick")]
+    public async Task<ActionResult<AvailabilityResponse>> CheckNickAvailability(
+        [FromQuery] string? value,
+        CancellationToken cancellationToken)
+    {
+        return await authService.CheckNickAvailabilityAsync(value, cancellationToken);
+    }
+
+    [HttpGet("availability/email")]
+    public async Task<ActionResult<AvailabilityResponse>> CheckEmailAvailability(
+        [FromQuery] string? value,
+        CancellationToken cancellationToken)
+    {
+        return await authService.CheckEmailAvailabilityAsync(value, cancellationToken);
+    }
+
     [HttpPost("register")]
     public async Task<ActionResult<RegisterResponse>> Register(
         [FromBody] RegisterRequest request,

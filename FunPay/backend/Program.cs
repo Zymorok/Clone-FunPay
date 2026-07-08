@@ -1,14 +1,22 @@
 ﻿using FunPay.Backend.Data;
+using System.Text;
 using FunPay.Backend.Logging;
+using FunPay.Backend.Development;
 using FunPay.Backend.Models;
 using FunPay.Backend.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 const string FrontendCorsPolicy = "Frontend";
+var backendUrl = builder.Configuration.GetValue("Backend:Url", "http://localhost:5090");
+var shouldAutoStartFrontend = builder.Configuration.GetValue("DevFrontend:AutoStart", true);
+
+Console.OutputEncoding = Encoding.UTF8;
+builder.WebHost.UseUrls(backendUrl);
 
 var logLayout = LoggingBootstrap.Configure(builder.Configuration, builder.Environment.ContentRootPath, "backend");
 builder.Host.UseSerilog();
@@ -45,12 +53,44 @@ try
 
     var app = builder.Build();
 
-    app.UseSerilogRequestLogging();
+    app.UseSerilogRequestLogging(options =>
+    {
+        options.GetLevel = (httpContext, _, exception) =>
+        {
+            if (httpContext.Request.Path.StartsWithSegments("/internal/dev/frontend-heartbeat"))
+            {
+                return LogEventLevel.Verbose;
+            }
+
+            if (exception is not null || httpContext.Response.StatusCode >= 500)
+            {
+                return LogEventLevel.Error;
+            }
+
+            return LogEventLevel.Information;
+        };
+    });
     app.UseCors(FrontendCorsPolicy);
 
     app.MapControllers();
 
-    app.MapGet("/", () => "FunPay backend работает.");
+    if (shouldAutoStartFrontend)
+    {
+        DevFrontendLauncher.MapRoutes(app);
+
+        app.MapGet("/", () => Results.Redirect(DevFrontendLauncher.FrontendUrl));
+
+        app.Lifetime.ApplicationStarted.Register(() =>
+        {
+            _ = Task.Run(() => DevFrontendLauncher.StartAsync(
+                app.Environment.ContentRootPath,
+                app.Lifetime.ApplicationStopping));
+        });
+    }
+    else
+    {
+        app.MapGet("/", () => "FunPay backend работает.");
+    }
 
     Log.Information("Backend готов к запуску.");
 
