@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navbar } from "./components/Navbar";
+import { Catalog } from "./pages/Catalog";
 import { Register } from "./pages/Register";
 import { RouteStub, type RouteStubInfo } from "./pages/RouteStub";
 
@@ -7,7 +8,6 @@ export type Theme = "light" | "dark";
 
 const themeStorageKey = "funpay-theme";
 const routeVideoPath = "/assets/website/backgrounds/routes";
-const devBackendUrl = import.meta.env.VITE_API_URL ?? "http://localhost:5090";
 
 const routeStubs: Record<string, RouteStubInfo> = {
   "/catalog": {
@@ -75,25 +75,6 @@ export default function App() {
   const routeStub = routeStubs[route];
 
   useEffect(() => {
-    if (!import.meta.env.DEV) {
-      return;
-    }
-
-    const heartbeatUrl = `${devBackendUrl}/internal/dev/frontend-heartbeat`;
-
-    function sendHeartbeat() {
-      void fetch(heartbeatUrl, { method: "POST", keepalive: true }).catch(() => undefined);
-    }
-
-    sendHeartbeat();
-    const intervalId = window.setInterval(sendHeartbeat, 3000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, []);
-
-  useEffect(() => {
     replaceRootRoute();
   }, []);
 
@@ -103,10 +84,12 @@ export default function App() {
   }, [theme]);
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[var(--bg)] text-[var(--text)] transition-colors duration-200">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-200">
       <Navbar theme={theme} onThemeChange={setTheme} />
       {route === "/register" ? (
         <Register />
+      ) : route === "/catalog" ? (
+        <Catalog />
       ) : (
         <RouteStub
           path={route}
