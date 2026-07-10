@@ -1,0 +1,92 @@
+.route-transition {
+  min-height: 100vh;
+}
+
+.route-transition--leaving {
+  pointer-events: none;
+  animation: route-ui-fade-out 180ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.route-transition--entering {
+  animation: route-ui-fade-in 240ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+html.ui-change--leaving #root,
+html.ui-change--entering #root {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+html.ui-change--leaving::before,
+html.ui-change--entering::before {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  background: var(--ui-change-background, var(--bg));
+  pointer-events: none;
+}
+
+html.ui-change--leaving #root {
+  animation: ui-change-fade-out 150ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+html.ui-change--entering #root {
+  animation: ui-change-fade-in 220ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+html.language-dust--active #root {
+  pointer-events: none;
+}
+
+html.language-dust--active #root,
+html.language-dust--active #root * {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  caret-color: transparent !important;
+}
+
+html.language-dust--active #root *::placeholder {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.language-dust-canvas {
+  position: fixed;
+  z-index: 2147483646;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+@keyframes route-ui-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes route-ui-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ui-change-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes ui-change-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-transition--leaving,
+  .route-transition--entering,
+  html.ui-change--leaving #root,
+  html.ui-change--entering #root,
+  .language-dust-canvas {
+    animation: none;
+  }
+}

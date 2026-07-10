@@ -1,0 +1,243 @@
+.team-manager {
+  position: fixed;
+  z-index: 120;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(2, 7, 14, 0.72);
+  padding: 20px;
+  animation: modal-layer-fade-in 220ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.team-manager.modal-layer--closing,
+.profile-editor.modal-layer--closing {
+  pointer-events: none;
+  animation: modal-layer-fade-out 180ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes modal-layer-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-layer-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.team-manager__sheet {
+  display: grid;
+  width: min(650px, 100%);
+  max-height: min(720px, calc(100vh - 40px));
+  gap: 18px;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, #a78bfa 38%, var(--border));
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.52);
+  padding: 22px;
+}
+
+.team-manager__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.team-manager__head h2 {
+  margin: 3px 0 4px;
+  color: var(--text);
+  font-size: 21px;
+  font-weight: 950;
+}
+
+.team-manager__head p,
+.team-manager__search small,
+.team-manager__state {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.team-manager__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #bda7ff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.team-manager__search {
+  display: grid;
+  gap: 7px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.team-manager__search div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  padding: 0 11px;
+}
+
+.team-manager__search div:focus-within {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #a78bfa 18%, transparent);
+}
+
+.team-manager__search svg {
+  color: var(--muted);
+}
+
+.team-manager__search input {
+  width: 100%;
+  min-height: 42px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+.team-manager__list {
+  display: grid;
+  gap: 9px;
+}
+
+.team-manager__account {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-soft);
+  padding: 10px;
+}
+
+.team-manager__avatar {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--muted) 18%, transparent);
+  color: var(--muted);
+}
+
+.team-manager__avatar--admin { background: color-mix(in srgb, #52d8ff 18%, transparent); color: #52d8ff; }
+.team-manager__avatar--owner { background: color-mix(in srgb, #f7c948 19%, transparent); color: #f7c948; }
+
+.team-manager__identity {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.team-manager__identity strong,
+.team-manager__identity small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-manager__identity strong { color: var(--text); font-size: 14px; font-weight: 900; }
+.team-manager__identity small { color: var(--muted); font-size: 11px; font-weight: 700; }
+
+.team-manager__roles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.team-manager__roles button {
+  min-height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  padding: 0 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.team-manager__roles button:hover:not(:disabled) { border-color: #a78bfa; color: var(--text); }
+.team-manager__roles button.is-active { border-color: #a78bfa; background: color-mix(in srgb, #8b5cf6 17%, transparent); color: #d7cbff; }
+.team-manager__roles button:disabled { cursor: default; opacity: 0.72; }
+
+.team-manager__state { padding: 12px 2px; text-align: center; }
+
+.team-manager__message {
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 44%, var(--border));
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  padding: 9px 11px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.user-menu__link:hover,
+.user-menu__logout:hover {
+  border-color: color-mix(in srgb, var(--profile-accent, var(--accent)) 78%, var(--border));
+  transform: translateY(-1px);
+}
+
+.user-menu__link svg,
+.user-menu__logout svg {
+  color: var(--profile-accent, var(--accent-strong));
+}
+
+.user-menu__link span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-menu__link--profile {
+  --profile-accent: #52d8ff;
+}
+
+.user-menu__link--orders {
+  --profile-accent: #ffc107;
+}
+
+.user-menu__link--chat {
+  --profile-accent: #5eead4;
+}
+
+.user-menu__link--support {
+  --profile-accent: #a78bfa;
+}
+
+.user-menu__logout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-height: 50px;
+  text-align: left;
+  --profile-accent: var(--danger);
+}
+
+.user-menu__logout svg {
+  grid-row: span 2;
+}
+
+.user-menu__logout span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -4,9 +4,11 @@ using FunPay.Backend.Logging;
 using FunPay.Backend.Development;
 using FunPay.Backend.Models;
 using FunPay.Backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
 
@@ -36,7 +38,42 @@ try
         options.UseNpgsql(connectionString));
 
     builder.Services.AddScoped<AuthService>();
+    builder.Services.AddScoped<ProfileUserResolver>();
+    builder.Services.AddScoped<ProfileCosmeticsService>();
+    builder.Services.AddScoped<ProfileMapper>();
+    builder.Services.AddScoped<ProfileAvatarService>();
+    builder.Services.AddScoped<ProfileService>();
+    builder.Services.AddScoped<PresenceService>();
+    builder.Services.AddScoped<TeamManagementService>();
     builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+    var jwtSigningKey = builder.Configuration["Jwt:SigningKey"]
+        ?? throw new InvalidOperationException("Не найден Jwt:SigningKey.");
+    var jwtSigningKeyBytes = Encoding.UTF8.GetBytes(jwtSigningKey);
+
+    if (jwtSigningKeyBytes.Length < 32)
+    {
+        throw new InvalidOperationException("Jwt:SigningKey должен быть не короче 32 байт.");
+    }
+
+    builder.Services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = builder.Configuration.GetValue("Jwt:Issuer", "FunPay.Backend"),
+                ValidateAudience = true,
+                ValidAudience = builder.Configuration.GetValue("Jwt:Audience", "FunPay.Frontend"),
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(jwtSigningKeyBytes),
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromSeconds(30)
+            };
+        });
+
+    builder.Services.AddAuthorization();
 
     builder.Services.AddCors(options =>
     {
@@ -71,6 +108,9 @@ try
         };
     });
     app.UseCors(FrontendCorsPolicy);
+    app.UseStaticFiles();
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.MapControllers();
 

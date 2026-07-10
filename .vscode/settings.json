@@ -1,4 +1,5 @@
 {
+  "css.lint.unknownAtRules": "ignore",
   "dotnet.defaultSolution": "FunPay.sln",
   "files.exclude": {
     "**/node_modules": true,

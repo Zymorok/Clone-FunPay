@@ -1,0 +1,99 @@
+.user-menu {
+  position: relative;
+  z-index: 40;
+}
+
+.site-navbar {
+  position: relative;
+  z-index: 80;
+}
+
+.site-navbar__glass,
+.register-page > section {
+  border-color: rgba(17, 17, 19, 0.1);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 44%),
+    rgba(245, 245, 245, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    -4px 4px 15px rgba(0, 0, 0, 0.12);
+  -webkit-backdrop-filter: blur(14px) saturate(125%);
+  backdrop-filter: blur(14px) saturate(125%);
+}
+
+.dark .site-navbar__glass,
+.dark .register-page > section {
+  border-color: rgba(241, 241, 241, 0.1);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 46%),
+    rgba(0, 0, 0, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    -4px 4px 15px rgba(0, 0, 0, 0.24);
+}
+
+.register-page {
+  --register-glass-inset: rgba(255, 255, 255, 0.38);
+  --register-glass-inset-border: rgba(17, 17, 19, 0.12);
+  --register-glass-inset-highlight: rgba(255, 255, 255, 0.4);
+}
+
+.dark .register-page {
+  --register-glass-inset: rgba(241, 241, 241, 0.075);
+  --register-glass-inset-border: rgba(241, 241, 241, 0.12);
+  --register-glass-inset-highlight: rgba(255, 255, 255, 0.08);
+}
+
+.register-page .field,
+.register-page .market-feature-icon {
+  border-color: var(--register-glass-inset-border);
+  background: var(--register-glass-inset);
+  box-shadow:
+    inset 0 1px 0 var(--register-glass-inset-highlight),
+    0 5px 16px rgba(0, 0, 0, 0.06);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  backdrop-filter: blur(10px) saturate(120%);
+}
+
+.register-page .field {
+  --register-field-focus: var(--muted);
+  --register-field-focus-ring: color-mix(in srgb, var(--muted) 34%, transparent);
+}
+
+.register-page .field.field--danger {
+  --register-field-focus: var(--danger);
+  --register-field-focus-ring: color-mix(in srgb, var(--danger) 30%, transparent);
+}
+
+.register-page .field.field--submit-danger {
+  --register-field-focus: var(--danger);
+  --register-field-focus-ring: color-mix(in srgb, var(--danger) 30%, transparent);
+  border-color: var(--danger);
+}
+
+.register-page .field.field--warning {
+  --register-field-focus: var(--warning);
+  --register-field-focus-ring: color-mix(in srgb, var(--warning) 30%, transparent);
+}
+
+.register-page .field.field--success {
+  --register-field-focus: var(--success);
+  --register-field-focus-ring: color-mix(in srgb, var(--success) 30%, transparent);
+}
+
+.register-page .field.field--danger,
+.register-page .field.field--warning,
+.register-page .field.field--success {
+  border-color: var(--register-field-focus);
+  box-shadow:
+    inset 0 1px 0 var(--register-glass-inset-highlight),
+    0 0 0 1px var(--register-field-focus-ring);
+}
+
+.register-page .field:focus {
+  border-color: var(--register-field-focus);
+  box-shadow:
+    inset 0 1px 0 var(--register-glass-inset-highlight),
+    0 0 0 3px var(--register-field-focus-ring),
+    0 8px 24px rgba(0, 0, 0, 0.12);
+}

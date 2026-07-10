@@ -1,0 +1,425 @@
+{
+  $meta: {
+    defaultLang: "uk",
+    fallback: {
+      uk: ["ru"],
+      ru: ["uk"]
+    }
+  },
+
+  uk: {
+    language: {
+      name: "Українська",
+      switchTo: "Переключити мову"
+    },
+
+    nav: {
+      aria: "Головна навігація",
+      catalog: "Каталог",
+      orders: "Мої замовлення",
+      chat: "Чат",
+      support: "Підтримка",
+      login: "Увійти"
+    },
+
+    userMenu: {
+      open: "Відкрити меню акаунта",
+      profile: "Профіль",
+      orders: "Мої замовлення",
+      chat: "Чат",
+      support: "Підтримка",
+      roleUser: "Користувач",
+      logout: "Вийти",
+      logoutHint: "Завершити поточну сесію",
+      signingOut: "Виходимо..."
+    },
+
+    login: {
+      title: "Вхід в акаунт",
+      subtitle: "Увійдіть, щоб продовжити покупки, продажі та замовлення.",
+      identityLabel: "Email або нік",
+      identityPlaceholder: "Введіть email або нік",
+      passwordLabel: "Пароль",
+      passwordPlaceholder: "Введіть пароль",
+      remember: "Запам'ятати мене",
+      forgot: "Забули пароль?",
+      submit: "Увійти",
+      noAccount: "Ще немає акаунта?",
+      register: "Зареєструватися",
+      showPassword: "Показати пароль",
+      hidePassword: "Сховати пароль",
+      noteTitle: "Безпечний вхід",
+      noteText: "Дані входу відправляються на backend. Якщо сесія завершиться, сайт попросить увійти знову.",
+      errors: {
+        failed: "Не вдалося увійти.",
+        checkFields: "Заповніть виділені поля."
+      }
+    },
+
+    profile: {
+      badge: "Активна сесія",
+      title: "Кабінет акаунта",
+      subtitle: "Швидкі переходи до основних розділів користувача.",
+      page: {
+        about: "Про профіль", contacts: "Контакти", online: "Онлайн", afk: "АФК", offline: "Офлайн", teamStatus: "Статус команди сайту",
+        member: "Користувач", administrator: "Адміністратор", administratorFemale: "Адміністраторка", owner: "Хазяїн", ownerFemale: "Хазяйка", edit: "Редагувати профіль", close: "Закрити",
+        save: "Зберегти зміни", saving: "Збереження...", saved: "Профіль збережено.", upload: "Завантажити аватарку", uploading: "Завантаження...", avatarHint: "JPG, PNG або WEBP, до 5 МБ",
+        appearance: "Зовнішній вигляд", nickname: "Нікнейм", description: "Опис", descriptionPlaceholder: "Розкажіть щось про себе",
+        gender: "Стать", genderNone: "Не вказано", genderMale: "Чоловіча", genderFemale: "Жіноча", genderOther: "Інша",
+        birthday: "День народження", country: "Країна", countryNone: "Не вказано", countryUa: "Україна", countryRu: "Росія", countryPl: "Польща", countryDe: "Німеччина", countryUs: "США", countryGb: "Велика Британія", countryOther: "Інша",
+        telegram: "Telegram", discord: "Discord", youtube: "YouTube", notSpecified: "Не вказано", since: "На FunPay з {date}", memberFor: "З нами ({duration})",
+        banner: "Банер", avatar: "Аватарка", frame: "Рамка", bannerMidnight: "Нічний", bannerEmber: "Вогняний", bannerAurora: "Полярний", avatarGold: "Золота", avatarCyan: "Блакитна", avatarViolet: "Фіолетова", frameGold: "Золота", frameCyan: "Блакитна", frameViolet: "Фіолетова", frameNone: "Без рамки",
+        loadError: "Не вдалося завантажити профіль.", retry: "Спробувати ще раз", notFoundTitle: "Цей профіль десь загубився", notFoundText: "Ми перевірили нік та ID, але нікого не знайшли. Можливо, у посиланні сховалась помилка.", notFoundQueryHint: "Шукали за ніком або ID", myProfile: "Мій профіль", goCatalog: "До каталогу", countrySearch: "Пошук країни", quickAdd: "Швидко додати", contactsLimit: "Посилань: {count}/6", contactTitle: "Назва", contactUrl: "Посилання", customService: "Назва сервісу", moveUp: "Перемістити вище", moveDown: "Перемістити нижче", removeContact: "Видалити контакт", noContacts: "Контакти ще не додані", addContact: "Додати контакт", wallpaper: "Шпалери", assetSearch: "Пошук предмета", assetNone: "Не вибрано", showMoreAssets: "Показати ще {count}", myFrame: "Моя рамка", myAvatar: "Моя аватарка", activeAnimationsOnly: "Лише активні", preview: "Переглянути", previewMode: "Попередній перегляд", previewUnsaved: "Зміни не збережено", exitPreview: "Повернутися до редактора", cosmeticsError: "Не вдалося завантажити предмети оформлення."
+      },
+      links: {
+        profile: "Профіль",
+        profileText: "Дані акаунта та майбутні налаштування",
+        orders: "Мої замовлення",
+        ordersText: "Історія угод і статуси покупок",
+        chat: "Чат",
+        chatText: "Переписка з продавцями та покупцями",
+        support: "Підтримка",
+        supportText: "Допомога та спірні ситуації"
+      }
+    },
+
+    register: {
+      title: "Створити акаунт",
+      subtitle: "Приєднуйтесь до FunPay і починайте купувати та продавати ігрові товари.",
+      nickLabel: "Нік",
+      nickPlaceholder: "Введіть ваш нік",
+      emailLabel: "Email",
+      emailPlaceholder: "Введіть email",
+      passwordLabel: "Пароль",
+      passwordPlaceholder: "Мінімум 8 символів",
+      confirmPasswordLabel: "Підтвердіть пароль",
+      confirmPasswordPlaceholder: "Повторіть пароль",
+      passwordMismatch: "Паролі не збігаються.",
+      checkFields: "Перевірте виділені поля.",
+      createFailed: "Не вдалося створити акаунт.",
+      success: "Акаунт {nick} створено.",
+      remember: "Запам'ятати мене",
+      submit: "Створити акаунт",
+      termsPrefix: "Реєструючись, ви погоджуєтесь з нашими",
+      termsLink: "Умовами використання",
+      privacyMiddle: "і",
+      privacyLink: "Політикою конфіденційності",
+      hasAccount: "Вже є акаунт?",
+      login: "Увійти",
+      showPassword: "Показати пароль",
+      hidePassword: "Сховати пароль",
+      showConfirmPassword: "Показати підтвердження пароля",
+      hideConfirmPassword: "Сховати підтвердження пароля"
+    },
+
+    market: {
+      title: "Все для ваших ігрових угод",
+      features: {
+        catalog: {
+          title: "Каталог ігор і товарів",
+          text: "Тисячі пропозицій за популярними іграми"
+        },
+        orders: {
+          title: "Безпечні замовлення",
+          text: "Система замовлень із захистом покупця"
+        },
+        chat: {
+          title: "Чат з продавцем",
+          text: "Спілкуйтеся прямо в замовленні"
+        },
+        fast: {
+          title: "Швидко і зручно",
+          text: "Миттєві сповіщення і простий інтерфейс"
+        }
+      },
+      popularOffers: "Популярні пропозиції",
+      goCatalog: "Перейти в каталог",
+      offerTypes: {
+        account: "Акаунт",
+        key: "Ключ",
+        silver: "Срібло",
+        calibration: "Калібрування"
+      }
+    },
+
+    routes: {
+      common: {
+        inDevelopment: "Розділ у розробці",
+        backHome: "Повернутися на головну",
+        notFoundTitle: "Як ти знайшов(ла) сторінку, якої немає?",
+        notFoundText: "Схоже, це посилання веде в порожнечу. Можливо, сторінку перенесли, перейменували або видалили.",
+        notFoundAction: "На головну"
+      },
+      orders: {
+        title: "Мої замовлення",
+        text: "Тут буде історія замовлень, статуси угод і швидкий перехід до продавця. А поки насолоджуйтеся оніме-дівчатами 💔",
+      },
+      chat: {
+        title: "Чат",
+        text: "Пізніше тут з'явиться переписка покупця і продавця всередині замовлення. Навіть не думайте відбирати у Віталіка кішко-жінку на фоні 😸",
+      },
+      support: {
+        title: "Підтримка",
+        text: "Цей розділ залишимо для допомоги користувачам і вирішення спірних ситуацій. Люсі зі Шреком багато лайна повідали в цьому світі 🚬 (P.S Люсі не смій зраджувати Девіду 😾)",
+      },
+      terms: {
+        title: "Умови використання",
+        text: "Цю сторінку писатимуть надто розумні люди ☝️🤓"
+      },
+      privacy: {
+        title: "Політика конфіденційності",
+        text: "Цю сторінку писатимуть надто розумні люди ☝️🤓"
+      }
+    },
+
+    catalog: {
+      heroLabel: "Каталог ігор",
+      title: "Виберіть гру",
+      subtitle: "Ігрові розділи для майбутніх оголошень, замовлень і швидких угод.",
+      allGames: "Усі ігри",
+      allGamesSubtitle: "Швидкі категорії на картці і повний список праворуч",
+      popular: "Популярні",
+      az: "A-Z",
+      sectionsCount: "{count} розділів",
+      quickCategoriesAria: "Швидкі категорії {game}",
+      showAllowedCategories: "Показати дозволені категорії для {game}",
+      filters: "Фільтри",
+      reset: "Скинути",
+      search: "Пошук",
+      searchPlaceholder: "Назва гри",
+      saleCategories: "Категорії продажу",
+      saleCategoriesAria: "Показати всі категорії продажу",
+      allCategoriesSubtitle: "Загальний список фільтрів",
+      allowedCategoriesSubtitle: "Дозволені категорії для гри",
+      categorySearch: "Пошук категорії",
+      categorySearchPlaceholder: "Наприклад послуги",
+      back: "Назад",
+      categories: {
+        accounts: "Акаунти",
+        services: "Послуги",
+        training: "Навчання",
+        subscription: "Підписка",
+        currency: "Валюта",
+        donate: "Донат",
+        items: "Предмети",
+        "twitch-drops": "Twitch Drops",
+        keys: "Ключі",
+        "offline-activation": "Офлайн активації",
+        other: "Інше",
+        guides: "Гайди",
+        "game-pass": "Game Pass",
+        kinars: "Кінари",
+        virts: "Вірти",
+        "region-change": "Зміна регіону"
+      }
+    }
+  },
+
+  ru: {
+    language: {
+      name: "Русский",
+      switchTo: "Переключить язык"
+    },
+
+    nav: {
+      aria: "Главная навигация",
+      catalog: "Каталог",
+      orders: "Мои заказы",
+      chat: "Чат",
+      support: "Поддержка",
+      login: "Войти"
+    },
+
+    userMenu: {
+      open: "Открыть меню аккаунта",
+      profile: "Профиль",
+      orders: "Мои заказы",
+      chat: "Чат",
+      support: "Поддержка",
+      roleUser: "Пользователь",
+      logout: "Выйти",
+      logoutHint: "Завершить текущую сессию",
+      signingOut: "Выходим..."
+    },
+
+    login: {
+      title: "Вход в аккаунт",
+      subtitle: "Войдите, чтобы продолжить покупки, продажи и заказы.",
+      identityLabel: "Email или ник",
+      identityPlaceholder: "Введите email или ник",
+      passwordLabel: "Пароль",
+      passwordPlaceholder: "Введите пароль",
+      remember: "Запомнить меня",
+      forgot: "Забыли пароль?",
+      submit: "Войти",
+      noAccount: "Еще нет аккаунта?",
+      register: "Зарегистрироваться",
+      showPassword: "Показать пароль",
+      hidePassword: "Скрыть пароль",
+      noteTitle: "Безопасный вход",
+      noteText: "Данные входа отправляются на backend. Если сессия закончится, сайт попросит войти снова.",
+      errors: {
+        failed: "Не получилось войти.",
+        checkFields: "Заполните выделенные поля."
+      }
+    },
+
+    profile: {
+      badge: "Активная сессия",
+      title: "Кабинет аккаунта",
+      subtitle: "Быстрые переходы к основным разделам пользователя.",
+      page: {
+        about: "О профиле", contacts: "Контакты", online: "Онлайн", afk: "АФК", offline: "Оффлайн", teamStatus: "Статус команды сайта",
+        member: "Пользователь", administrator: "Администратор", administratorFemale: "Администраторка", owner: "Хозяин", ownerFemale: "Хозяйка", edit: "Редактировать профиль", close: "Закрыть",
+        save: "Сохранить изменения", saving: "Сохранение...", saved: "Профиль сохранён.", upload: "Загрузить аватарку", uploading: "Загрузка...", avatarHint: "JPG, PNG или WEBP, до 5 МБ",
+        appearance: "Внешний вид", nickname: "Никнейм", description: "Описание", descriptionPlaceholder: "Расскажите что-нибудь о себе",
+        gender: "Пол", genderNone: "Не указан", genderMale: "Мужской", genderFemale: "Женский", genderOther: "Другой",
+        birthday: "День рождения", country: "Страна", countryNone: "Не указана", countryUa: "Украина", countryRu: "Россия", countryPl: "Польша", countryDe: "Германия", countryUs: "США", countryGb: "Великобритания", countryOther: "Другая",
+        telegram: "Telegram", discord: "Discord", youtube: "YouTube", notSpecified: "Не указано", since: "На FunPay с {date}", memberFor: "С нами ({duration})",
+        banner: "Баннер", avatar: "Аватарка", frame: "Рамка", bannerMidnight: "Ночной", bannerEmber: "Огненный", bannerAurora: "Полярный", avatarGold: "Золотая", avatarCyan: "Голубая", avatarViolet: "Фиолетовая", frameGold: "Золотая", frameCyan: "Голубая", frameViolet: "Фиолетовая", frameNone: "Без рамки",
+        loadError: "Не удалось загрузить профиль.", retry: "Попробовать ещё раз", notFoundTitle: "Этот профиль где-то потерялся", notFoundText: "Мы проверили ник и ID, но никого не нашли. Возможно, в ссылке спряталась опечатка.", notFoundQueryHint: "Искали по нику или ID", myProfile: "Мой профиль", goCatalog: "В каталог", countrySearch: "Поиск страны", quickAdd: "Быстро добавить", contactsLimit: "Ссылок: {count}/6", contactTitle: "Название", contactUrl: "Ссылка", customService: "Название сервиса", moveUp: "Переместить выше", moveDown: "Переместить ниже", removeContact: "Удалить контакт", noContacts: "Контакты ещё не добавлены", addContact: "Добавить контакт", wallpaper: "Обои", assetSearch: "Поиск предмета", assetNone: "Не выбрано", showMoreAssets: "Показать ещё {count}", myFrame: "Моя рамка", myAvatar: "Моя аватарка", activeAnimationsOnly: "Только активные", preview: "Предпросмотр", previewMode: "Режим предпросмотра", previewUnsaved: "Изменения не сохранены", exitPreview: "Вернуться в редактор", cosmeticsError: "Не удалось загрузить предметы оформления."
+      },
+      links: {
+        profile: "Профиль",
+        profileText: "Данные аккаунта и будущие настройки",
+        orders: "Мои заказы",
+        ordersText: "История сделок и статусы покупок",
+        chat: "Чат",
+        chatText: "Переписка с продавцами и покупателями",
+        support: "Поддержка",
+        supportText: "Помощь и спорные ситуации"
+      }
+    },
+
+    register: {
+      title: "Создать аккаунт",
+      subtitle: "Присоединяйтесь к FunPay и начинайте покупать и продавать игровые товары.",
+      nickLabel: "Ник",
+      nickPlaceholder: "Введите ваш ник",
+      emailLabel: "Email",
+      emailPlaceholder: "Введите email",
+      passwordLabel: "Пароль",
+      passwordPlaceholder: "Минимум 8 символов",
+      confirmPasswordLabel: "Подтвердите пароль",
+      confirmPasswordPlaceholder: "Повторите пароль",
+      passwordMismatch: "Пароли не совпадают.",
+      checkFields: "Проверьте выделенные поля.",
+      createFailed: "Не получилось создать аккаунт.",
+      success: "Аккаунт {nick} создан.",
+      remember: "Запомнить меня",
+      submit: "Создать аккаунт",
+      termsPrefix: "Регистрируясь, вы соглашаетесь с нашими",
+      termsLink: "Условиями использования",
+      privacyMiddle: "и",
+      privacyLink: "Политикой конфиденциальности",
+      hasAccount: "Уже есть аккаунт?",
+      login: "Войти",
+      showPassword: "Показать пароль",
+      hidePassword: "Скрыть пароль",
+      showConfirmPassword: "Показать подтверждение пароля",
+      hideConfirmPassword: "Скрыть подтверждение пароля"
+    },
+
+    market: {
+      title: "Все для ваших игровых сделок",
+      features: {
+        catalog: {
+          title: "Каталог игр и товаров",
+          text: "Тысячи предложений по популярным играм"
+        },
+        orders: {
+          title: "Безопасные заказы",
+          text: "Система заказов с защитой покупателя"
+        },
+        chat: {
+          title: "Чат с продавцом",
+          text: "Общайтесь прямо в заказе"
+        },
+        fast: {
+          title: "Быстро и удобно",
+          text: "Мгновенные уведомления и простой интерфейс"
+        }
+      },
+      popularOffers: "Популярные предложения",
+      goCatalog: "Перейти в каталог",
+      offerTypes: {
+        account: "Аккаунт",
+        key: "Ключ",
+        silver: "Серебро",
+        calibration: "Калибровка"
+      }
+    },
+
+    routes: {
+      common: {
+        inDevelopment: "Раздел в разработке",
+        backHome: "Вернуться на главную",
+        notFoundTitle: "Как ты обнаружил(а) страницу, которой нет?",
+        notFoundText: "Похоже, эта ссылка ведёт в пустоту. Возможно, страницу перенесли, переименовали или удалили.",
+        notFoundAction: "На главную"
+      },
+      orders: {
+        title: "Мои заказы",
+        text: "Здесь будет история заказов, статусы сделок и быстрый переход к продавцу. А пока наслаждайтесь ониме девочками 💔",
+      },
+      chat: {
+        title: "Чат",
+        text: "Позже тут появится переписка покупателя и продавца внутри заказа. Даже не думайте отбирать у Виталика кошко-жену на фоне 😸",
+      },
+      support: {
+        title: "Поддержка",
+        text: "Этот раздел оставим для помощи пользователям и решения спорных ситуаций. Люси со Шреком многое дерьм0 поведали в этом мире 🚬 (P.S Люси не смей изменять Дэвиду 😾)",
+      },
+      terms: {
+        title: "Условия использования",
+        text: "Эту страницу будут писать слишком умные люди ☝️🤓"
+      },
+      privacy: {
+        title: "Политика конфиденциальности",
+        text: "Эту страницу будут писать слишком умные люди ☝️🤓"
+      }
+    },
+
+    catalog: {
+      heroLabel: "Каталог игр",
+      title: "Выберите игру",
+      subtitle: "Игровые разделы для будущих объявлений, заказов и быстрых сделок.",
+      allGames: "Все игры",
+      allGamesSubtitle: "Быстрые категории на карточке и полный список справа",
+      popular: "Популярные",
+      az: "A-Z",
+      sectionsCount: "{count} разделов",
+      quickCategoriesAria: "Быстрые категории {game}",
+      showAllowedCategories: "Показать разрешенные категории для {game}",
+      filters: "Фильтры",
+      reset: "Сбросить",
+      search: "Поиск",
+      searchPlaceholder: "Название игры",
+      saleCategories: "Категории продаж",
+      saleCategoriesAria: "Показать все категории продаж",
+      allCategoriesSubtitle: "Общий список фильтров",
+      allowedCategoriesSubtitle: "Разрешенные категории для игры",
+      categorySearch: "Поиск категории",
+      categorySearchPlaceholder: "Например услуги",
+      back: "Назад",
+      categories: {
+        accounts: "Аккаунты",
+        services: "Услуги",
+        training: "Обучение",
+        subscription: "Подписка",
+        currency: "Валюта",
+        donate: "Донат",
+        items: "Предметы",
+        "twitch-drops": "Twitch Drops",
+        keys: "Ключи",
+        "offline-activation": "Оффлайн активации",
+        other: "Прочее",
+        guides: "Гайды",
+        "game-pass": "Game Pass",
+        kinars: "Кинары",
+        virts: "Вирты",
+        "region-change": "Смена региона"
+      }
+    }
+  }
+}

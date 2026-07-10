@@ -17,6 +17,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     public DbSet<Message> Messages => Set<Message>();
 
+    public DbSet<ProfileContact> ProfileContacts => Set<ProfileContact>();
+
+    public DbSet<UserSession> UserSessions => Set<UserSession>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -27,6 +31,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         ConfigureProducts(modelBuilder);
         ConfigureOrders(modelBuilder);
         ConfigureMessages(modelBuilder);
+        ConfigureProfileContacts(modelBuilder);
+        ConfigureUserSessions(modelBuilder);
     }
 
     private static void ConfigureUsers(ModelBuilder modelBuilder)
@@ -37,13 +43,23 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             {
                 table.HasCheckConstraint("CK_Users_Nick_NotEmpty", "length(btrim(\"Nick\")) > 0");
                 table.HasCheckConstraint("CK_Users_Email_NotEmpty", "length(btrim(\"Email\")) > 0");
-                table.HasCheckConstraint("CK_Users_Nick_Normalized", "\"Nick\" = lower(btrim(\"Nick\"))");
+                table.HasCheckConstraint("CK_Users_NormalizedNick_NotEmpty", "length(btrim(\"NormalizedNick\")) > 0");
+                table.HasCheckConstraint("CK_Users_NormalizedNick_MatchesNick", "\"NormalizedNick\" = lower(btrim(\"Nick\"))");
                 table.HasCheckConstraint("CK_Users_Email_Normalized", "\"Email\" = lower(btrim(\"Email\"))");
+                table.HasCheckConstraint("CK_Users_PublicId_Format", "\"PublicId\" ~ '^[0-9]{9}$'");
             });
 
             entity.HasKey(user => user.Id);
 
             entity.Property(user => user.Nick)
+                .HasMaxLength(32)
+                .IsRequired();
+
+            entity.Property(user => user.PublicId)
+                .HasMaxLength(9)
+                .IsRequired();
+
+            entity.Property(user => user.NormalizedNick)
                 .HasMaxLength(32)
                 .IsRequired();
 
@@ -54,6 +70,35 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(user => user.PasswordHash)
                 .HasMaxLength(500)
                 .IsRequired();
+
+            entity.Property(user => user.Description)
+                .HasMaxLength(1000);
+
+            entity.Property(user => user.Gender)
+                .HasMaxLength(20);
+
+            entity.Property(user => user.CountryCode)
+                .HasMaxLength(2);
+
+            entity.Property(user => user.AvatarUrl)
+                .HasMaxLength(500);
+
+            entity.Property(user => user.AvatarStyle)
+                .HasMaxLength(30)
+                .HasDefaultValue("gold");
+
+            entity.Property(user => user.BannerStyle)
+                .HasMaxLength(30)
+                .HasDefaultValue("midnight");
+
+            entity.Property(user => user.FrameStyle)
+                .HasMaxLength(30)
+                .HasDefaultValue("gold");
+
+            entity.Property(user => user.SelectedAvatarAsset).HasMaxLength(500);
+            entity.Property(user => user.SelectedBannerAsset).HasMaxLength(500);
+            entity.Property(user => user.SelectedFrameAsset).HasMaxLength(500);
+            entity.Property(user => user.SelectedWallpaperAsset).HasMaxLength(500);
 
             entity.Property(user => user.Role)
                 .HasConversion<string>()
@@ -66,11 +111,50 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(user => user.UpdatedAt)
                 .HasDefaultValueSql("now()");
 
-            entity.HasIndex(user => user.Nick)
+            entity.HasIndex(user => user.LastSeenAt);
+
+            entity.HasIndex(user => user.NormalizedNick)
                 .IsUnique();
 
             entity.HasIndex(user => user.Email)
                 .IsUnique();
+
+            entity.HasIndex(user => user.PublicId)
+                .IsUnique();
+
+        });
+    }
+
+    private static void ConfigureProfileContacts(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ProfileContact>(entity =>
+        {
+            entity.ToTable("ProfileContacts");
+            entity.HasKey(contact => contact.Id);
+            entity.Property(contact => contact.Service).HasMaxLength(32).IsRequired();
+            entity.Property(contact => contact.Title).HasMaxLength(60).IsRequired();
+            entity.Property(contact => contact.Url).HasMaxLength(500).IsRequired();
+            entity.HasOne(contact => contact.User)
+                .WithMany(user => user.ProfileContacts)
+                .HasForeignKey(contact => contact.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(contact => new { contact.UserId, contact.Position }).IsUnique();
+        });
+    }
+
+    private static void ConfigureUserSessions(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<UserSession>(entity =>
+        {
+            entity.ToTable("UserSessions");
+            entity.HasKey(session => session.Id);
+            entity.Property(session => session.RefreshTokenHash).HasMaxLength(128).IsRequired();
+            entity.HasOne(session => session.User)
+                .WithMany(user => user.Sessions)
+                .HasForeignKey(session => session.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(session => session.RefreshTokenHash).IsUnique();
+            entity.HasIndex(session => new { session.UserId, session.ExpiresAt });
         });
     }
 

@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowRight, Clock3 } from "lucide-react";
+import { useLanguage } from "../i18n";
 
 export type RouteStubInfo = {
   title: string;
@@ -13,6 +14,8 @@ type RouteStubProps = RouteStubInfo & {
 };
 
 export function RouteStub({ path, title, text, video, actionLabel, actionHref }: RouteStubProps) {
+  const { t } = useLanguage();
+
   return (
     <main className="route-stub mt-4">
       {video ? (
@@ -33,7 +36,7 @@ export function RouteStub({ path, title, text, video, actionLabel, actionHref }:
         <div className="max-w-[620px]">
           <div className="mb-5 inline-flex items-center gap-2 rounded-lg border border-white/18 bg-black/20 px-3 py-2 text-sm font-bold text-white/82 backdrop-blur">
             <Clock3 size={16} aria-hidden="true" />
-            Раздел в разработке
+            {t("routes.common.inDevelopment")}
           </div>
 
           <p className="mb-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--accent-strong)]">
@@ -58,7 +61,7 @@ export function RouteStub({ path, title, text, video, actionLabel, actionHref }:
               href="/"
             >
               <ArrowLeft size={17} aria-hidden="true" />
-              Вернуться на главную
+              {t("routes.common.backHome")}
             </a>
           </div>
         </div>

@@ -1,0 +1,39 @@
+.offer-carousel {
+  --offer-gap: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.offer-carousel::before,
+.offer-carousel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 38px;
+  pointer-events: none;
+}
+
+.offer-carousel::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--surface), transparent);
+}
+
+.offer-carousel::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--surface), transparent);
+}
+
+.offer-track {
+  display: grid;
+  gap: var(--offer-gap);
+  grid-auto-columns: calc((100% - (var(--offer-gap) * 2)) / 3);
+  grid-auto-flow: column;
+  will-change: transform;
+  animation: offers-scroll 38s linear infinite;
+}
+
+.offer-carousel:hover .offer-track {
+  animation-play-state: paused;
+}

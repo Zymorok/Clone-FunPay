@@ -1,88 +1,105 @@
 import { ArrowRight, Star } from "lucide-react";
+import { useLanguage } from "../i18n";
 
 const animationAssets = "/assets/website/animations";
 
-const features = [
-  {
-    icon: `${animationAssets}/characters/cute-animal-play-games.svg`,
-    title: "Каталог игр и товаров",
-    text: "Тысячи предложений по популярным играм"
-  },
-  {
-    icon: `${animationAssets}/icons/security-safe-data-lock.svg`,
-    title: "Безопасные заказы",
-    text: "Система заказов с защитой покупателя"
-  },
-  {
-    icon: `${animationAssets}/icons/chat.svg`,
-    title: "Чат с продавцом",
-    text: "Общайтесь прямо в заказе"
-  },
-  {
-    icon: `${animationAssets}/icons/fast-thunder-yellow.svg`,
-    title: "Быстро и удобно",
-    text: "Мгновенные уведомления и простой интерфейс"
-  }
-];
+const featureAssets = {
+  catalog: `${animationAssets}/characters/cute-animal-play-games.svg`,
+  orders: `${animationAssets}/icons/security-safe-data-lock.svg`,
+  chat: `${animationAssets}/icons/chat.svg`,
+  fast: `${animationAssets}/icons/fast-thunder-yellow.svg`
+};
 
-const offers = [
-  {
-    image: "/assets/website/offers/assets_counter_strike_2.png",
-    title: "Counter-Strike 2",
-    type: "Аккаунт",
-    price: "499 ₽",
-    rating: "4.9 · 128"
-  },
-  {
-    image: "/assets/website/offers/assets_valorant.png",
-    title: "Valorant",
-    type: "Аккаунт",
-    price: "299 ₽",
-    rating: "4.8 · 95"
-  },
-  {
-    image: "/assets/website/offers/assets_rust.png",
-    title: "RUST",
-    type: "Ключ",
-    price: "799 ₽",
-    rating: "4.7 · 67"
-  },
-  {
-    image: "/assets/website/offers/assets_albion_online.jpeg",
-    title: "Albion Online",
-    type: "Серебро",
-    price: "1 250 ₽",
-    rating: "4.9 · 142"
-  },
-  {
-    image: "/assets/website/offers/assets_dota_2.jpg",
-    title: "Dota 2",
-    type: "Калибровка",
-    price: "890 ₽",
-    rating: "4.8 · 101"
-  },
-  {
-    image: "/assets/website/offers/assets_gta_v.jpg",
-    title: "GTA V",
-    type: "Аккаунт",
-    price: "699 ₽",
-    rating: "4.7 · 74"
-  }
+const offerImages = [
+  "/assets/website/offers/assets_counter_strike_2.png",
+  "/assets/website/offers/assets_valorant.png",
+  "/assets/website/offers/assets_rust.png",
+  "/assets/website/offers/assets_albion_online.jpeg",
+  "/assets/website/offers/assets_dota_2.jpg",
+  "/assets/website/offers/assets_gta_v.jpg"
 ];
-
-const carouselOffers = [...offers, ...offers];
 
 export function MarketPreview() {
+  const { t } = useLanguage();
+  const features = [
+    {
+      icon: featureAssets.catalog,
+      title: t("market.features.catalog.title"),
+      text: t("market.features.catalog.text")
+    },
+    {
+      icon: featureAssets.orders,
+      title: t("market.features.orders.title"),
+      text: t("market.features.orders.text")
+    },
+    {
+      icon: featureAssets.chat,
+      title: t("market.features.chat.title"),
+      text: t("market.features.chat.text")
+    },
+    {
+      icon: featureAssets.fast,
+      title: t("market.features.fast.title"),
+      text: t("market.features.fast.text")
+    }
+  ];
+
+  const offers = [
+    {
+      image: offerImages[0],
+      title: "Counter-Strike 2",
+      type: t("market.offerTypes.account"),
+      price: "499 ₽",
+      rating: "4.9 · 128"
+    },
+    {
+      image: offerImages[1],
+      title: "Valorant",
+      type: t("market.offerTypes.account"),
+      price: "299 ₽",
+      rating: "4.8 · 95"
+    },
+    {
+      image: offerImages[2],
+      title: "RUST",
+      type: t("market.offerTypes.key"),
+      price: "799 ₽",
+      rating: "4.7 · 67"
+    },
+    {
+      image: offerImages[3],
+      title: "Albion Online",
+      type: t("market.offerTypes.silver"),
+      price: "1 250 ₽",
+      rating: "4.9 · 142"
+    },
+    {
+      image: offerImages[4],
+      title: "Dota 2",
+      type: t("market.offerTypes.calibration"),
+      price: "890 ₽",
+      rating: "4.8 · 101"
+    },
+    {
+      image: offerImages[5],
+      title: "GTA V",
+      type: t("market.offerTypes.account"),
+      price: "699 ₽",
+      rating: "4.7 · 74"
+    }
+  ];
+  const carouselOffers = [...offers, ...offers];
+
   return (
     <section className="hidden rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow)] lg:block">
       <h2 className="text-xl font-extrabold tracking-normal text-[var(--text)]">
-        Всё для ваших игровых сделок
+        {t("market.title")}
       </h2>
 
       <div className="mt-4 grid gap-3">
         {features.map(({ icon, title, text }) => (
           <article className="grid grid-cols-[44px_1fr] items-center gap-4" key={title}>
-            <span className="grid size-11 place-items-center rounded-lg border border-[var(--border)] bg-[var(--feature-icon-bg)] shadow-sm">
+            <span className="market-feature-icon grid size-11 place-items-center rounded-lg border border-[var(--border)] bg-[var(--feature-icon-bg)] shadow-sm">
               <img
                 alt=""
                 aria-hidden="true"
@@ -100,8 +117,8 @@ export function MarketPreview() {
       </div>
 
       <div className="mt-6 border-t border-[var(--border)] pt-5">
-        <h2 className="text-lg font-extrabold text-[var(--text)]">Популярные предложения</h2>
-        <div className="offer-carousel mt-4" aria-label="Популярные предложения">
+        <h2 className="text-lg font-extrabold text-[var(--text)]">{t("market.popularOffers")}</h2>
+        <div className="offer-carousel mt-4" aria-label={t("market.popularOffers")}>
           <div className="offer-track">
             {carouselOffers.map((offer, index) => (
               <article
@@ -134,7 +151,7 @@ export function MarketPreview() {
         className="mt-4 inline-flex h-10 w-full items-center justify-center gap-3 rounded-lg border border-[var(--border)] text-sm font-extrabold text-[var(--link)] transition hover:border-[var(--accent)] hover:text-[var(--accent-strong)]"
         href="/catalog"
       >
-        Перейти в каталог
+        {t("market.goCatalog")}
         <ArrowRight size={17} aria-hidden="true" />
       </a>
     </section>

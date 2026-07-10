@@ -219,6 +219,43 @@ namespace FunPay.Backend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FunPay.Backend.Models.ProfileContact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Service")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Position")
+                        .IsUnique();
+
+                    b.ToTable("ProfileContacts", (string)null);
+                });
+
             modelBuilder.Entity("FunPay.Backend.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -227,20 +264,74 @@ namespace FunPay.Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AvatarStyle")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasDefaultValue("gold");
+
+                    b.Property<string>("AvatarUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("BannerStyle")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasDefaultValue("midnight");
+
+                    b.Property<DateOnly?>("BirthDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("CountryCode")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)");
+
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("now()");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
                         .HasColumnType("character varying(254)");
 
+                    b.Property<string>("FrameStyle")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasDefaultValue("gold");
+
+                    b.Property<string>("Gender")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
                     b.Property<bool>("IsBlocked")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTimeOffset?>("LastActiveAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("LastLoginAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("LastSeenAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Nick")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("NormalizedNick")
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)");
@@ -250,10 +341,31 @@ namespace FunPay.Backend.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("character varying(9)");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<string>("SelectedAvatarAsset")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("SelectedBannerAsset")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("SelectedFrameAsset")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("SelectedWallpaperAsset")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -265,7 +377,12 @@ namespace FunPay.Backend.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("Nick")
+                    b.HasIndex("LastSeenAt");
+
+                    b.HasIndex("NormalizedNick")
+                        .IsUnique();
+
+                    b.HasIndex("PublicId")
                         .IsUnique();
 
                     b.ToTable("Users", null, t =>
@@ -274,10 +391,49 @@ namespace FunPay.Backend.Migrations
 
                             t.HasCheckConstraint("CK_Users_Email_NotEmpty", "length(btrim(\"Email\")) > 0");
 
-                            t.HasCheckConstraint("CK_Users_Nick_Normalized", "\"Nick\" = lower(btrim(\"Nick\"))");
-
                             t.HasCheckConstraint("CK_Users_Nick_NotEmpty", "length(btrim(\"Nick\")) > 0");
+
+                            t.HasCheckConstraint("CK_Users_NormalizedNick_MatchesNick", "\"NormalizedNick\" = lower(btrim(\"Nick\"))");
+
+                            t.HasCheckConstraint("CK_Users_NormalizedNick_NotEmpty", "length(btrim(\"NormalizedNick\")) > 0");
+
+                            t.HasCheckConstraint("CK_Users_PublicId_Format", "\"PublicId\" ~ '^[0-9]{9}$'");
                         });
+                });
+
+            modelBuilder.Entity("FunPay.Backend.Models.UserSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("LastUsedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RefreshTokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RefreshTokenHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "ExpiresAt");
+
+                    b.ToTable("UserSessions", (string)null);
                 });
 
             modelBuilder.Entity("FunPay.Backend.Models.Message", b =>
@@ -353,6 +509,28 @@ namespace FunPay.Backend.Migrations
                     b.Navigation("Seller");
                 });
 
+            modelBuilder.Entity("FunPay.Backend.Models.ProfileContact", b =>
+                {
+                    b.HasOne("FunPay.Backend.Models.User", "User")
+                        .WithMany("ProfileContacts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FunPay.Backend.Models.UserSession", b =>
+                {
+                    b.HasOne("FunPay.Backend.Models.User", "User")
+                        .WithMany("Sessions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FunPay.Backend.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -381,7 +559,11 @@ namespace FunPay.Backend.Migrations
 
                     b.Navigation("Products");
 
+                    b.Navigation("ProfileContacts");
+
                     b.Navigation("SellerOrders");
+
+                    b.Navigation("Sessions");
                 });
 #pragma warning restore 612, 618
         }

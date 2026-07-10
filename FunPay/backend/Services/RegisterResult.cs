@@ -10,15 +10,15 @@ public class RegisterResult
 
     public string Message { get; private init; } = string.Empty;
 
-    public RegisterResponse? User { get; private init; }
+    public AuthResponse? Session { get; private init; }
 
-    public static RegisterResult Success(RegisterResponse user)
+    public static RegisterResult Success(AuthResponse session)
     {
         return new RegisterResult
         {
             IsSuccess = true,
             StatusCode = StatusCodes.Status201Created,
-            User = user
+            Session = session
         };
     }
 

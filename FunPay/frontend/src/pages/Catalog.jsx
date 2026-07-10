@@ -11,24 +11,25 @@ import {
   Star,
   Tags
 } from "lucide-react";
+import { useLanguage } from "../i18n";
 
 const saleCategories = [
-  { label: "Аккаунты", slug: "accounts" },
-  { label: "Услуги", slug: "services" },
-  { label: "Обучение", slug: "training" },
-  { label: "Подписка", slug: "subscription" },
-  { label: "Валюта", slug: "currency" },
-  { label: "Донат", slug: "donate" },
-  { label: "Предметы", slug: "items" },
-  { label: "Twitch Drops", slug: "twitch-drops" },
-  { label: "Ключи", slug: "keys" },
-  { label: "Оффлайн активации", slug: "offline-activation" },
-  { label: "Прочее", slug: "other" },
-  { label: "Гайды", slug: "guides" },
-  { label: "Game Pass", slug: "game-pass" },
-  { label: "Кинары", slug: "kinars" },
-  { label: "Вирты", slug: "virts" },
-  { label: "Смена региона", slug: "region-change" }
+  { slug: "accounts" },
+  { slug: "services" },
+  { slug: "training" },
+  { slug: "subscription" },
+  { slug: "currency" },
+  { slug: "donate" },
+  { slug: "items" },
+  { slug: "twitch-drops" },
+  { slug: "keys" },
+  { slug: "offline-activation" },
+  { slug: "other" },
+  { slug: "guides" },
+  { slug: "game-pass" },
+  { slug: "kinars" },
+  { slug: "virts" },
+  { slug: "region-change" }
 ];
 
 const saleCategoryBySlug = new Map(
@@ -152,7 +153,12 @@ function getCategoryHref(game, category) {
   return `/catalog/${game.slug}/${category.slug}`;
 }
 
+function getCategoryLabel(t, category) {
+  return t(`catalog.categories.${category.slug}`);
+}
+
 export function Catalog() {
+  const { t } = useLanguage();
   const [panelMode, setPanelMode] = useState("filters");
   const [selectedGame, setSelectedGame] = useState(null);
 
@@ -187,22 +193,22 @@ export function Catalog() {
           <div className="catalog-hero__content">
             <div className="inline-flex items-center gap-2 rounded-lg border border-white/16 bg-black/20 px-3 py-2 text-sm font-bold text-white/84 backdrop-blur">
               <Gamepad2 size={16} aria-hidden="true" />
-              Каталог игр
+              {t("catalog.heroLabel")}
             </div>
             <h1 className="mt-5 text-4xl font-black leading-tight text-white sm:text-5xl">
-              Выберите игру
+              {t("catalog.title")}
             </h1>
             <p className="mt-3 max-w-[640px] text-base leading-7 text-white/76">
-              Игровые разделы для будущих объявлений, заказов и быстрых сделок.
+              {t("catalog.subtitle")}
             </p>
           </div>
         </div>
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-2xl font-black tracking-normal text-[var(--text)]">Все игры</h2>
+            <h2 className="text-2xl font-black tracking-normal text-[var(--text)]">{t("catalog.allGames")}</h2>
             <p className="mt-1 text-sm text-[var(--muted)]">
-              Быстрые категории на карточке и полный список справа
+              {t("catalog.allGamesSubtitle")}
             </p>
           </div>
 
@@ -212,14 +218,14 @@ export function Catalog() {
               type="button"
             >
               <Star size={16} aria-hidden="true" />
-              Популярные
+              {t("catalog.popular")}
             </button>
             <button
               className="inline-flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 text-sm font-extrabold text-[var(--text)] shadow-sm"
               type="button"
             >
               <ArrowUpDown size={16} aria-hidden="true" />
-              A-Z
+              {t("catalog.az")}
             </button>
           </div>
         </div>
@@ -243,7 +249,7 @@ export function Catalog() {
                   />
                   <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,7,14,0.02),rgba(2,7,14,0.82))]" />
                   <span className="absolute left-3 top-3 rounded-lg border border-white/16 bg-black/36 px-2.5 py-1 text-xs font-extrabold text-white backdrop-blur">
-                    {allowedCategories.length} разделов
+                    {t("catalog.sectionsCount", { count: allowedCategories.length })}
                   </span>
                 </div>
 
@@ -253,20 +259,20 @@ export function Catalog() {
                   </h3>
 
                   <div className="flex items-end justify-between gap-3">
-                    <div className="catalog-card-links" aria-label={`Быстрые категории ${game.title}`}>
+                    <div className="catalog-card-links" aria-label={t("catalog.quickCategoriesAria", { game: game.title })}>
                       {quickCategories.map((category) => (
                         <a
                           className="catalog-category-link"
                           href={getCategoryHref(game, category)}
                           key={category.slug}
                         >
-                          {category.label}
+                          {getCategoryLabel(t, category)}
                         </a>
                       ))}
                     </div>
 
                     <button
-                      aria-label={`Показать разрешенные категории для ${game.title}`}
+                      aria-label={t("catalog.showAllowedCategories", { game: game.title })}
                       className="catalog-category-arrow grid size-10 shrink-0 place-items-center rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--muted)] transition group-hover:border-[var(--accent)] group-hover:text-[var(--accent-strong)]"
                       onClick={() => showGameCategories(game)}
                       type="button"
@@ -299,6 +305,8 @@ export function Catalog() {
 }
 
 function DefaultFilterPanel({ onOpenCategories }) {
+  const { t } = useLanguage();
+
   return (
     <>
       <div className="flex items-center justify-between gap-3">
@@ -306,7 +314,7 @@ function DefaultFilterPanel({ onOpenCategories }) {
           <span className="grid size-9 place-items-center rounded-lg bg-[var(--surface-strong)] text-[var(--accent-strong)]">
             <SlidersHorizontal size={18} aria-hidden="true" />
           </span>
-          <h2 className="text-xl font-black text-[var(--text)]">Фильтры</h2>
+          <h2 className="text-xl font-black text-[var(--text)]">{t("catalog.filters")}</h2>
         </div>
 
         <button
@@ -314,26 +322,26 @@ function DefaultFilterPanel({ onOpenCategories }) {
           type="button"
         >
           <RotateCcw size={14} aria-hidden="true" />
-          Сбросить
+          {t("catalog.reset")}
         </button>
       </div>
 
       <label className="mt-5 grid gap-2">
-        <span className="text-sm font-extrabold text-[var(--text)]">Поиск</span>
+        <span className="text-sm font-extrabold text-[var(--text)]">{t("catalog.search")}</span>
         <span className="relative block">
           <Search
             className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]"
             size={18}
             aria-hidden="true"
           />
-          <input className="field" placeholder="Название игры" type="search" />
+          <input className="field" placeholder={t("catalog.searchPlaceholder")} type="search" />
         </span>
       </label>
 
       <section className="mt-6 border-t border-[var(--border)] pt-5">
         <div className="mb-3 flex items-center gap-2">
           <Sparkles size={17} className="text-[var(--accent-strong)]" aria-hidden="true" />
-          <h3 className="text-sm font-extrabold uppercase text-[var(--muted)]">A-Z</h3>
+          <h3 className="text-sm font-extrabold uppercase text-[var(--muted)]">{t("catalog.az")}</h3>
         </div>
         <div className="grid grid-cols-6 gap-2">
           {alphabet.map((letter) => (
@@ -352,10 +360,10 @@ function DefaultFilterPanel({ onOpenCategories }) {
         <div className="mb-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Tags size={17} className="text-[var(--accent-strong)]" aria-hidden="true" />
-            <h3 className="text-sm font-extrabold uppercase text-[var(--muted)]">Категории продаж</h3>
+            <h3 className="text-sm font-extrabold uppercase text-[var(--muted)]">{t("catalog.saleCategories")}</h3>
           </div>
           <button
-            aria-label="Показать все категории продаж"
+            aria-label={t("catalog.saleCategoriesAria")}
             className="catalog-filter-arrow grid size-9 place-items-center rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--muted)] transition hover:border-[var(--accent)] hover:text-[var(--accent-strong)]"
             onClick={onOpenCategories}
             type="button"
@@ -367,7 +375,7 @@ function DefaultFilterPanel({ onOpenCategories }) {
         <div className="catalog-filter-quick-list">
           {filterPreviewCategories.map((category) => (
             <button className="catalog-filter-chip" key={category.slug} type="button">
-              {category.label}
+              {getCategoryLabel(t, category)}
             </button>
           ))}
         </div>
@@ -377,20 +385,22 @@ function DefaultFilterPanel({ onOpenCategories }) {
 }
 
 function AllCategoriesPanel({ onBack }) {
+  const { t } = useLanguage();
+
   return (
     <>
       <PanelTitle
         icon={<Tags size={18} aria-hidden="true" />}
-        subtitle="Общий список фильтров"
-        title="Категории продаж"
+        subtitle={t("catalog.allCategoriesSubtitle")}
+        title={t("catalog.saleCategories")}
       />
       <PanelActions onBack={onBack} />
-      <CategorySearch placeholder="Например услуги" />
+      <CategorySearch placeholder={t("catalog.categorySearchPlaceholder")} />
 
       <div className="mt-5 grid gap-2">
         {saleCategories.map((category) => (
           <button className="catalog-full-category-link" key={category.slug} type="button">
-            <span>{category.label}</span>
+            <span>{getCategoryLabel(t, category)}</span>
             <ChevronRight size={16} aria-hidden="true" />
           </button>
         ))}
@@ -400,20 +410,22 @@ function AllCategoriesPanel({ onBack }) {
 }
 
 function GameCategoryPanel({ categories, game, onBack }) {
+  const { t } = useLanguage();
+
   return (
     <>
       <PanelTitle
         icon={<Tags size={18} aria-hidden="true" />}
-        subtitle="Разрешенные категории для игры"
+        subtitle={t("catalog.allowedCategoriesSubtitle")}
         title={game.title}
       />
       <PanelActions onBack={onBack} />
-      <CategorySearch placeholder="Например услуги" />
+      <CategorySearch placeholder={t("catalog.categorySearchPlaceholder")} />
 
       <div className="mt-5 grid gap-2">
         {categories.map((category) => (
           <a className="catalog-full-category-link" href={getCategoryHref(game, category)} key={category.slug}>
-            <span>{category.label}</span>
+            <span>{getCategoryLabel(t, category)}</span>
             <ChevronRight size={16} aria-hidden="true" />
           </a>
         ))}
@@ -439,6 +451,8 @@ function PanelTitle({ icon, subtitle, title }) {
 }
 
 function PanelActions({ onBack }) {
+  const { t } = useLanguage();
+
   return (
     <div className="mt-5 grid grid-cols-2 gap-2">
       <button
@@ -447,7 +461,7 @@ function PanelActions({ onBack }) {
         type="button"
       >
         <ArrowLeft size={16} aria-hidden="true" />
-        Назад
+        {t("catalog.back")}
       </button>
       <button
         className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-sm font-extrabold text-[var(--muted)]"
@@ -455,16 +469,18 @@ function PanelActions({ onBack }) {
         type="button"
       >
         <RotateCcw size={14} aria-hidden="true" />
-        Сбросить
+        {t("catalog.reset")}
       </button>
     </div>
   );
 }
 
 function CategorySearch({ placeholder }) {
+  const { t } = useLanguage();
+
   return (
     <label className="mt-5 grid gap-2 border-t border-[var(--border)] pt-5">
-      <span className="text-sm font-extrabold text-[var(--text)]">Поиск категории</span>
+      <span className="text-sm font-extrabold text-[var(--text)]">{t("catalog.categorySearch")}</span>
       <span className="relative block">
         <Search
           className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]"

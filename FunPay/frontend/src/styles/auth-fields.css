@@ -1,0 +1,79 @@
+.field {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  min-height: 38px;
+  padding: 8px 40px;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.field[type="search"] {
+  padding-left: 40px;
+  padding-right: 14px;
+}
+
+.field:focus {
+  border-color: color-mix(in srgb, var(--muted) 48%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--muted) 16%, transparent);
+}
+
+.field.field--danger {
+  border-color: var(--danger);
+}
+
+.field.field--danger:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 24%, transparent);
+}
+
+.field.field--submit-danger,
+.field.field--submit-danger:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 24%, transparent);
+}
+
+.auth-field-control--shake {
+  animation: auth-field-shake 320ms ease-out;
+  will-change: transform;
+}
+
+@keyframes auth-field-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-7px); }
+  50% { transform: translateX(7px); }
+  75% { transform: translateX(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-field-control--shake {
+    animation: none;
+  }
+}
+
+.field.field--warning {
+  border-color: var(--warning);
+}
+
+.field.field--warning:focus {
+  border-color: var(--warning);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 24%, transparent);
+}
+
+.field.field--success {
+  border-color: var(--success);
+}
+
+.field.field--success:focus {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 24%, transparent);
+}
+
+.field::placeholder {
+  color: color-mix(in srgb, var(--muted) 86%, transparent);
+}
