@@ -102,7 +102,7 @@ export function Catalog() {
     }
 
     if (sortMode === "az") {
-      result = [...result].sort((a, b) => a.title.localeCompare(b.title));
+      result = [...result].sort((a, b) => (a.name || "").localeCompare(b.name || ""));
     } else {
       // "popular": sort by number of allowed categories desc (proxy for popularity)
       result = [...result].sort((a, b) => b.allowedCategorySlugs.length - a.allowedCategorySlugs.length);
