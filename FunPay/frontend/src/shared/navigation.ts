@@ -17,6 +17,7 @@ export function navigateTo(path: string, replace = false): void {
     window.history.pushState(null, "", path);
   }
 
+  window.dispatchEvent(new PopStateEvent("popstate"));
   window.dispatchEvent(new Event(navigationEventName));
 }
 

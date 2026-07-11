@@ -1,4 +1,5 @@
 import { ArrowRight, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "../i18n";
 import catalogDataRaw from "../data/catalogData.json";
 import type { CatalogData } from "../types/catalog";
@@ -53,6 +54,7 @@ export function MarketPreview() {
       const rating = `4.${(product.id % 3) + 7} · ${(product.id % 90) + 40}`;
 
       return {
+        id: product.id,
         image,
         title: product.title,
         type: `${game?.name ?? t("market.popularOffers")} · ${category?.name ?? "Offer"}`,
@@ -94,27 +96,28 @@ export function MarketPreview() {
         <div className="offer-carousel mt-4" aria-label={t("market.popularOffers")}>
           <div className="offer-track">
             {carouselOffers.map((offer, index) => (
-              <article
-                className="offer-card relative flex aspect-[1.35] min-h-[134px] flex-col justify-end overflow-hidden rounded-lg border border-[var(--border)] p-3 text-white shadow-sm"
-                key={`${offer.title}-${index}`}
-              >
-                <img
-                  alt=""
-                  className="absolute inset-0 size-full object-cover"
-                  draggable="false"
-                  src={offer.image}
-                />
-                <span className="absolute inset-0 bg-[var(--offer-overlay)]" />
-                <h3 className="relative text-sm font-extrabold leading-tight">{offer.title}</h3>
-                <p className="relative text-xs leading-4 text-white/82">{offer.type}</p>
-                <div className="relative mt-3 flex items-center justify-between gap-2">
-                  <span className="text-sm font-extrabold">{offer.price}</span>
-                  <span className="inline-flex items-center gap-1 text-[11px] text-white/82">
-                    <Star size={11} fill="currentColor" aria-hidden="true" />
-                    {offer.rating}
-                  </span>
-                </div>
-              </article>
+              <Link className="block" key={`${offer.id}-${index}`} to={`/offer/${offer.id}`}>
+                <article
+                  className="offer-card relative flex aspect-[1.35] min-h-[134px] flex-col justify-end overflow-hidden rounded-lg border border-[var(--border)] p-3 text-white shadow-sm"
+                >
+                  <img
+                    alt=""
+                    className="absolute inset-0 size-full object-cover"
+                    draggable="false"
+                    src={offer.image}
+                  />
+                  <span className="absolute inset-0 bg-[var(--offer-overlay)]" />
+                  <h3 className="relative text-sm font-extrabold leading-tight">{offer.title}</h3>
+                  <p className="relative text-xs leading-4 text-white/82">{offer.type}</p>
+                  <div className="relative mt-3 flex items-center justify-between gap-2">
+                    <span className="text-sm font-extrabold">{offer.price}</span>
+                    <span className="inline-flex items-center gap-1 text-[11px] text-white/82">
+                      <Star size={11} fill="currentColor" aria-hidden="true" />
+                      {offer.rating}
+                    </span>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   AuthProvider,
   isProtectedRoute,
@@ -12,10 +13,10 @@ import { LanguageProvider, useLanguage } from "../i18n";
 import { Catalog } from "../pages/Catalog";
 import { Login } from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
+import { OfferPage } from "../pages/OfferPage";
 import { Profile } from "../pages/Profile";
 import { Register } from "../pages/Register";
 import { RouteStub } from "../pages/RouteStub";
-import { getCurrentRoute, navigateTo, navigationEventName } from "../shared/navigation";
 import { runUiChangeTransition } from "../shared/uiTransitions";
 import type { Theme } from "./theme";
 
@@ -64,162 +65,94 @@ function getInitialTheme(): Theme {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function replaceRootRoute() {
-  if (window.location.pathname === "/" || window.location.pathname === "") {
-    navigateTo("/register", true);
+function ProfileRoute() {
+  const params = useParams();
+  const rawIdentifier = params.identifier;
+
+  if (!rawIdentifier) {
+    return <NotFound />;
   }
-}
 
-function useRoute() {
-  const [route, setRoute] = useState(getCurrentRoute);
-
-  useEffect(() => {
-    const updateRoute = () => setRoute(getCurrentRoute());
-
-    window.addEventListener("popstate", updateRoute);
-    window.addEventListener(navigationEventName, updateRoute);
-
-    return () => {
-      window.removeEventListener("popstate", updateRoute);
-      window.removeEventListener(navigationEventName, updateRoute);
-    };
-  }, []);
-
-  return route;
-}
-
-function useInternalLinkNavigation() {
-  useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
-      if (
-        event.defaultPrevented
-        || event.button !== 0
-        || event.metaKey
-        || event.ctrlKey
-        || event.shiftKey
-        || event.altKey
-      ) {
-        return;
-      }
-
-      const target = event.target;
-
-      if (!(target instanceof Element)) {
-        return;
-      }
-
-      const anchor = target.closest("a[href]");
-
-      if (
-        !(anchor instanceof HTMLAnchorElement)
-        || anchor.hasAttribute("download")
-        || anchor.dataset.noSpa === "true"
-        || (anchor.target && anchor.target !== "_self")
-      ) {
-        return;
-      }
-
-      const destination = new URL(anchor.href, window.location.href);
-
-      if (destination.origin !== window.location.origin) {
-        return;
-      }
-
-      const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-      const destinationPath = `${destination.pathname}${destination.search}${destination.hash}`;
-
-      if (destinationPath === currentPath) {
-        event.preventDefault();
-        return;
-      }
-
-      if (
-        destination.hash
-        && destination.pathname === window.location.pathname
-        && destination.search === window.location.search
-      ) {
-        return;
-      }
-
-      event.preventDefault();
-      navigateTo(destinationPath);
-    };
-
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, []);
+  try {
+    const identifier = decodeURIComponent(rawIdentifier).trim();
+    return identifier ? <Profile identifier={identifier} /> : <NotFound />;
+  } catch {
+    return <NotFound />;
+  }
 }
 
 function AppShell({ theme, onThemeChange }: { theme: Theme; onThemeChange: (theme: Theme) => void }) {
   const { t } = useLanguage();
-  const route = useRoute();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { isAuthenticated, status } = useAuth();
-  useInternalLinkNavigation();
 
   useEffect(() => {
-    if (!isAuthenticated || (route !== "/login" && route !== "/register")) {
+    const currentPath = location.pathname;
+
+    if (!isAuthenticated || (currentPath !== "/login" && currentPath !== "/register")) {
       return;
     }
 
-    navigateTo("/catalog", true);
-  }, [isAuthenticated, route]);
+    navigate("/catalog", { replace: true });
+  }, [isAuthenticated, location.pathname, navigate]);
 
   useEffect(() => {
-    if (status === "checking" || !isProtectedRoute(route) || isAuthenticated) {
+    const currentPath = location.pathname;
+
+    if (status === "checking" || !isProtectedRoute(currentPath) || isAuthenticated) {
       return;
     }
 
-    if (window.location.pathname.startsWith("/login") || window.location.pathname.startsWith("/register")) {
+    if (currentPath.startsWith("/login") || currentPath.startsWith("/register")) {
       return;
     }
 
     rememberCurrentRouteForLogin();
-    navigateTo(`/login?returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`, true);
-  }, [isAuthenticated, route, status]);
+    navigate(`/login?returnTo=${encodeURIComponent(location.pathname + location.search)}`, { replace: true });
+  }, [isAuthenticated, location.pathname, location.search, navigate, status]);
 
   return (
     <>
       <PresenceTracker />
-      <RouteTransition route={route}>
-        {(displayedRoute) => {
-          const routeStub = routeStubs[displayedRoute];
-          const profileRouteMatch = displayedRoute.match(/^\/profile\/([^/]+)$/);
-          let profileIdentifier: string | null = null;
-
-          if (profileRouteMatch) {
-            try {
-              profileIdentifier = decodeURIComponent(profileRouteMatch[1]).trim();
-            } catch {
-              profileIdentifier = null;
-            }
-          }
-
-          return (
-            <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-200">
-              <Navbar theme={theme} onThemeChange={onThemeChange} />
-              {status === "checking" || (isProtectedRoute(displayedRoute) && !isAuthenticated) ? null : displayedRoute === "/register" ? (
-                <Register />
-              ) : displayedRoute === "/login" ? (
-                <Login />
-              ) : displayedRoute === "/catalog" ? (
-                <Catalog />
-              ) : displayedRoute === "/profile" ? (
-                <Profile />
-              ) : profileIdentifier ? (
-                <Profile identifier={profileIdentifier} />
-              ) : !routeStub ? (
-                <NotFound />
-              ) : (
-                <RouteStub
-                  path={displayedRoute}
-                  title={t(routeStub.titleKey)}
-                  text={t(routeStub.textKey)}
-                  video={routeStub.video}
+      <RouteTransition route={location.pathname}>
+        {() => (
+          <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-200">
+            <Navbar theme={theme} onThemeChange={onThemeChange} />
+            {status === "checking" ? null : (
+              <Routes>
+                <Route path="/" element={<Register />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/catalog" element={<Catalog />} />
+                <Route path="/offer/:id" element={<OfferPage />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/:identifier" element={<ProfileRoute />} />
+                <Route
+                  path="/orders"
+                  element={<RouteStub path="/orders" title={t(routeStubs["/orders"].titleKey)} text={t(routeStubs["/orders"].textKey)} video={routeStubs["/orders"].video} />}
                 />
-              )}
-            </div>
-          );
-        }}
+                <Route
+                  path="/chat"
+                  element={<RouteStub path="/chat" title={t(routeStubs["/chat"].titleKey)} text={t(routeStubs["/chat"].textKey)} video={routeStubs["/chat"].video} />}
+                />
+                <Route
+                  path="/support"
+                  element={<RouteStub path="/support" title={t(routeStubs["/support"].titleKey)} text={t(routeStubs["/support"].textKey)} video={routeStubs["/support"].video} />}
+                />
+                <Route
+                  path="/terms"
+                  element={<RouteStub path="/terms" title={t(routeStubs["/terms"].titleKey)} text={t(routeStubs["/terms"].textKey)} />}
+                />
+                <Route
+                  path="/privacy"
+                  element={<RouteStub path="/privacy" title={t(routeStubs["/privacy"].titleKey)} text={t(routeStubs["/privacy"].textKey)} />}
+                />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            )}
+          </div>
+        )}
       </RouteTransition>
     </>
   );
@@ -229,10 +162,6 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const changeTheme = useCallback((nextTheme: Theme) => {
     runUiChangeTransition(() => setTheme(nextTheme));
-  }, []);
-
-  useEffect(() => {
-    replaceRootRoute();
   }, []);
 
   useEffect(() => {
