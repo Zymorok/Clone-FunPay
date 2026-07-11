@@ -147,7 +147,8 @@
 }
 
 .catalog-filter-chip:hover,
-.catalog-filter-chip:focus-visible {
+.catalog-filter-chip:focus-visible,
+.catalog-filter-chip--active {
   border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
   background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface-soft));
   color: var(--accent-strong);

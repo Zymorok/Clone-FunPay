@@ -161,6 +161,11 @@ export function Catalog() {
   const { t } = useLanguage();
   const [panelMode, setPanelMode] = useState("filters");
   const [selectedGame, setSelectedGame] = useState(null);
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState(null);
+
+  const visibleGames = selectedCategorySlug
+    ? games.filter((game) => game.allowedCategorySlugs.includes(selectedCategorySlug))
+    : games;
 
   function showDefaultFilters() {
     setSelectedGame(null);
@@ -231,7 +236,7 @@ export function Catalog() {
         </div>
 
         <div className="catalog-grid mt-4">
-          {games.map((game) => {
+          {visibleGames.map((game) => {
             const allowedCategories = getAllowedCategories(game);
             const quickCategories = getQuickCategories(game);
 
@@ -297,14 +302,18 @@ export function Catalog() {
         ) : panelMode === "all-categories" ? (
           <AllCategoriesPanel onBack={showDefaultFilters} />
         ) : (
-          <DefaultFilterPanel onOpenCategories={showAllCategories} />
+          <DefaultFilterPanel
+            onOpenCategories={showAllCategories}
+            onSelectCategory={setSelectedCategorySlug}
+            selectedCategorySlug={selectedCategorySlug}
+          />
         )}
       </aside>
     </main>
   );
 }
 
-function DefaultFilterPanel({ onOpenCategories }) {
+function DefaultFilterPanel({ onOpenCategories, onSelectCategory, selectedCategorySlug }) {
   const { t } = useLanguage();
 
   return (
@@ -318,7 +327,9 @@ function DefaultFilterPanel({ onOpenCategories }) {
         </div>
 
         <button
-          className="inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-xs font-extrabold text-[var(--muted)]"
+          className="inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-xs font-extrabold text-[var(--muted)] disabled:opacity-40"
+          disabled={!selectedCategorySlug}
+          onClick={() => onSelectCategory(null)}
           type="button"
         >
           <RotateCcw size={14} aria-hidden="true" />
@@ -374,7 +385,12 @@ function DefaultFilterPanel({ onOpenCategories }) {
 
         <div className="catalog-filter-quick-list">
           {filterPreviewCategories.map((category) => (
-            <button className="catalog-filter-chip" key={category.slug} type="button">
+            <button
+              className={`catalog-filter-chip${category.slug === selectedCategorySlug ? " catalog-filter-chip--active" : ""}`}
+              key={category.slug}
+              onClick={() => onSelectCategory(category.slug === selectedCategorySlug ? null : category.slug)}
+              type="button"
+            >
               {getCategoryLabel(t, category)}
             </button>
           ))}
