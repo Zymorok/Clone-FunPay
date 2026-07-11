@@ -1,0 +1,147 @@
+{
+  "games": [
+    {
+      "id": 1,
+      "name": "Dota 2",
+      "imageUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+      "createdAt": "2026-07-01T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Counter-Strike 2",
+      "imageUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80",
+      "createdAt": "2026-07-01T10:05:00Z"
+    },
+    {
+      "id": 3,
+      "name": "World of Warcraft",
+      "imageUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80",
+      "createdAt": "2026-07-01T10:10:00Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Accounts",
+      "createdAt": "2026-07-01T10:20:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Boosting",
+      "createdAt": "2026-07-01T10:21:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Currency",
+      "createdAt": "2026-07-01T10:22:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Coaching",
+      "createdAt": "2026-07-01T10:23:00Z"
+    },
+    {
+      "id": 5,
+      "name": "Raid Services",
+      "createdAt": "2026-07-01T10:24:00Z"
+    }
+  ],
+  "products": [
+    {
+      "id": 101,
+      "sellerId": 12,
+      "gameId": 1,
+      "categoryId": 2,
+      "title": "MMR Boost 2500 -> 3000",
+      "description": "Solo queue boost with daily progress reports and replay review after each session.",
+      "price": 39.99,
+      "status": "Active",
+      "createdAt": "2026-07-03T08:10:00Z",
+      "updatedAt": "2026-07-10T12:40:00Z"
+    },
+    {
+      "id": 102,
+      "sellerId": 27,
+      "gameId": 1,
+      "categoryId": 4,
+      "title": "Midlane Coaching 90 min",
+      "description": "Live coaching for laning, map movement, and item timings. Includes written summary.",
+      "price": 24.5,
+      "status": "Active",
+      "createdAt": "2026-07-04T09:00:00Z",
+      "updatedAt": "2026-07-09T16:30:00Z"
+    },
+    {
+      "id": 103,
+      "sellerId": 41,
+      "gameId": 2,
+      "categoryId": 1,
+      "title": "Premier Ready Account",
+      "description": "Verified CS2 account with Prime enabled, clean match history, and competitive setup.",
+      "price": 79,
+      "status": "Active",
+      "createdAt": "2026-07-02T15:25:00Z",
+      "updatedAt": "2026-07-10T08:00:00Z"
+    },
+    {
+      "id": 104,
+      "sellerId": 33,
+      "gameId": 2,
+      "categoryId": 2,
+      "title": "Faceit Elo +300",
+      "description": "Boost package for Faceit with flexible schedule and duo queue options.",
+      "price": 54.75,
+      "status": "Active",
+      "createdAt": "2026-07-05T11:05:00Z",
+      "updatedAt": "2026-07-10T13:15:00Z"
+    },
+    {
+      "id": 105,
+      "sellerId": 18,
+      "gameId": 3,
+      "categoryId": 5,
+      "title": "Mythic+ Weekly 10 Runs",
+      "description": "Ten Mythic+ dungeon runs with timed route plans and loot optimization.",
+      "price": 120,
+      "status": "Active",
+      "createdAt": "2026-07-03T18:45:00Z",
+      "updatedAt": "2026-07-10T14:20:00Z"
+    },
+    {
+      "id": 106,
+      "sellerId": 18,
+      "gameId": 3,
+      "categoryId": 3,
+      "title": "WoW Gold 500k",
+      "description": "Fast transfer in main trade hubs with safe split delivery and proof screenshots.",
+      "price": 62.3,
+      "status": "Hidden",
+      "createdAt": "2026-07-01T19:30:00Z",
+      "updatedAt": "2026-07-08T10:10:00Z"
+    },
+    {
+      "id": 107,
+      "sellerId": 52,
+      "gameId": 1,
+      "categoryId": 1,
+      "title": "Immortal Smurf Account",
+      "description": "Ranked-ready account with calibrated MMR and unlocked heroes.",
+      "price": 149.99,
+      "status": "Sold",
+      "createdAt": "2026-07-02T07:20:00Z",
+      "updatedAt": "2026-07-06T21:45:00Z"
+    },
+    {
+      "id": 108,
+      "sellerId": 45,
+      "gameId": 2,
+      "categoryId": 4,
+      "title": "Aim Training Review",
+      "description": "VOD breakdown and personalized training routine for rifling and peeking.",
+      "price": 19,
+      "status": "Active",
+      "createdAt": "2026-07-06T12:00:00Z",
+      "updatedAt": "2026-07-10T09:35:00Z"
+    }
+  ]
+}
