@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   ArrowLeft,
   ArrowUpDown,
@@ -165,6 +165,13 @@ export function Catalog() {
   const [selectedCategorySlug, setSelectedCategorySlug] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortMode, setSortMode] = useState("popular"); // "popular" | "az"
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const visibleGames = useMemo(() => {
     let result = games;
@@ -245,7 +252,18 @@ export function Catalog() {
 
           <div className="flex flex-wrap gap-2">
             <button
-              className={`inline-flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-extrabold shadow-sm transition ${
+              className="catalog-sort-btn catalog-mobile-filter-btn inline-flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 text-sm font-extrabold shadow-sm lg:hidden"
+              onClick={() => setIsMobileFilterOpen((v) => !v)}
+              type="button"
+            >
+              <SlidersHorizontal size={16} aria-hidden="true" />
+              {t("catalog.filters")}
+              {(selectedCategorySlug || searchQuery) && (
+                <span className="catalog-filter-badge" aria-label="active filters" />
+              )}
+            </button>
+            <button
+              className={`catalog-sort-btn inline-flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-extrabold shadow-sm transition ${
                 sortMode === "popular"
                   ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_12%,var(--surface))] text-[var(--accent-strong)]"
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--text)]"
@@ -257,7 +275,7 @@ export function Catalog() {
               {t("catalog.popular")}
             </button>
             <button
-              className={`inline-flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-extrabold shadow-sm transition ${
+              className={`catalog-sort-btn inline-flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-extrabold shadow-sm transition ${
                 sortMode === "az"
                   ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_12%,var(--surface))] text-[var(--accent-strong)]"
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--text)]"
@@ -271,8 +289,43 @@ export function Catalog() {
           </div>
         </div>
 
+        {isMobileFilterOpen && (
+          <div className="mt-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] lg:hidden">
+            {panelMode === "game-categories" && selectedGame ? (
+              <GameCategoryPanel
+                categories={getAllowedCategories(selectedGame)}
+                game={selectedGame}
+                onBack={showDefaultFilters}
+              />
+            ) : panelMode === "all-categories" ? (
+              <AllCategoriesPanel onBack={showDefaultFilters} />
+            ) : (
+              <DefaultFilterPanel
+                onOpenCategories={showAllCategories}
+                onSelectCategory={setSelectedCategorySlug}
+                onReset={resetAllFilters}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                selectedCategorySlug={selectedCategorySlug}
+              />
+            )}
+          </div>
+        )}
+
         <div className="catalog-grid mt-4">
-          {visibleGames.length === 0 && (
+          {isLoading
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <div className="catalog-skeleton-card" key={i} aria-hidden="true">
+                  <div className="catalog-skeleton-thumb" />
+                  <div className="catalog-skeleton-body">
+                    <div className="catalog-skeleton-line catalog-skeleton-line--title" />
+                    <div className="catalog-skeleton-line catalog-skeleton-line--short" />
+                    <div className="catalog-skeleton-line catalog-skeleton-line--tags" />
+                  </div>
+                </div>
+              ))
+            : null}
+          {!isLoading && visibleGames.length === 0 && (
             <div className="catalog-empty-state">
               <span className="catalog-empty-state__icon">
                 <PackageSearch size={32} aria-hidden="true" />
@@ -291,7 +344,7 @@ export function Catalog() {
               </button>
             </div>
           )}
-          {visibleGames.map((game) => {
+          {!isLoading && visibleGames.map((game) => {
             const allowedCategories = getAllowedCategories(game);
             const quickCategories = getQuickCategories(game);
 
@@ -347,7 +400,7 @@ export function Catalog() {
         </div>
       </section>
 
-      <aside className="catalog-filter-panel h-fit rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] lg:sticky lg:top-4">
+      <aside className="catalog-filter-panel hidden h-fit rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] lg:block lg:sticky lg:top-4">
         {panelMode === "game-categories" && selectedGame ? (
           <GameCategoryPanel
             categories={getAllowedCategories(selectedGame)}
@@ -536,7 +589,7 @@ function PanelActions({ onBack }) {
   return (
     <div className="mt-5 grid grid-cols-2 gap-2">
       <button
-        className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-sm font-extrabold text-[var(--text)]"
+        className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-sm font-extrabold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent-strong)] active:scale-95"
         onClick={onBack}
         type="button"
       >
@@ -544,7 +597,7 @@ function PanelActions({ onBack }) {
         {t("catalog.back")}
       </button>
       <button
-        className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-sm font-extrabold text-[var(--muted)]"
+        className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-sm font-extrabold text-[var(--muted)] transition hover:border-[var(--accent)] hover:text-[var(--accent-strong)] active:scale-95"
         onClick={onBack}
         type="button"
       >

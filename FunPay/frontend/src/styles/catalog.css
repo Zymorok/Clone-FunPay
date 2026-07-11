@@ -340,3 +340,144 @@
     overflow: visible;
   }
 }
+
+/* ── Skeleton loading ── */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.catalog-skeleton-card {
+  width: min(100%, 272px);
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.catalog-skeleton-thumb {
+  aspect-ratio: 1.54;
+  background: var(--surface-strong);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.catalog-skeleton-body {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+.catalog-skeleton-line {
+  border-radius: 6px;
+  background: var(--surface-strong);
+  height: 14px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.catalog-skeleton-line--title {
+  height: 18px;
+  width: 68%;
+  animation-delay: 80ms;
+}
+
+.catalog-skeleton-line--short {
+  width: 42%;
+  animation-delay: 160ms;
+}
+
+.catalog-skeleton-line--tags {
+  width: 60%;
+  animation-delay: 240ms;
+}
+
+@media (max-width: 900px) {
+  .catalog-skeleton-card {
+    width: 100%;
+  }
+}
+
+/* ── Sort button hover / active / focus ── */
+.catalog-sort-btn {
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    color 150ms ease,
+    background 150ms ease,
+    transform 100ms ease;
+}
+
+.catalog-sort-btn:hover {
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--border));
+  color: var(--accent-strong);
+}
+
+.catalog-sort-btn:active {
+  transform: scale(0.96);
+}
+
+.catalog-sort-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+/* ── Game card active state ── */
+.catalog-game-card:active {
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.12),
+    0 0 0 1px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+/* ── Arrow / filter button active states ── */
+.catalog-filter-arrow:active,
+.catalog-category-arrow:active {
+  transform: scale(0.92);
+}
+
+/* ── Filter chip active state ── */
+.catalog-filter-chip:active {
+  transform: scale(0.94);
+}
+
+/* ── Full-category link active state ── */
+.catalog-full-category-link:active {
+  transform: translateX(4px);
+}
+
+/* ── Empty-state reset button active state ── */
+.catalog-empty-state__reset:active {
+  transform: scale(0.95);
+}
+
+/* ── Mobile filter toggle button ── */
+.catalog-mobile-filter-btn {
+  position: relative;
+}
+
+.catalog-filter-badge {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+}
+
+/* ── Very small screens: force single-column grid ── */
+@media (max-width: 479px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .catalog-game-card,
+  .catalog-skeleton-card {
+    width: 100%;
+  }
+
+  .catalog-hero__content {
+    padding: 24px 20px;
+  }
+}
