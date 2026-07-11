@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, PackageX, ShoppingCart, Star, Tag } from "lucide-react";
+import { ArrowLeft, CheckCircle2, PackageX, ShoppingCart, Star, Tag } from "lucide-react";
 import catalogDataRaw from "../data/catalogData.json";
 import type { CatalogData } from "../types/catalog";
+import { CheckoutModal } from "../components/CheckoutModal";
 
 const catalogData = catalogDataRaw as CatalogData;
 
@@ -37,12 +39,29 @@ export function OfferPage() {
     );
   }
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const priceFormatted = new Intl.NumberFormat("ru-RU", { minimumFractionDigits: 2 }).format(product.price);
   const rating = `4.${(product.id % 3) + 7}`;
   const reviewCount = (product.id % 90) + 40;
 
+  function handleConfirm() {
+    setIsModalOpen(false);
+    setIsSuccess(true);
+    setTimeout(() => setIsSuccess(false), 4000);
+  }
+
   return (
+    <>
     <main className="mx-auto max-w-[1260px] px-4 py-6 sm:px-6">
+      {isSuccess && (
+        <div className="checkout-success" role="status">
+          <CheckCircle2 size={18} aria-hidden="true" />
+          Покупку підтверджено! Очікуйте на продавця.
+        </div>
+      )}
+
       <nav className="mb-4">
         <Link
           className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--muted)] transition hover:text-[var(--accent-strong)]"
@@ -118,6 +137,7 @@ export function OfferPage() {
 
           <button
             className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--accent)] text-sm font-extrabold text-[var(--accent-text)] shadow-sm transition hover:bg-[var(--accent-strong)]"
+            onClick={() => setIsModalOpen(true)}
             type="button"
           >
             <ShoppingCart size={17} aria-hidden="true" />
@@ -129,6 +149,15 @@ export function OfferPage() {
           </p>
         </aside>
       </div>
+
+      <CheckoutModal
+        isOpen={isModalOpen}
+        price={priceFormatted}
+        title={product.title}
+        onCancel={() => setIsModalOpen(false)}
+        onConfirm={handleConfirm}
+      />
     </main>
+    </>
   );
 }
