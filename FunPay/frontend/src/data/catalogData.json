@@ -1,22 +1,113 @@
-{
+    
+    {
   "games": [
     {
       "id": 1,
       "name": "Dota 2",
-      "imageUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+      "slug": "dota-2",
+      "imageUrl": "/assets/website/offers/assets_dota_2.jpg",
+      "accent": "from-[#3a1d15] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "currency", "donate", "items", "guides", "other"],
       "createdAt": "2026-07-01T10:00:00Z"
     },
     {
       "id": 2,
       "name": "Counter-Strike 2",
-      "imageUrl": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80",
+      "slug": "counter-strike-2",
+      "imageUrl": "/assets/website/offers/assets_counter_strike_2.png",
+      "accent": "from-[#273f63] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "currency", "items", "keys", "guides", "other"],
       "createdAt": "2026-07-01T10:05:00Z"
     },
     {
       "id": 3,
       "name": "World of Warcraft",
-      "imageUrl": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80",
+      "slug": "world-of-warcraft",
+      "imageUrl": "/assets/website/offers/assets_albion_online.jpeg",
+      "accent": "from-[#243d54] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "currency", "items", "guides", "game-pass", "other"],
       "createdAt": "2026-07-01T10:10:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Valorant",
+      "slug": "valorant",
+      "imageUrl": "/assets/website/offers/assets_valorant.png",
+      "accent": "from-[#4a1625] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "currency", "donate", "items", "twitch-drops", "keys", "other"],
+      "createdAt": "2026-07-01T10:15:00Z"
+    },
+    {
+      "id": 5,
+      "name": "Rust",
+      "slug": "rust",
+      "imageUrl": "/assets/website/offers/assets_rust.png",
+      "accent": "from-[#4b2a17] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "currency", "donate", "items", "keys", "other"],
+      "createdAt": "2026-07-01T10:16:00Z"
+    },
+    {
+      "id": 6,
+      "name": "Albion Online",
+      "slug": "albion-online",
+      "imageUrl": "/assets/website/offers/assets_albion_online.jpeg",
+      "accent": "from-[#183b2b] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "currency", "donate", "items", "kinars", "guides", "other"],
+      "createdAt": "2026-07-01T10:17:00Z"
+    },
+    {
+      "id": 7,
+      "name": "Grand Theft Auto V",
+      "slug": "grand-theft-auto-v",
+      "imageUrl": "/assets/website/offers/assets_gta_v.jpg",
+      "accent": "from-[#23402d] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "currency", "donate", "virts", "region-change", "other"],
+      "createdAt": "2026-07-01T10:18:00Z"
+    },
+    {
+      "id": 8,
+      "name": "Minecraft",
+      "slug": "minecraft",
+      "imageUrl": "/assets/website/offers/assets_rust.png",
+      "accent": "from-[#23422d] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "currency", "donate", "items", "keys", "guides", "other"],
+      "createdAt": "2026-07-01T10:19:00Z"
+    },
+    {
+      "id": 9,
+      "name": "Genshin Impact",
+      "slug": "genshin-impact",
+      "imageUrl": "/assets/website/offers/assets_valorant.png",
+      "accent": "from-[#253a62] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "subscription", "currency", "donate", "other"],
+      "createdAt": "2026-07-01T10:20:00Z"
+    },
+    {
+      "id": 10,
+      "name": "Apex Legends",
+      "slug": "apex-legends",
+      "imageUrl": "/assets/website/offers/assets_counter_strike_2.png",
+      "accent": "from-[#5a231e] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "currency", "items", "twitch-drops", "other"],
+      "createdAt": "2026-07-01T10:21:00Z"
+    },
+    {
+      "id": 11,
+      "name": "League of Legends",
+      "slug": "league-of-legends",
+      "imageUrl": "/assets/website/offers/assets_dota_2.jpg",
+      "accent": "from-[#17364d] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "training", "currency", "items", "guides", "other"],
+      "createdAt": "2026-07-01T10:22:00Z"
+    },
+    {
+      "id": 12,
+      "name": "Escape from Tarkov",
+      "slug": "escape-from-tarkov",
+      "imageUrl": "/assets/website/offers/assets_gta_v.jpg",
+      "accent": "from-[#3d3325] to-[#111827]",
+      "allowedCategorySlugs": ["accounts", "services", "currency", "items", "keys", "offline-activation", "guides", "other"],
+      "createdAt": "2026-07-01T10:23:00Z"
     }
   ],
   "categories": [
