@@ -11,6 +11,10 @@ const membershipWords = {
   uk: {
     years: ["рік", "роки", "років"],
     days: ["день", "дні", "днів"]
+  },
+  en: {
+    years: ["year", "years", "years"],
+    days: ["day", "days", "days"]
   }
 } as const;
 

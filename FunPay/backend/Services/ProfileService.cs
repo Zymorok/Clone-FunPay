@@ -21,12 +21,22 @@ public class ProfileService(
             : ProfileResult.Success(mapper.Map(user));
     }
 
-    public async Task<ProfileResult> GetPublicAsync(string? identifier, CancellationToken cancellationToken)
+    public async Task<ProfileResult> GetPublicAsync(
+        ClaimsPrincipal principal,
+        string? identifier,
+        CancellationToken cancellationToken)
     {
         var user = await users.FindByIdentifierAsync(identifier, cancellationToken);
-        return user is null
-            ? ProfileResult.Failure("Профиль не найден.", StatusCodes.Status404NotFound)
-            : ProfileResult.Success(mapper.Map(user, includePrivateData: false));
+
+        if (user is null)
+        {
+            return ProfileResult.Failure("Профиль не найден.", StatusCodes.Status404NotFound);
+        }
+
+        var actor = await users.FindCurrentAsync(principal, cancellationToken);
+        return ProfileResult.Success(mapper.Map(
+            user,
+            includePrivateData: actor is not null && CanEdit(actor, user)));
     }
 
     public CosmeticCatalogResponse GetCosmetics() => cosmetics.GetCatalog();
@@ -192,6 +202,18 @@ public class ProfileService(
         return ProfileResult.Success(mapper.Map(user));
     }
 
-    private static bool CanEdit(User actor, User target) =>
-        actor.Id == target.Id || actor.Role is UserRole.Admin or UserRole.Owner;
+    public static bool CanEdit(User actor, User target)
+    {
+        if (actor.Id == target.Id)
+        {
+            return true;
+        }
+
+        return actor.Role switch
+        {
+            UserRole.Admin => target.Role == UserRole.User,
+            UserRole.Owner => target.Role is UserRole.User or UserRole.Admin,
+            _ => false
+        };
+    }
 }

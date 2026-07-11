@@ -19,6 +19,12 @@ public class User
     // Тут хранится не пароль, а его безопасный отпечаток.
     public string PasswordHash { get; set; } = string.Empty;
 
+    // Уникальный ID Google позволяет узнавать аккаунт даже после смены почты в Google.
+    public string? GoogleSubject { get; set; }
+
+    // При обычном входе после пароля потребуется одноразовый код из письма.
+    public bool IsEmailTwoFactorEnabled { get; set; }
+
     // Обычный пользователь или админ.
     public UserRole Role { get; set; } = UserRole.User;
 
@@ -65,6 +71,10 @@ public class User
     public List<ProfileContact> ProfileContacts { get; set; } = [];
 
     public List<UserSession> Sessions { get; set; } = [];
+
+    public List<PasswordRecoveryCode> PasswordRecoveryCodes { get; set; } = [];
+
+    public List<AccountSecurityChallenge> AccountSecurityChallenges { get; set; } = [];
 
     public List<Product> Products { get; set; } = [];
 

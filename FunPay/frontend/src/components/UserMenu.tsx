@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { ChevronDown, LogOut, MessageCircle, ShieldCheck, UserCircle } from "lucide-react";
+import { ChevronDown, LogOut, MessageCircle, Settings2, ShieldCheck, UserCircle } from "lucide-react";
 import { getApiAssetUrl } from "../api/apiClient";
 import type { AuthUser } from "../api/authApi";
+import type { Theme } from "../app/theme";
 import { useAuth } from "../auth/AuthContext";
 import { useLanguage } from "../i18n";
 import { isAvatarBorderHidden, isAvatarBorderRainbow, isAvatarBorderRainbowSpectrum, parseAvatarBorderColor } from "../shared/cosmetics";
+import { AccountSettingsDialog } from "./AccountSettingsDialog";
+import { EmailPrivacyToggle } from "./EmailPrivacyToggle";
 import { TeamManagementDialog } from "./TeamManagementDialog";
 
 const menuItems = [
@@ -12,11 +15,17 @@ const menuItems = [
   { href: "/chat", icon: MessageCircle, labelKey: "userMenu.chat", tone: "chat" }
 ] as const;
 
-export function UserMenu() {
+type UserMenuProps = {
+  theme: Theme;
+  onThemeChange: (theme: Theme) => void;
+};
+
+export function UserMenu({ theme, onThemeChange }: UserMenuProps) {
   const { t } = useLanguage();
   const { logout, user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isTeamManagerOpen, setIsTeamManagerOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -105,13 +114,20 @@ export function UserMenu() {
         inert={!isOpen}
         role="menu"
       >
-        <a className="user-menu__head" href="/profile" onClick={() => closeMenu()} role="menuitem">
+        <div className="user-menu__head">
+          <a
+            aria-label={t("userMenu.profile")}
+            className="user-menu__head-link"
+            href="/profile"
+            onClick={() => closeMenu()}
+            role="menuitem"
+          />
           <MenuAvatar user={user} />
           <span className="user-menu__head-copy">
             <strong>{user.nick}</strong>
-            <small>{user.email}</small>
+            <EmailPrivacyToggle className="user-menu__email" email={user.email} />
           </span>
-        </a>
+        </div>
 
         <div className="user-menu__grid">
           {menuItems.map((item) => {
@@ -144,11 +160,27 @@ export function UserMenu() {
           >
             <ShieldCheck size={18} aria-hidden="true" />
             <span>
-              <strong>Управление командой</strong>
-              <small>Роли аккаунтов</small>
+              <strong>{t("teamManagement.menuTitle")}</strong>
+              <small>{t("teamManagement.menuHint")}</small>
             </span>
           </button>
         ) : null}
+
+        <button
+          className="user-menu__settings"
+          onClick={() => {
+            closeMenu(false);
+            setIsSettingsOpen(true);
+          }}
+          role="menuitem"
+          type="button"
+        >
+          <Settings2 size={18} aria-hidden="true" />
+          <span>
+            <strong>{t("userMenu.settings")}</strong>
+            <small>{t("userMenu.settingsHint")}</small>
+          </span>
+        </button>
 
         <button className="user-menu__logout" disabled={isLoggingOut} onClick={handleLogout} role="menuitem" type="button">
           <LogOut size={17} aria-hidden="true" />
@@ -156,6 +188,13 @@ export function UserMenu() {
           <small>{t("userMenu.logoutHint")}</small>
         </button>
       </div>
+      {isSettingsOpen ? (
+        <AccountSettingsDialog
+          onClose={() => setIsSettingsOpen(false)}
+          onThemeChange={onThemeChange}
+          theme={theme}
+        />
+      ) : null}
       {isTeamManagerOpen ? <TeamManagementDialog onClose={() => setIsTeamManagerOpen(false)} /> : null}
     </div>
   );

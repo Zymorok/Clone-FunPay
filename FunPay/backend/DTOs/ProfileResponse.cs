@@ -8,6 +8,7 @@ public class ProfileResponse
     public string Nick { get; set; } = string.Empty;
     public string NormalizedNick { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public bool TwoFactorEnabled { get; set; }
     public string Role { get; set; } = string.Empty;
     public string PresenceStatus { get; set; } = "offline";
     public DateTimeOffset CreatedAt { get; set; }

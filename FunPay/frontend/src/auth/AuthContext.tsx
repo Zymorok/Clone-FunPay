@@ -9,14 +9,20 @@ import {
   type ReactNode
 } from "react";
 import {
+  authenticateWithGoogle,
+  completeTwoFactorLogin,
+  isTwoFactorLoginChallenge,
   loginAccount,
   logoutSession,
   getCurrentUser,
+  loginWithPasswordRecovery,
   registerAccount,
   refreshSession,
+  resetPasswordWithRecovery,
   type AuthSession,
   type AuthUser,
   type LoginPayload,
+  type TwoFactorLoginChallenge,
   type RegisterPayload
 } from "../api/authApi";
 import { getCurrentPath, navigateTo, sanitizeReturnPath } from "../shared/navigation";
@@ -32,10 +38,20 @@ type StoredSession = {
 type AuthContextValue = {
   accessToken: string | null;
   isAuthenticated: boolean;
-  login: (payload: LoginPayload, options?: LoginOptions) => Promise<void>;
+  continueWithGoogle: (credential: string, options?: LoginOptions) => Promise<void>;
+  continueWithRecovery: (ticket: string, options?: LoginOptions) => Promise<void>;
+  continueWithTwoFactor: (token: string, code: string, options?: LoginOptions) => Promise<void>;
+  login: (payload: LoginPayload, options?: LoginOptions) => Promise<TwoFactorLoginChallenge | null>;
   logout: (redirectTo?: string) => Promise<void>;
   register: (payload: RegisterPayload, options?: RegisterOptions) => Promise<void>;
+  resetPasswordWithCode: (
+    ticket: string,
+    password: string,
+    confirmPassword: string,
+    options?: LoginOptions
+  ) => Promise<void>;
   refreshAccessToken: () => Promise<AuthSession | null>;
+  replaceCurrentSession: (session: AuthSession) => void;
   status: AuthStatus;
   updateCurrentUser: (user: AuthUser) => void;
   user: AuthUser | null;
@@ -75,6 +91,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setStatus("anonymous");
     clearStoredSession();
   }, []);
+
+  const replaceCurrentSession = useCallback((nextSession: AuthSession) => {
+    applySession(nextSession, persistence);
+  }, [applySession, persistence]);
 
   const updateCurrentUser = useCallback((user: AuthUser) => {
     setSession((currentSession) => {
@@ -151,11 +171,69 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(
     async (payload: LoginPayload, options: LoginOptions = {}) => {
       const nextSession = await loginAccount(payload);
+
+      if (isTwoFactorLoginChallenge(nextSession)) {
+        return nextSession;
+      }
+
       const nextPersistence = options.persist === false ? "session" : "local";
       const returnTo = sanitizeReturnPath(options.returnTo ?? consumePendingReturnPath());
 
       applySession(nextSession, nextPersistence);
       navigateTo(returnTo, true);
+      return null;
+    },
+    [applySession]
+  );
+
+  const continueWithTwoFactor = useCallback(
+    async (token: string, code: string, options: LoginOptions = {}) => {
+      const nextSession = await completeTwoFactorLogin(token, code);
+      const nextPersistence = options.persist === false ? "session" : "local";
+      const returnTo = sanitizeReturnPath(options.returnTo ?? consumePendingReturnPath());
+
+      applySession(nextSession, nextPersistence);
+      navigateTo(returnTo, true);
+    },
+    [applySession]
+  );
+
+  const continueWithGoogle = useCallback(
+    async (credential: string, options: LoginOptions = {}) => {
+      const nextSession = await authenticateWithGoogle(credential);
+      const nextPersistence = options.persist === false ? "session" : "local";
+      const returnTo = sanitizeReturnPath(options.returnTo ?? consumePendingReturnPath());
+
+      applySession(nextSession, nextPersistence);
+      navigateTo(returnTo, true);
+    },
+    [applySession]
+  );
+
+  const continueWithRecovery = useCallback(
+    async (ticket: string, options: LoginOptions = {}) => {
+      const nextSession = await loginWithPasswordRecovery(ticket);
+      const nextPersistence = options.persist === false ? "session" : "local";
+      const returnTo = sanitizeReturnPath(options.returnTo ?? consumePendingReturnPath());
+
+      applySession(nextSession, nextPersistence);
+      navigateTo(returnTo, true);
+    },
+    [applySession]
+  );
+
+  const resetPasswordWithCode = useCallback(
+    async (
+      ticket: string,
+      password: string,
+      confirmPassword: string,
+      options: LoginOptions = {}
+    ) => {
+      const nextSession = await resetPasswordWithRecovery(ticket, password, confirmPassword);
+      const nextPersistence = options.persist === false ? "session" : "local";
+
+      applySession(nextSession, nextPersistence);
+      navigateTo("/profile", true);
     },
     [applySession]
   );
@@ -188,16 +266,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextValue>(() => {
     return {
       accessToken: session?.accessToken ?? null,
+      continueWithGoogle,
+      continueWithRecovery,
+      continueWithTwoFactor,
       isAuthenticated: Boolean(session),
       login,
       logout,
       register,
+      resetPasswordWithCode,
       refreshAccessToken,
+      replaceCurrentSession,
       status,
       updateCurrentUser,
       user: session?.user ?? null
     };
-  }, [login, logout, refreshAccessToken, register, session, status, updateCurrentUser]);
+  }, [continueWithGoogle, continueWithRecovery, continueWithTwoFactor, login, logout, refreshAccessToken, register, replaceCurrentSession, resetPasswordWithCode, session, status, updateCurrentUser]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

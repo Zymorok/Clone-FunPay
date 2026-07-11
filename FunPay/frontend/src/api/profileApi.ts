@@ -72,10 +72,17 @@ export async function getMyProfile(accessToken: string): Promise<ProfileData> {
   );
 }
 
-export async function getProfileByIdentifier(identifier: string, signal?: AbortSignal): Promise<ProfileData> {
+export async function getProfileByIdentifier(
+  identifier: string,
+  accessToken?: string | null,
+  signal?: AbortSignal
+): Promise<ProfileData> {
   return requestJson<ProfileData>(
     `/api/profile/${encodeURIComponent(identifier)}`,
-    { signal },
+    {
+      signal,
+      headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined
+    },
     "Профиль не найден."
   );
 }

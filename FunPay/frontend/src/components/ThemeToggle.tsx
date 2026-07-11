@@ -1,5 +1,6 @@
 import { Moon, Sun } from "lucide-react";
 import type { Theme } from "../app/theme";
+import { useLanguage } from "../i18n";
 
 type ThemeToggleProps = {
   theme: Theme;
@@ -7,11 +8,12 @@ type ThemeToggleProps = {
 };
 
 export function ThemeToggle({ theme, onThemeChange }: ThemeToggleProps) {
+  const { t } = useLanguage();
   const isDark = theme === "dark";
 
   return (
     <button
-      aria-label={isDark ? "Включить светлую тему" : "Включить тёмную тему"}
+      aria-label={t(isDark ? "userMenu.enableLightTheme" : "userMenu.enableDarkTheme")}
       className="inline-flex h-9 w-[66px] items-center justify-between rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-1.5 text-[var(--muted)] transition hover:text-[var(--text)]"
       onClick={() => onThemeChange(isDark ? "light" : "dark")}
       type="button"

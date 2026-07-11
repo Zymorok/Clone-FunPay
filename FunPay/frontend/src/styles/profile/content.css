@@ -115,6 +115,37 @@
   color: var(--accent-text);
 }
 
+.profile-edit-button--managed {
+  border-color: rgba(147, 197, 253, 0.86);
+  background: linear-gradient(105deg, #1747c7 0%, #2563eb 39%, #be2537 61%, #e11d48 100%);
+  background-size: 220% 100%;
+  box-shadow: -7px 0 20px rgba(37, 99, 235, 0.34), 7px 0 20px rgba(225, 29, 72, 0.32);
+  color: #fff;
+  animation: profile-police-lights 2.1s ease-in-out infinite alternate;
+}
+
+.profile-edit-button--managed:hover {
+  border-color: #fff;
+  background-position: 100% 0;
+}
+
+@keyframes profile-police-lights {
+  from {
+    background-position: 0 0;
+    box-shadow: -8px 0 22px rgba(37, 99, 235, 0.5), 6px 0 12px rgba(225, 29, 72, 0.18);
+  }
+  to {
+    background-position: 100% 0;
+    box-shadow: -6px 0 12px rgba(37, 99, 235, 0.18), 8px 0 22px rgba(225, 29, 72, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-edit-button--managed {
+    animation: none;
+  }
+}
+
 .profile-edit-button:hover,
 .profile-primary-button:hover,
 .profile-secondary-button:hover {

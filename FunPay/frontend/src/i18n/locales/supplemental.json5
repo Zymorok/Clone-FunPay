@@ -1,0 +1,277 @@
+{
+  uk: {
+    chatCapture: {
+      cameraBlockedTitle: "\u041a\u0430\u043c\u0435\u0440\u0443 \u0437\u0430\u0431\u043b\u043e\u043a\u043e\u0432\u0430\u043d\u043e",
+      cameraBlockedHint: "\u041d\u0430\u0442\u0438\u0441\u043d\u0456\u0442\u044c \u0437\u043d\u0430\u0447\u043e\u043a \u043a\u0430\u043c\u0435\u0440\u0438 \u0432 \u0430\u0434\u0440\u0435\u0441\u043d\u043e\u043c\u0443 \u0440\u044f\u0434\u043a\u0443, \u043e\u0431\u0435\u0440\u0456\u0442\u044c \u00ab\u0414\u043e\u0437\u0432\u043e\u043b\u0438\u0442\u0438\u00bb \u0456 \u043f\u043e\u0432\u0442\u043e\u0440\u0456\u0442\u044c.",
+      attachAllFiles: "Прикріпити файл (усі файли)",
+      readyToSend: "Готово до надсилання",
+      sendAttachment: "Надіслати вкладення",
+      openingMicrophone: "Відкриваємо мікрофон…",
+      openingCamera: "Відкриваємо камеру…",
+      cameraPermissionHint: "Дозвольте браузеру використовувати камеру та мікрофон.",
+      recordingVideo: "Запис відеокружечка",
+      videoLimit: "Максимальна тривалість запису — 5 хвилин",
+      switchCamera: "Змінити камеру",
+      frontCamera: "Фронтальна камера",
+      rearCamera: "Основна камера",
+      finishVoice: "Завершити запис голосу",
+      finishVideo: "Завершити запис відео",
+      permissionDenied: "Надайте браузеру доступ до мікрофона або камери.",
+      recordingFailed: "Не вдалося почати запис. Перевірте пристрій і дозволи браузера.",
+      voiceFileName: "Голосове повідомлення.webm",
+      videoFileName: "Відеокружечок.webm",
+      voiceReady: "Голосове повідомлення",
+      videoReady: "Відеокружечок",
+      imageAlt: "Прикріплене зображення",
+      openDocument: "Відкрити документ"
+    },
+    chatEmoji: {
+      recent: "Нещодавні",
+      standard: "Стандартні емодзі",
+      loading: "Завантажуємо емодзі…",
+      notFound: "Нічого не знайдено",
+      autoSendHint: "Автоматично надсилати емодзі після вибору",
+      groups: {
+        smileys_emotion: "Смайли та емоції",
+        people_body: "Люди та жести",
+        animals_nature: "Тварини та природа",
+        food_drink: "Їжа та напої",
+        travel_places: "Подорожі та місця",
+        activities: "Заняття",
+        objects: "Предмети",
+        symbols: "Символи",
+        flags: "Прапори"
+      }
+    },
+    emailPrivacy: {
+      show: "Показати пошту",
+      hide: "Сховати пошту"
+    },
+    teamManagement: {
+      menuTitle: "Керування командою",
+      menuHint: "Ролі акаунтів",
+      dialogLabel: "Керування командою",
+      kicker: "Команда сайту",
+      title: "Керування ролями",
+      subtitle: "Змінюйте статус свого або іншого акаунта.",
+      close: "Закрити",
+      searchLabel: "Пошук акаунта",
+      searchPlaceholder: "Нік або пошта",
+      searchHint: "Можна ввести будь-яку частину ніка або пошти.",
+      searching: "Шукаємо акаунти…",
+      notFound: "Акаунти не знайдені.",
+      searchFailed: "Не вдалося виконати пошук.",
+      updateFailed: "Не вдалося оновити роль.",
+      roleSaved: "Роль «{role}» збережено.",
+      roleAria: "Роль {name}"
+    },
+    borderEditor: {
+      title: "Колір обведення",
+      subtitle: "Палітра та попередній перегляд",
+      previewHint: "Так виглядатиме обведення профілю.",
+      showBorder: "Показувати обведення",
+      rainbowMode: "Режим веселки",
+      rainbowVariant: "Варіант веселки",
+      colorShift: "Перелив кольору",
+      colorSpectrum: "Спектр по кільцю",
+      palette: "Палітра",
+      paletteAria: "Виберіть колір обведення",
+      valueLabel: "HEX або RGB",
+      valuePlaceholder: "#E32636 або RGB: 227,38,54",
+      disableRainbowHint: "Вимкніть режим веселки, щоб змінити колір.",
+      supportedFormats: "Підтримуються #E32636 і RGB: 227,38,54",
+      showAvatar: "Показувати аватар",
+      showFrame: "Показувати рамку"
+    },
+    extras: {
+      customService: "Інший сервіс"
+    },
+    googleIdentity: {
+      loadFailed: "Не вдалося завантажити Google Identity Services."
+    }
+  },
+
+  ru: {
+    chatCapture: {
+      cameraBlockedTitle: "\u041a\u0430\u043c\u0435\u0440\u0430 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u0430",
+      cameraBlockedHint: "\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u0437\u043d\u0430\u0447\u043e\u043a \u043a\u0430\u043c\u0435\u0440\u044b \u0432 \u0430\u0434\u0440\u0435\u0441\u043d\u043e\u0439 \u0441\u0442\u0440\u043e\u043a\u0435, \u0432\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u00ab\u0420\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u044c\u00bb \u0438 \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u0435.",
+      attachAllFiles: "Прикрепить файл (все файлы)",
+      readyToSend: "Готово к отправке",
+      sendAttachment: "Отправить вложение",
+      openingMicrophone: "Открываем микрофон…",
+      openingCamera: "Открываем камеру…",
+      cameraPermissionHint: "Разрешите браузеру использовать камеру и микрофон.",
+      recordingVideo: "Запись видеокружка",
+      videoLimit: "Максимальная длительность записи — 5 минут",
+      switchCamera: "Сменить камеру",
+      frontCamera: "Фронтальная камера",
+      rearCamera: "Основная камера",
+      finishVoice: "Завершить запись голоса",
+      finishVideo: "Завершить запись видео",
+      permissionDenied: "Разрешите браузеру доступ к микрофону или камере.",
+      recordingFailed: "Не удалось начать запись. Проверьте устройство и разрешения браузера.",
+      voiceFileName: "Голосовое сообщение.webm",
+      videoFileName: "Видеокружок.webm",
+      voiceReady: "Голосовое сообщение",
+      videoReady: "Видеокружок",
+      imageAlt: "Прикреплённое изображение",
+      openDocument: "Открыть документ"
+    },
+    chatEmoji: {
+      recent: "Недавние",
+      standard: "Стандартные эмодзи",
+      loading: "Загружаем эмодзи…",
+      notFound: "Ничего не найдено",
+      autoSendHint: "Автоматически отправлять эмодзи после выбора",
+      groups: {
+        smileys_emotion: "Смайлы и эмоции",
+        people_body: "Люди и жесты",
+        animals_nature: "Животные и природа",
+        food_drink: "Еда и напитки",
+        travel_places: "Путешествия и места",
+        activities: "Занятия",
+        objects: "Предметы",
+        symbols: "Символы",
+        flags: "Флаги"
+      }
+    },
+    emailPrivacy: {
+      show: "Показать почту",
+      hide: "Скрыть почту"
+    },
+    teamManagement: {
+      menuTitle: "Управление командой",
+      menuHint: "Роли аккаунтов",
+      dialogLabel: "Управление командой",
+      kicker: "Команда сайта",
+      title: "Управление ролями",
+      subtitle: "Меняйте статус своего или другого аккаунта.",
+      close: "Закрыть",
+      searchLabel: "Поиск аккаунта",
+      searchPlaceholder: "Ник или почта",
+      searchHint: "Можно ввести любую часть ника или почты.",
+      searching: "Ищем аккаунты…",
+      notFound: "Аккаунты не найдены.",
+      searchFailed: "Не удалось выполнить поиск.",
+      updateFailed: "Не удалось обновить роль.",
+      roleSaved: "Роль «{role}» сохранена.",
+      roleAria: "Роль {name}"
+    },
+    borderEditor: {
+      title: "Цвет обводки",
+      subtitle: "Палитра и предпросмотр",
+      previewHint: "Так будет выглядеть обводка профиля.",
+      showBorder: "Показывать обводку",
+      rainbowMode: "Режим радуги",
+      rainbowVariant: "Вариант радуги",
+      colorShift: "Перелив цвета",
+      colorSpectrum: "Спектр по кольцу",
+      palette: "Палитра",
+      paletteAria: "Выберите цвет обводки",
+      valueLabel: "HEX или RGB",
+      valuePlaceholder: "#E32636 или RGB: 227,38,54",
+      disableRainbowHint: "Отключите режим радуги, чтобы изменить цвет.",
+      supportedFormats: "Поддерживаются #E32636 и RGB: 227,38,54",
+      showAvatar: "Показывать аватар",
+      showFrame: "Показывать рамку"
+    },
+    extras: {
+      customService: "Другой сервис"
+    },
+    googleIdentity: {
+      loadFailed: "Не удалось загрузить Google Identity Services."
+    }
+  },
+
+  en: {
+    chatCapture: {
+      cameraBlockedTitle: "Camera access is blocked",
+      cameraBlockedHint: "Click the camera icon in the address bar, choose Allow, and try again.",
+      attachAllFiles: "Attach a file (all files)",
+      readyToSend: "Ready to send",
+      sendAttachment: "Send attachment",
+      openingMicrophone: "Opening microphone…",
+      openingCamera: "Opening camera…",
+      cameraPermissionHint: "Allow the browser to use your camera and microphone.",
+      recordingVideo: "Recording video message",
+      videoLimit: "Maximum recording length is 5 minutes",
+      switchCamera: "Switch camera",
+      frontCamera: "Front camera",
+      rearCamera: "Rear camera",
+      finishVoice: "Finish voice recording",
+      finishVideo: "Finish video recording",
+      permissionDenied: "Allow the browser to access your microphone or camera.",
+      recordingFailed: "Recording could not start. Check the device and browser permissions.",
+      voiceFileName: "Voice message.webm",
+      videoFileName: "Video message.webm",
+      voiceReady: "Voice message",
+      videoReady: "Video message",
+      imageAlt: "Attached image",
+      openDocument: "Open document"
+    },
+    chatEmoji: {
+      recent: "Recent",
+      standard: "Standard emoji",
+      loading: "Loading emoji…",
+      notFound: "Nothing found",
+      autoSendHint: "Automatically send emoji after selection",
+      groups: {
+        smileys_emotion: "Smileys & emotion",
+        people_body: "People & body",
+        animals_nature: "Animals & nature",
+        food_drink: "Food & drink",
+        travel_places: "Travel & places",
+        activities: "Activities",
+        objects: "Objects",
+        symbols: "Symbols",
+        flags: "Flags"
+      }
+    },
+    emailPrivacy: {
+      show: "Show email",
+      hide: "Hide email"
+    },
+    teamManagement: {
+      menuTitle: "Team management",
+      menuHint: "Account roles",
+      dialogLabel: "Team management",
+      kicker: "Site team",
+      title: "Manage roles",
+      subtitle: "Change the status of your account or another account.",
+      close: "Close",
+      searchLabel: "Search accounts",
+      searchPlaceholder: "Nickname or email",
+      searchHint: "Enter any part of a nickname or email address.",
+      searching: "Searching accounts…",
+      notFound: "No accounts found.",
+      searchFailed: "Could not complete the search.",
+      updateFailed: "Could not update the role.",
+      roleSaved: "Role “{role}” saved.",
+      roleAria: "Role for {name}"
+    },
+    borderEditor: {
+      title: "Border color",
+      subtitle: "Palette and preview",
+      previewHint: "This is how the profile border will look.",
+      showBorder: "Show border",
+      rainbowMode: "Rainbow mode",
+      rainbowVariant: "Rainbow style",
+      colorShift: "Color shift",
+      colorSpectrum: "Ring spectrum",
+      palette: "Palette",
+      paletteAria: "Choose border color",
+      valueLabel: "HEX or RGB",
+      valuePlaceholder: "#E32636 or RGB: 227,38,54",
+      disableRainbowHint: "Turn off rainbow mode to change the color.",
+      supportedFormats: "Supported formats: #E32636 and RGB: 227,38,54",
+      showAvatar: "Show avatar",
+      showFrame: "Show frame"
+    },
+    extras: {
+      customService: "Other service"
+    },
+    googleIdentity: {
+      loadFailed: "Google Identity Services failed to load."
+    }
+  }
+}

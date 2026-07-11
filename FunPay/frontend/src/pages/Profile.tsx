@@ -35,7 +35,7 @@ export function Profile({ identifier }: { identifier?: string }) {
     setErrorStatus(null);
     try {
       const nextProfile = identifier
-        ? await getProfileByIdentifier(identifier, signal)
+        ? await getProfileByIdentifier(identifier, accessToken, signal)
         : await getMyProfile(accessToken!);
       setProfile(nextProfile);
       setPresenceStatus(nextProfile.presenceStatus);
@@ -95,16 +95,26 @@ export function Profile({ identifier }: { identifier?: string }) {
   if (!profile) return <main className="profile-page"><section className="profile-error"><p>{error || t("profile.page.loadError")}</p><button className="profile-primary-button" onClick={() => void loadProfile()} type="button">{t("profile.page.retry")}</button></section></main>;
 
   const visibleProfile = previewDraft ? applyProfileDraft(profile, previewDraft) : profile;
-  const canEditProfile = !identifier || user?.id === profile.id || user?.role === "Admin" || user?.role === "Owner";
+  const canEditProfile = canEditTarget(user, profile);
 
   return (
     <ProfileView
       canEditProfile={canEditProfile}
       editor={isEditing && canEditProfile ? <ProfileEditor profile={profile} targetIdentifier={identifier} onClose={closeEditor} onPreviewChange={handlePreviewChange} onSaved={handleSaved} /> : null}
+      isOwnProfile={user?.id === profile.id}
       onEdit={openEditor}
       presenceStatus={presenceStatus}
       profile={visibleProfile}
       savedMessage={savedMessage}
+      showMusicFavorites={user?.id === profile.id}
     />
   );
+}
+
+function canEditTarget(user: ReturnType<typeof useAuth>["user"], profile: ProfileData) {
+  if (!user) return false;
+  if (user.id === profile.id) return true;
+  if (user.role === "Admin") return profile.role === "User";
+  if (user.role === "Owner") return profile.role === "User" || profile.role === "Admin";
+  return false;
 }

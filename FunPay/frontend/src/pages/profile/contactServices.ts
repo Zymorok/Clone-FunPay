@@ -36,7 +36,7 @@ export const contactServices: ServiceDefinition[] = [
   { id: "github", title: "GitHub", Icon: SiGithub },
   { id: "steam", title: "Steam", Icon: SiSteam },
   { id: "kick", title: "Kick", Icon: SiKick },
-  { id: "custom", title: "Другой сервис", Icon: AtSign }
+  { id: "custom", title: "Custom", Icon: AtSign }
 ];
 
 export function getServiceDefinition(service: string) {

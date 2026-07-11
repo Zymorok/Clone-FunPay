@@ -17,6 +17,7 @@ namespace FunPay.Backend.Services;
 public class AuthService(
     AppDbContext dbContext,
     IPasswordHasher<User> passwordHasher,
+    AccountSecurityService accountSecurityService,
     IConfiguration configuration)
 {
     private static readonly EmailAddressAttribute EmailAddressValidator = new();
@@ -108,7 +109,36 @@ public class AuthService(
             user.PasswordHash = passwordHasher.HashPassword(user, request.Password);
         }
 
+        if (user.IsEmailTwoFactorEnabled)
+        {
+            var challenge = await accountSecurityService.StartLoginAsync(
+                user,
+                request.Language,
+                cancellationToken);
+
+            if (!challenge.IsSuccess || challenge.Value is null)
+            {
+                return AuthResult.Failure(challenge.Message, challenge.StatusCode);
+            }
+
+            return AuthResult.TwoFactorRequired(challenge.Value);
+        }
+
         return AuthResult.Success(await IssueSessionAsync(user, cancellationToken));
+    }
+
+    public async Task<AuthResult> CompleteTwoFactorLoginAsync(
+        VerifySecurityCodeRequest request,
+        CancellationToken cancellationToken)
+    {
+        var verification = await accountSecurityService.CompleteLoginAsync(request, cancellationToken);
+
+        if (!verification.IsSuccess || verification.Value is null)
+        {
+            return AuthResult.Failure(verification.Message, verification.StatusCode);
+        }
+
+        return AuthResult.Success(await IssueSessionAsync(verification.Value, cancellationToken));
     }
 
     public async Task<AuthResult> RefreshAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
@@ -139,8 +169,25 @@ public class AuthService(
             return AuthResult.Failure("Аккаунт заблокирован.", StatusCodes.Status403Forbidden);
         }
 
-        dbContext.UserSessions.Remove(session);
-        return AuthResult.Success(await IssueSessionAsync(user, cancellationToken));
+        await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        // NOTE: Забираем старую сессию одним запросом. Если параллельный refresh уже успел
+        // удалить её, спокойно отклоняем повторный запрос вместо DbUpdateConcurrencyException.
+        var claimedSessionCount = await dbContext.UserSessions
+            .Where(current => current.Id == session.Id && current.RefreshTokenHash == refreshTokenHash)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        if (claimedSessionCount == 0)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            return AuthResult.Failure("Сессия истекла. Войдите снова.", StatusCodes.Status401Unauthorized);
+        }
+
+        dbContext.Entry(session).State = EntityState.Detached;
+        var response = await IssueSessionAsync(user, cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+
+        return AuthResult.Success(response);
     }
 
     public async Task<RegisterResponse?> GetCurrentUserAsync(ClaimsPrincipal principal, CancellationToken cancellationToken)
@@ -278,6 +325,11 @@ public class AuthService(
         };
     }
 
+    internal Task<AuthResponse> IssueSessionForUserAsync(User user, CancellationToken cancellationToken)
+    {
+        return IssueSessionAsync(user, cancellationToken);
+    }
+
     private async Task ClearAllSessionsAsync(User user, CancellationToken cancellationToken)
     {
         dbContext.UserSessions.RemoveRange(dbContext.UserSessions.Where(session => session.UserId == user.Id));
@@ -330,6 +382,7 @@ public class AuthService(
             Nick = user.Nick,
             NormalizedNick = user.NormalizedNick,
             Email = user.Email,
+            TwoFactorEnabled = user.IsEmailTwoFactorEnabled,
             Role = user.Role.ToString(),
             CanManageTeam = CanManageTeam(user),
             Gender = user.Gender ?? string.Empty,
@@ -337,7 +390,8 @@ public class AuthService(
             AvatarUrl = user.AvatarUrl ?? string.Empty,
             AvatarStyle = user.AvatarStyle,
             SelectedAvatarAsset = user.SelectedAvatarAsset ?? string.Empty,
-            SelectedFrameAsset = user.SelectedFrameAsset ?? string.Empty
+            SelectedFrameAsset = user.SelectedFrameAsset ?? string.Empty,
+            SelectedWallpaperAsset = user.SelectedWallpaperAsset ?? string.Empty
         };
     }
 

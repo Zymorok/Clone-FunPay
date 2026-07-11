@@ -9,9 +9,11 @@ import {
   type ReactNode
 } from "react";
 import appLocaleRaw from "./locales/app.json5?raw";
+import englishLocaleRaw from "./locales/en.json5?raw";
+import supplementalLocaleRaw from "./locales/supplemental.json5?raw";
 import { runLanguageDustTransition } from "../shared/uiTransitions";
 
-export const supportedLanguages = ["uk", "ru"] as const;
+export const supportedLanguages = ["uk", "ru", "en"] as const;
 export type Language = (typeof supportedLanguages)[number];
 
 type LocalePrimitive = string | number | boolean | null;
@@ -32,8 +34,13 @@ export type Translate = (key: string, params?: TranslateParams) => string;
 
 const languageStorageKey = "funpay-language";
 const localeModule = JSON5.parse(appLocaleRaw) as LocaleModule;
+const englishLocale = JSON5.parse(englishLocaleRaw) as LocaleTree;
+const supplementalLocale = JSON5.parse(supplementalLocaleRaw) as Partial<Record<Language, LocaleTree>>;
 const defaultLanguage = localeModule.$meta?.defaultLang ?? "uk";
-const languageFallbacks = localeModule.$meta?.fallback ?? {};
+const languageFallbacks: Partial<Record<Language, Language[]>> = {
+  ...localeModule.$meta?.fallback,
+  en: ["ru", "uk"]
+};
 
 function isLanguage(value: string | null): value is Language {
   return supportedLanguages.includes(value as Language);
@@ -59,7 +66,8 @@ function flattenLocale(tree: LocaleTree, parent = ""): LocaleBundle {
 }
 
 const bundles = supportedLanguages.reduce<Record<Language, LocaleBundle>>((result, language) => {
-  result[language] = flattenLocale(localeModule[language] ?? {});
+  const primaryLocale = language === "en" ? englishLocale : localeModule[language] ?? {};
+  result[language] = flattenLocale({ ...primaryLocale, ...supplementalLocale[language] });
   return result;
 }, {} as Record<Language, LocaleBundle>);
 
@@ -102,11 +110,11 @@ function getInitialLanguage(): Language {
   }
 
   const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
-  const hasRussianLocale = browserLanguages.some((language) =>
-    language.toLowerCase().startsWith("ru")
-  );
+  const browserLanguage = browserLanguages
+    .map((language) => language.toLowerCase().split("-")[0])
+    .find((language): language is Language => isLanguage(language));
 
-  return hasRussianLocale ? "ru" : defaultLanguage;
+  return browserLanguage ?? defaultLanguage;
 }
 
 type LanguageContextValue = {
@@ -142,7 +150,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const toggleLanguage = useCallback(() => {
     runLanguageDustTransition(() => {
-      setCurrentLanguage((current) => (current === "uk" ? "ru" : "uk"));
+      setCurrentLanguage((current) => {
+        const currentIndex = supportedLanguages.indexOf(current);
+        return supportedLanguages[(currentIndex + 1) % supportedLanguages.length];
+      });
     });
   }, []);
 

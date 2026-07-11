@@ -1,3 +1,5 @@
+import { localizeApiMessage } from "../i18n/apiMessages";
+
 export class ApiError extends Error {
   status: number;
 
@@ -8,7 +10,7 @@ export class ApiError extends Error {
   }
 }
 
-const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:5090";
+export const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:5090";
 
 export function getApiAssetUrl(path: string) {
   return path ? `${apiUrl}${path}` : "";
@@ -24,13 +26,13 @@ export async function requestJson<T>(
   try {
     response = await fetch(`${apiUrl}${path}`, init);
   } catch {
-    throw new ApiError("Backend недоступен. Проверьте, что сервер запущен.", 0);
+    throw new ApiError(localizeApiMessage("Backend недоступен. Проверьте, что сервер запущен."), 0);
   }
 
   const data = await readJson(response);
 
   if (!response.ok) {
-    throw new ApiError(getErrorMessage(data) ?? fallbackMessage, response.status);
+    throw new ApiError(localizeApiMessage(getErrorMessage(data) ?? fallbackMessage), response.status);
   }
 
   return data as T;

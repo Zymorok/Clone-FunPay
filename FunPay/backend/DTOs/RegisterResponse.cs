@@ -12,6 +12,8 @@ public class RegisterResponse
 
     public string Email { get; set; } = string.Empty;
 
+    public bool TwoFactorEnabled { get; set; }
+
     public string Role { get; set; } = string.Empty;
 
     public bool CanManageTeam { get; set; }
@@ -27,4 +29,6 @@ public class RegisterResponse
     public string SelectedAvatarAsset { get; set; } = string.Empty;
 
     public string SelectedFrameAsset { get; set; } = string.Empty;
+
+    public string SelectedWallpaperAsset { get; set; } = string.Empty;
 }

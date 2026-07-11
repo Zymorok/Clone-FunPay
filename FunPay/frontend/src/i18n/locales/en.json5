@@ -1,0 +1,633 @@
+{
+  language: {
+    name: "English",
+    switchTo: "Switch language"
+  },
+
+  nav: {
+    aria: "Main navigation",
+    catalog: "Catalog",
+    orders: "My orders",
+    chat: "Chat",
+    support: "Support",
+    login: "Log in"
+  },
+
+  music: {
+    title: "FunPay Music",
+    player: "Music mini player",
+    start: "Start music",
+    pause: "Pause music",
+    resume: "Resume music",
+    tabPaused: "Paused while tab is inactive",
+    openPlayer: "Open mini player",
+    close: "Close player",
+    settings: "Music settings",
+    settingsHint: "Your changes are saved for this account in the current browser.",
+    pauseInactive: "Pause in inactive tabs",
+    pauseInactiveHint: "The sound fades out and resumes when you return to this tab.",
+    officialOnly: "Only tracks added by the FunPay team are played on the website.",
+    nowPlaying: "Now playing",
+    noTracks: "The queue is empty",
+    addFavorite: "Add to favorites",
+    removeFavorite: "Remove from favorites",
+    seek: "Seek track",
+    previous: "Previous track",
+    next: "Next track",
+    volume: "Volume",
+    queue: "Queue",
+    queueCount: "Active: {count}",
+    addToQueue: "Add track to queue",
+    removeFromQueue: "Remove track from queue",
+    moveUp: "Move up",
+    moveDown: "Move down",
+    profileFavorites: "Favorite music",
+    profileFavoritesEmpty: "Tap the heart on a track and it will appear here.",
+    playTrack: "Play {title}",
+    errors: {
+      emptyQueue: "Add at least one track to the queue.",
+      playbackBlocked: "Your browser blocked audio playback. Press the button again.",
+      loadFailed: "Could not load this track."
+    }
+  },
+
+  userMenu: {
+    open: "Open account menu",
+    profile: "Profile",
+    orders: "My orders",
+    chat: "Chat",
+    support: "Support",
+    roleUser: "User",
+    settings: "Settings",
+    settingsHint: "Language and appearance",
+    settingsTitle: "Account settings",
+    settingsSubtitle: "Choose your preferred language and interface theme.",
+    closeSettings: "Close settings",
+    language: "Language",
+    languageHint: "Changes the language across the website.",
+    theme: "Theme",
+    themeHint: "Switches between light and dark appearance.",
+    themeLight: "Light",
+    themeDark: "Dark",
+    enableLightTheme: "Enable light theme",
+    enableDarkTheme: "Enable dark theme",
+    logout: "Log out",
+    logoutHint: "End the current session",
+    signingOut: "Logging out..."
+  },
+
+  notifications: {
+    open: "Open notifications",
+    title: "Notifications",
+    allRead: "All caught up",
+    emptyTitle: "All quiet for now",
+    emptyText: "New notifications will appear here."
+  },
+
+  googleAuth: {
+    divider: "or",
+    loading: "Loading Google...",
+    signingIn: "Signing in with Google...",
+    unavailable: "Google sign-in is not configured yet",
+    failed: "Could not sign in with Google. Please try again."
+  },
+
+  login: {
+    title: "Log in to your account",
+    subtitle: "Sign in to continue buying, selling, and managing orders.",
+    identityLabel: "Email or nickname",
+    identityPlaceholder: "Enter your email or nickname",
+    passwordLabel: "Password",
+    passwordPlaceholder: "Enter your password",
+    remember: "Remember me",
+    forgot: "Forgot your password?",
+    submit: "Log in",
+    noAccount: "Don't have an account yet?",
+    register: "Create an account",
+    showPassword: "Show password",
+    hidePassword: "Hide password",
+    noteTitle: "Secure sign-in",
+    noteText: "Your login details are sent securely to the server. If your session expires, the website will ask you to sign in again.",
+    twoFactor: {
+      title: "Confirm sign-in",
+      subtitle: "Your password is correct. Enter the six-digit code from the email.",
+      codeLabel: "Security code",
+      privacy: "The code is valid for 15 minutes. The website does not show the recipient address.",
+      submit: "Confirm and sign in",
+      back: "Back to password",
+      codeError: "Enter a valid six-digit code."
+    },
+    errors: {
+      failed: "Could not log in.",
+      checkFields: "Check the highlighted fields."
+    }
+  },
+
+  profile: {
+    badge: "Active session",
+    title: "Account dashboard",
+    subtitle: "Quick access to your main account sections.",
+    page: {
+      about: "About",
+      contacts: "Contacts",
+      online: "Online",
+      afk: "Away",
+      offline: "Offline",
+      teamStatus: "Site team status",
+      member: "User",
+      administrator: "Administrator",
+      administratorFemale: "Administrator",
+      owner: "Owner",
+      ownerFemale: "Owner",
+      edit: "Edit profile",
+      close: "Close",
+      save: "Save changes",
+      saving: "Saving...",
+      saved: "Profile saved.",
+      upload: "Upload avatar",
+      uploading: "Uploading...",
+      avatarHint: "JPG, PNG, or WEBP, up to 5 MB",
+      appearance: "Appearance",
+      nickname: "Nickname",
+      description: "Description",
+      descriptionPlaceholder: "Tell others a little about yourself",
+      gender: "Gender",
+      genderNone: "Not specified",
+      genderMale: "Male",
+      genderFemale: "Female",
+      genderOther: "Other",
+      birthday: "Birthday",
+      country: "Country",
+      countryNone: "Not specified",
+      countryUa: "Ukraine",
+      countryRu: "Russia",
+      countryPl: "Poland",
+      countryDe: "Germany",
+      countryUs: "United States",
+      countryGb: "United Kingdom",
+      countryOther: "Other",
+      telegram: "Telegram",
+      discord: "Discord",
+      youtube: "YouTube",
+      notSpecified: "Not specified",
+      since: "On FunPay since {date}",
+      memberFor: "With us for {duration}",
+      banner: "Banner",
+      avatar: "Avatar",
+      frame: "Frame",
+      bannerMidnight: "Midnight",
+      bannerEmber: "Ember",
+      bannerAurora: "Aurora",
+      avatarGold: "Gold",
+      avatarCyan: "Cyan",
+      avatarViolet: "Violet",
+      frameGold: "Gold",
+      frameCyan: "Cyan",
+      frameViolet: "Violet",
+      frameNone: "No frame",
+      loadError: "Could not load the profile.",
+      retry: "Try again",
+      notFoundTitle: "This profile seems to be missing",
+      notFoundText: "We checked the nickname and ID but could not find anyone. There may be a typo in the link.",
+      notFoundQueryHint: "Searched by nickname or ID",
+      myProfile: "My profile",
+      goCatalog: "Go to catalog",
+      countrySearch: "Search countries",
+      quickAdd: "Quick add",
+      contactsLimit: "Links: {count}/6",
+      contactTitle: "Title",
+      contactUrl: "Link",
+      customService: "Service name",
+      moveUp: "Move up",
+      moveDown: "Move down",
+      removeContact: "Remove contact",
+      noContacts: "No contacts added yet",
+      addContact: "Add contact",
+      wallpaper: "Wallpaper",
+      assetSearch: "Search items",
+      assetNone: "Not selected",
+      showMoreAssets: "Show {count} more",
+      myFrame: "My frame",
+      myAvatar: "My avatar",
+      activeAnimationsOnly: "Active only",
+      preview: "Preview",
+      previewMode: "Preview mode",
+      previewUnsaved: "Changes are not saved",
+      exitPreview: "Back to editor",
+      cosmeticsError: "Could not load appearance items."
+    },
+    security: {
+      title: "Account security", email: "Email", changeEmail: "Change", twoFactor: "Two-factor protection (2FA)", enabled: "Enabled", disabled: "Disabled",
+      emailInputTitle: "New email", emailInputText: "We will first send a code to your current email, then another code to the new one. If two-factor protection is enabled, sign-in codes will automatically move to the new email.", managedEmailText: "Enter the new email. Verification codes are not required when managing another profile.", newEmail: "New email", newEmailPlaceholder: "Enter your new email", sendCurrentCode: "Send code to current email", applyDirectly: "Apply",
+      twoFactorCodeTitle: "Confirm the setting", enableCodeText: "Enter the code from your current email to enable two-factor protection.", disableCodeText: "Enter the code from your current email to disable two-factor protection.",
+      currentCodeTitle: "Confirm current email", currentCodeText: "Enter the code sent to your current email.", newCodeTitle: "Confirm new email", newCodeText: "Your current email is confirmed. Enter the code sent to the new email.",
+      password: "Password", passwordHint: "Change the password used to sign in.", changePassword: "Change", passwordTitle: "Change password", passwordText: "Enter your current password and the new password twice. If 2FA is enabled, we will ask for an email code.", managedPasswordText: "Enter the new password twice. The current password and verification codes are not required.", passwordCodeTitle: "Confirm password change", passwordCodeText: "Enter the emailed code to finish changing the password.", currentPassword: "Current password", newPassword: "New password", confirmNewPassword: "Repeat new password",
+      code: "Six-digit code", codeLifetime: "The code is valid for 15 minutes.", continue: "Continue", confirm: "Confirm", back: "Back to settings", resendCode: "Send a new code", continuePending: "Continue confirmation", enterSentCode: "Enter sent code", managedMode: "Management mode: this user's security codes and current password are not requested.",
+      errors: { send: "Could not send the code.", email: "Enter a valid email.", emailChange: "Could not start changing the email.", code: "The code is invalid or has expired.", passwordLength: "The new password must be at least 8 characters.", passwordMismatch: "The new passwords do not match.", currentPassword: "Enter the current password.", passwordChange: "Could not change the password." }
+    },
+    links: {
+      profile: "Profile",
+      profileText: "Account details and settings",
+      orders: "My orders",
+      ordersText: "Purchase history and order statuses",
+      chat: "Chat",
+      chatText: "Messages with sellers and buyers",
+      support: "Support",
+      supportText: "Help and dispute resolution"
+    }
+  },
+
+  chatUi: {
+    title: "Chats",
+    settings: "Chat settings",
+    search: "Search",
+    conversations: "Conversation list",
+    unread: "Unread messages: {count}",
+    emptySearch: "Nothing found",
+    emptySearchHint: "Try entering a different name.",
+    backToChats: "Back to chats",
+    openMenu: "Open chat menu",
+    muted: "Notifications are off",
+    disableNotifications: "Turn off notifications",
+    enableNotifications: "Turn on notifications",
+    notificationsOn: "Notifications are currently on",
+    notificationsOff: "Notifications are currently off",
+    showProfile: "View profile",
+    messageLayout: "Message layout",
+    layoutClassic: "My messages on the right",
+    layoutLeft: "All messages on the left",
+    deleteChat: "Delete chat",
+    deleteChatHint: "This action will become available later",
+    today: "Today",
+    yesterday: "yesterday",
+    orderTitle: "FunPay order",
+    attach: "Attach file",
+    addImage: "Add image",
+    emoji: "Open emoji",
+    messagePlaceholder: "Message...",
+    send: "Send message",
+    stickerAlt: "Senkuro sticker",
+    loadFailed: "Could not load the chat. Please try again.",
+    dateNotFound: "No messages were found near this date.",
+    noChats: "No chats yet",
+    noChatsHint: "A chat will appear here after an order is created.",
+    yesterdayLabel: "Yesterday",
+    loadEarlier: "Show earlier messages",
+    attachments: {
+      photoVideo: "Photo or video",
+      document: "Document",
+      tasks: "Task list",
+      location: "Location",
+      clipboard: "File from clipboard",
+      uiOnly: "Uploads will be available later"
+    },
+    record: {
+      voice: "Voice message",
+      video: "Video message",
+      cancel: "Cancel"
+    },
+    shortcuts: {
+      title: "Keyboard shortcuts",
+      hint: "Work faster in chat",
+      subtitle: "Shortcuts for messages, search, and navigation.",
+      send: "Send message",
+      newLine: "New line",
+      search: "Search chats",
+      date: "Go to date",
+      switchChat: "Next or previous chat",
+      paste: "Paste a screenshot or video",
+      openHelp: "Open this guide",
+      close: "Close window"
+    },
+    date: {
+      open: "Go to messages by date",
+      title: "Go to date",
+      hint: "We will open messages near the selected day.",
+      go: "Go",
+      recent: "Recent dates"
+    },
+    order: {
+      number: "Number",
+      game: "Game",
+      status: "Status",
+      inProgress: "In progress"
+    },
+    status: {
+      sending: "Sending",
+      sent: "Sent",
+      read: "Read",
+      error: "Send failed"
+    },
+    profile: {
+      openPreview: "Open a quick profile for {name}",
+      previewTitle: "Quick profile for {name}",
+      message: "Chat",
+      openFull: "Open profile",
+      status: "Site team status",
+      member: "User",
+      memberSince: "Member for",
+      memberSinceShort: "2 days",
+      memberSinceMedium: "4 months",
+      memberSinceLong: "more than a year",
+      id: "Account ID",
+      defaultAbout: "I collect profile cosmetics and enjoy fast, honest deals."
+    },
+    media: {
+      title: "Site media",
+      emoji: "Emoji",
+      stickers: "Stickers",
+      gif: "GIF",
+      search: "Search the collection",
+      siteEmoji: "Site emoji",
+      noGif: "No GIFs yet",
+      noGifHint: "Custom GIFs will appear here when they become available.",
+      emojiAlt: "Site emoji"
+    },
+    presence: {
+      online: "online",
+      afk: "away",
+      offline: "last seen recently"
+    },
+    mock: {
+      alyndra: {
+        about: "I help with gaming deals and always reply quickly. I love anime and beautiful profiles ✨",
+        preview: "Yes, I can complete the deal now",
+        message1: "Hi! I can see the order and can start right away.",
+        message2: "Great, I am here. Please send the details in this chat.",
+        order: "#10482 · 2,050 Valorant Points",
+        message3: "Done ✨ Please check that everything arrived."
+      },
+      senkuro: {
+        about: "I collect rare profile cosmetics and share my best finds.",
+        preview: "I sent you the screenshots ✨",
+        message1: "I prepared several appearance options.",
+        message2: "The fourth one looks best."
+      },
+      mita: {
+        about: "A little shy, but a very responsible seller.",
+        preview: "Sticker",
+        message1: "How is the order going?",
+        message2: "Almost done, just one more minute."
+      },
+      david: {
+        about: "Smooth deals, fair prices, and no unnecessary fuss.",
+        preview: "Thanks for your purchase!",
+        message1: "The item has been delivered. You can check it now.",
+        message2: "Everything arrived. Confirmed."
+      },
+      rikka: {
+        about: "Always available in the evening. I collect avatars and frames.",
+        preview: "See you tonight 👋",
+        message1: "Are we still on for 7:00 PM?"
+      },
+      livesey: {
+        about: "Fast, confident, and always in a good mood 😎",
+        preview: "Deal 😎",
+        message1: "Let's complete this deal quickly and confidently!"
+      }
+    }
+  },
+
+  recovery: {
+    title: "Recover access",
+    subtitle: "Enter your email address or nickname. If the account exists, we will send a one-time code.",
+    identityLabel: "Email or nickname",
+    identityPlaceholder: "Enter your email or nickname",
+    sendCode: "Get code",
+    privacy: "We will not reveal whether the account exists or show the recipient's address.",
+    codeLabel: "Six-digit code",
+    codePrivacy: "The code is valid for 15 minutes. The website does not show which address received the email.",
+    verifyCode: "Verify code",
+    changeIdentity: "Use different details",
+    verifiedTitle: "Code verified",
+    verifiedText: "You can now log in without a password or set a new one.",
+    loginWithCode: "Log in without a password",
+    setNewPassword: "Set a new password",
+    newPassword: "New password",
+    passwordPlaceholder: "At least 8 characters",
+    confirmPassword: "Confirm password",
+    confirmPlaceholder: "Enter the new password again",
+    resetAndLogin: "Change password and log in",
+    backToChoice: "Back to options",
+    backToLogin: "Back to login",
+    remember: "Remember me",
+    showPassword: "Show password",
+    hidePassword: "Hide password",
+    stages: {
+      code: {
+        title: "Enter the code",
+        subtitle: "If the account was found, the email with your code is already queued."
+      },
+      choice: {
+        title: "Access verified",
+        subtitle: "Choose whether to log in now or replace the forgotten password."
+      },
+      password: {
+        title: "New password",
+        subtitle: "Your old password cannot be recovered, so create a new one."
+      }
+    },
+    errors: {
+      identity: "Enter your email address or nickname.",
+      request: "Could not request a code. Please try again later.",
+      code: "Enter all six digits.",
+      invalidCode: "The code is incorrect or has expired.",
+      expired: "The verification has expired. Request a new code.",
+      passwordLength: "The password must contain at least 8 characters.",
+      passwordMismatch: "Passwords do not match.",
+      reset: "Could not change the password."
+    }
+  },
+
+  register: {
+    title: "Create an account",
+    subtitle: "Join FunPay and start buying and selling gaming goods.",
+    nickLabel: "Nickname",
+    nickPlaceholder: "Enter your nickname",
+    emailLabel: "Email",
+    emailPlaceholder: "Enter your email",
+    passwordLabel: "Password",
+    passwordPlaceholder: "At least 8 characters",
+    confirmPasswordLabel: "Confirm password",
+    confirmPasswordPlaceholder: "Enter your password again",
+    passwordMismatch: "Passwords do not match.",
+    checkFields: "Check the highlighted fields.",
+    createFailed: "Could not create the account.",
+    success: "Account {nick} created.",
+    remember: "Remember me",
+    submit: "Create account",
+    termsPrefix: "By registering, you agree to our",
+    termsLink: "Terms of Use",
+    privacyMiddle: "and",
+    privacyLink: "Privacy Policy",
+    hasAccount: "Already have an account?",
+    login: "Log in",
+    showPassword: "Show password",
+    hidePassword: "Hide password",
+    showConfirmPassword: "Show password confirmation",
+    hideConfirmPassword: "Hide password confirmation"
+  },
+
+  market: {
+    title: "Everything you need for gaming trades",
+    features: {
+      catalog: {
+        title: "Games and goods catalog",
+        text: "Thousands of offers for popular games"
+      },
+      orders: {
+        title: "Secure orders",
+        text: "Buyer protection built into every order"
+      },
+      chat: {
+        title: "Chat with the seller",
+        text: "Message sellers directly from your order"
+      },
+      fast: {
+        title: "Fast and convenient",
+        text: "Instant notifications and a simple interface"
+      }
+    },
+    popularOffers: "Popular offers",
+    goCatalog: "Browse catalog",
+    offerTypes: {
+      account: "Account",
+      key: "Key",
+      silver: "Silver",
+      calibration: "Calibration"
+    }
+  },
+
+  routes: {
+    common: {
+      inDevelopment: "Section under development",
+      backHome: "Back to home",
+      notFoundTitle: "How did you find a page that doesn't exist?",
+      notFoundText: "This link seems to lead nowhere. The page may have been moved, renamed, or removed.",
+      notFoundAction: "Go home"
+    },
+    orders: {
+      title: "My orders",
+      text: "Your order history, deal statuses, and quick links to sellers will appear here. For now, enjoy the anime girls 💔",
+      subtitle: "All purchases, sellers, and deal statuses in one place",
+      goCatalog: "Go to catalog",
+      summaryLabel: "Order summary",
+      summary: {
+        active: "Active orders",
+        completed: "Completed",
+        spent: "Spent",
+        successRate: "Successful deals",
+        successPercent: "96%",
+        allTime: "all time"
+      },
+      history: "Order history",
+      historyCount: "28 purchases",
+      filters: {
+        label: "Filters",
+        all: "All",
+        active: "Active",
+        completed: "Completed"
+      },
+      search: "Find an order",
+      seller: "Seller",
+      total: "Total",
+      openOrder: "Open order {id}",
+      showMore: "Show more",
+      status: {
+        awaiting: "Awaiting confirmation",
+        progress: "In progress",
+        completed: "Completed",
+        review: "Under review"
+      },
+      dates: {
+        today: "today, 6:42 PM",
+        yesterday: "yesterday, 1:16 PM",
+        julyEight: "July 8",
+        julyFive: "July 5"
+      },
+      items: {
+        neonRider: "AK-47 | Neon Rider",
+        neonRiderMeta: "Counter-Strike 2 · item",
+        valorantPoints: "2,050 Valorant Points",
+        valorantPointsMeta: "Valorant · balance top-up",
+        dotaCoaching: "Rating calibration",
+        dotaCoachingMeta: "Dota 2 · coaching",
+        gtaAccount: "Open-world account",
+        gtaAccountMeta: "Grand Theft Auto V · account"
+      },
+      activeDeal: "Active deal",
+      activeDealText: "The seller has received the payment and is preparing the item for delivery.",
+      steps: {
+        paid: "Payment completed",
+        seller: "Seller is preparing the item",
+        delivery: "Delivery and confirmation",
+        now: "now",
+        next: "next step"
+      },
+      writeSeller: "Message seller",
+      help: {
+        title: "Need help?",
+        text: "Support can help with your order or a dispute.",
+        action: "Open support"
+      }
+    },
+    chat: {
+      title: "Chat",
+      text: "Buyer and seller conversations for each order will appear here. And don't even think about stealing Vitalii's cat wife from the background 😸"
+    },
+    support: {
+      title: "Support",
+      text: "This section will help users and resolve disputes. Lucy and Shrek have seen plenty in this world 🚬 (P.S. Lucy, don't you dare cheat on David 😾)"
+    },
+    terms: {
+      title: "Terms of Use",
+      text: "This page will be written by people who are far too smart ☝️🤓"
+    },
+    privacy: {
+      title: "Privacy Policy",
+      text: "This page will be written by people who are far too smart ☝️🤓"
+    }
+  },
+
+  catalog: {
+    heroLabel: "Game catalog",
+    title: "Choose a game",
+    subtitle: "Game sections for upcoming listings, orders, and quick deals.",
+    allGames: "All games",
+    allGamesSubtitle: "Quick categories on each card and the full list on the right",
+    popular: "Popular",
+    az: "A-Z",
+    sectionsCount: "{count} sections",
+    quickCategoriesAria: "Quick categories for {game}",
+    showAllowedCategories: "Show allowed categories for {game}",
+    filters: "Filters",
+    reset: "Reset",
+    search: "Search",
+    searchPlaceholder: "Game title",
+    saleCategories: "Sales categories",
+    saleCategoriesAria: "Show all sales categories",
+    allCategoriesSubtitle: "Complete filter list",
+    allowedCategoriesSubtitle: "Categories available for this game",
+    categorySearch: "Search categories",
+    categorySearchPlaceholder: "For example, services",
+    back: "Back",
+    categories: {
+      accounts: "Accounts",
+      services: "Services",
+      training: "Training",
+      subscription: "Subscription",
+      currency: "Currency",
+      donate: "Top-ups",
+      items: "Items",
+      "twitch-drops": "Twitch Drops",
+      keys: "Keys",
+      "offline-activation": "Offline activation",
+      other: "Other",
+      guides: "Guides",
+      "game-pass": "Game Pass",
+      kinars: "Kinars",
+      virts: "Virts",
+      "region-change": "Region change"
+    }
+  }
+}

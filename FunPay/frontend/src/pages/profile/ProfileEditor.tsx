@@ -16,6 +16,7 @@ import { useAnimatedDialog } from "../../components/useAnimatedDialog";
 import { useLanguage } from "../../i18n";
 import { AvatarBorderEditor, CosmeticPicker } from "./ProfileCosmetics";
 import { Avatar } from "./ProfileAvatar";
+import { ProfileSecurityEditor } from "./ProfileSecurityEditor";
 import { ContactEditor, CountryPicker } from "./ProfileFields";
 import { genders, profileToPayload } from "./profileModel";
 
@@ -38,19 +39,25 @@ function storeHoverOnlyAnimations(enabled: boolean) {
 }
 
 export function ProfileEditor({ profile, targetIdentifier, onClose, onPreviewChange, onSaved }: { profile: ProfileData; targetIdentifier?: string; onClose: () => void; onPreviewChange: (draft: ProfilePayload | null) => void; onSaved: (profile: ProfileData) => void }) {
-  const { accessToken } = useAuth();
+  const { accessToken, user } = useAuth();
   const { t } = useLanguage();
   const [form, setForm] = useState<ProfilePayload>(() => profileToPayload(profile));
   const [error, setError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const [isSecurityFlowActive, setIsSecurityFlowActive] = useState(false);
   const { isClosing, requestClose } = useAnimatedDialog(onClose);
   const [cosmetics, setCosmetics] = useState<CosmeticCatalog>({ avatars: [], banners: [], frames: [], wallpapers: [] });
   const [hoverOnlyAnimations, setHoverOnlyAnimations] = useState(readHoverOnlyAnimations);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const previewButtonRef = useRef<HTMLButtonElement | null>(null);
   const previewCloseButtonRef = useRef<HTMLButtonElement | null>(null);
+  const isOwnProfile = user?.id === profile.id;
+  const canManageSecurity = Boolean(!isOwnProfile && user && (
+    (user.role === "Admin" && profile.role === "User")
+    || (user.role === "Owner" && (profile.role === "User" || profile.role === "Admin"))
+  ));
 
   const updateField = <Key extends keyof ProfilePayload>(key: Key, value: ProfilePayload[Key]) => setForm((current) => ({ ...current, [key]: value }));
   const updateHoverOnlyAnimations = (enabled: boolean) => {
@@ -144,6 +151,8 @@ export function ProfileEditor({ profile, targetIdentifier, onClose, onPreviewCha
         <form className="profile-editor__sheet" onSubmit={handleSave}>
           <header className="profile-editor__head"><div><span className="profile-kicker"><Pencil size={14} aria-hidden="true" /> {t("profile.page.edit")}</span></div><button className="profile-icon-button" onClick={requestClose} type="button" aria-label={t("profile.page.close")}><X size={20} aria-hidden="true" /></button></header>
           <div className="profile-editor__body">
+            {isOwnProfile || canManageSecurity ? <ProfileSecurityEditor accessToken={accessToken ?? ""} isManaged={canManageSecurity} targetIdentifier={targetIdentifier ?? profile.publicId} onFlowChange={setIsSecurityFlowActive} onProfileChanged={onSaved} profile={profile} /> : null}
+            {!isSecurityFlowActive ? <>
             <section className="profile-editor__avatar-row"><Avatar profile={{ ...profile, ...form }} /><div><strong>{t("profile.page.avatar")}</strong><p>{t("profile.page.avatarHint")}</p><input accept="image/jpeg,image/png,image/webp" className="profile-file-input" onChange={(event) => void handleAvatarUpload(event.target.files?.[0])} ref={fileInputRef} type="file" /><button className="profile-secondary-button" disabled={isUploading} onClick={() => fileInputRef.current?.click()} type="button">{isUploading ? <LoaderCircle className="profile-spin" size={16} /> : <Camera size={16} />}{isUploading ? t("profile.page.uploading") : t("profile.page.upload")}</button></div></section>
             <div className="profile-form-grid">
               <label className="profile-field"><span>{t("profile.page.nickname")}</span><input value={form.nick} onChange={(event) => updateField("nick", event.target.value)} minLength={3} maxLength={32} required /></label>
@@ -154,8 +163,9 @@ export function ProfileEditor({ profile, targetIdentifier, onClose, onPreviewCha
             <label className="profile-field profile-field--wide"><span>{t("profile.page.description")}</span><textarea value={form.description} onChange={(event) => updateField("description", event.target.value)} maxLength={1000} placeholder={t("profile.page.descriptionPlaceholder")} rows={4} /></label>
             <ContactEditor contacts={form.contacts} onChange={(contacts) => updateField("contacts", contacts)} />
             <section className="profile-appearance"><div className="profile-appearance__heading"><div className="profile-section-title"><Sparkles size={16} aria-hidden="true" /> {t("profile.page.appearance")}</div><button aria-checked={hoverOnlyAnimations} className="profile-appearance__animation-toggle" onClick={() => updateHoverOnlyAnimations(!hoverOnlyAnimations)} role="switch" type="button"><span aria-hidden="true" />{t("profile.page.activeAnimationsOnly")}</button></div><AvatarBorderEditor form={form} onChange={updateField} profile={profile} /><CosmeticPicker cosmetics={cosmetics} form={form} hoverOnlyAnimations={hoverOnlyAnimations} onChange={updateField} profile={profile} /></section>
+            </> : null}
           </div>
-          <footer className="profile-editor__footer">{error && <p className="profile-editor__error">{error}</p>}<button className="profile-secondary-button" onClick={requestClose} type="button">{t("profile.page.close")}</button><button className="profile-secondary-button profile-editor__preview-button" onClick={openPreview} ref={previewButtonRef} type="button"><Eye size={17} aria-hidden="true" />{t("profile.page.preview")}</button><button className="profile-primary-button" disabled={isSaving} type="submit">{isSaving ? <LoaderCircle className="profile-spin" size={17} /> : <Save size={17} />}{isSaving ? t("profile.page.saving") : t("profile.page.save")}</button></footer>
+          {!isSecurityFlowActive ? <footer className="profile-editor__footer">{error && <p className="profile-editor__error">{error}</p>}<button className="profile-secondary-button" onClick={requestClose} type="button">{t("profile.page.close")}</button><button className="profile-secondary-button profile-editor__preview-button" onClick={openPreview} ref={previewButtonRef} type="button"><Eye size={17} aria-hidden="true" />{t("profile.page.preview")}</button><button className="profile-primary-button" disabled={isSaving} type="submit">{isSaving ? <LoaderCircle className="profile-spin" size={17} /> : <Save size={17} />}{isSaving ? t("profile.page.saving") : t("profile.page.save")}</button></footer> : null}
         </form>
       </div>
     </>,

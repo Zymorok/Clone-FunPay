@@ -105,10 +105,11 @@ export function ContactEditor({ contacts, onChange }: { contacts: ProfileContact
           {contactServices.map((service) => {
             const Icon = service.Icon;
             const isAdded = service.id !== "custom" && contacts.some((contact) => contact.service === service.id);
+            const serviceTitle = service.id === "custom" ? t("extras.customService") : service.title;
             return (
-              <button disabled={isLimitReached || isAdded} key={service.id} onClick={() => addContact(service.id)} title={service.title} type="button">
+              <button disabled={isLimitReached || isAdded} key={service.id} onClick={() => addContact(service.id)} title={serviceTitle} type="button">
                 <Icon size={16} aria-hidden="true" />
-                <span>{service.title}</span>
+                <span>{serviceTitle}</span>
               </button>
             );
           })}

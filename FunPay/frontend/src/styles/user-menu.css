@@ -125,6 +125,7 @@
 }
 
 .user-menu__head {
+  position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
@@ -135,6 +136,18 @@
   padding: 10px;
   color: var(--text);
   text-decoration: none;
+}
+
+.user-menu__head-link {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.user-menu__head-link:focus-visible {
+  outline: 2px solid var(--focus-ring, #f5c518);
+  outline-offset: 2px;
 }
 
 .user-menu__head-copy {
@@ -153,6 +166,19 @@
 .user-menu__head-copy strong {
   font-size: 14px;
   font-weight: 900;
+}
+
+.user-menu__head-copy,
+.user-menu__head > .user-avatar {
+  pointer-events: none;
+}
+
+.user-menu__email {
+  z-index: 1;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  pointer-events: auto;
 }
 
 .user-menu__head-copy small,
@@ -207,6 +233,51 @@
   color: var(--text);
   text-align: left;
   transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.user-menu__settings {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-height: 50px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--surface)), var(--surface-soft));
+  padding: 8px 11px;
+  color: var(--text);
+  text-align: left;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.user-menu__settings:hover {
+  border-color: color-mix(in srgb, var(--accent) 72%, var(--border));
+  transform: translateY(-1px);
+}
+
+.user-menu__settings > svg {
+  color: var(--accent-strong);
+}
+
+.user-menu__settings span {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.user-menu__settings strong {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.user-menu__settings small {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .user-menu__team:hover {

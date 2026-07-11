@@ -11,4 +11,7 @@ public class LoginRequest
     [Required]
     [MinLength(8)]
     public string Password { get; set; } = string.Empty;
+
+    [MaxLength(5)]
+    public string Language { get; set; } = "ru";
 }

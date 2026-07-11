@@ -21,6 +21,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     public DbSet<UserSession> UserSessions => Set<UserSession>();
 
+    public DbSet<PasswordRecoveryCode> PasswordRecoveryCodes => Set<PasswordRecoveryCode>();
+
+    public DbSet<AccountSecurityChallenge> AccountSecurityChallenges => Set<AccountSecurityChallenge>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -33,6 +37,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         ConfigureMessages(modelBuilder);
         ConfigureProfileContacts(modelBuilder);
         ConfigureUserSessions(modelBuilder);
+        ConfigurePasswordRecoveryCodes(modelBuilder);
+        ConfigureAccountSecurityChallenges(modelBuilder);
     }
 
     private static void ConfigureUsers(ModelBuilder modelBuilder)
@@ -70,6 +76,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(user => user.PasswordHash)
                 .HasMaxLength(500)
                 .IsRequired();
+
+            entity.Property(user => user.GoogleSubject)
+                .HasMaxLength(128);
 
             entity.Property(user => user.Description)
                 .HasMaxLength(1000);
@@ -119,6 +128,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.HasIndex(user => user.Email)
                 .IsUnique();
 
+            entity.HasIndex(user => user.GoogleSubject)
+                .IsUnique();
+
             entity.HasIndex(user => user.PublicId)
                 .IsUnique();
 
@@ -155,6 +167,43 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .OnDelete(DeleteBehavior.Cascade);
             entity.HasIndex(session => session.RefreshTokenHash).IsUnique();
             entity.HasIndex(session => new { session.UserId, session.ExpiresAt });
+        });
+    }
+
+    private static void ConfigurePasswordRecoveryCodes(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<PasswordRecoveryCode>(entity =>
+        {
+            entity.ToTable("PasswordRecoveryCodes");
+            entity.HasKey(recovery => recovery.Id);
+            entity.Property(recovery => recovery.CodeHash).HasMaxLength(64).IsRequired();
+            entity.Property(recovery => recovery.TicketHash).HasMaxLength(64);
+            entity.HasOne(recovery => recovery.User)
+                .WithMany(user => user.PasswordRecoveryCodes)
+                .HasForeignKey(recovery => recovery.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(recovery => recovery.TicketHash).IsUnique();
+            entity.HasIndex(recovery => new { recovery.UserId, recovery.ExpiresAt });
+        });
+    }
+
+    private static void ConfigureAccountSecurityChallenges(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<AccountSecurityChallenge>(entity =>
+        {
+            entity.ToTable("AccountSecurityChallenges");
+            entity.HasKey(challenge => challenge.Id);
+            entity.Property(challenge => challenge.Purpose).HasMaxLength(32).IsRequired();
+            entity.Property(challenge => challenge.CodeHash).HasMaxLength(64).IsRequired();
+            entity.Property(challenge => challenge.TokenHash).HasMaxLength(64).IsRequired();
+            entity.Property(challenge => challenge.PendingEmail).HasMaxLength(254);
+            entity.Property(challenge => challenge.PendingPasswordHash).HasMaxLength(500);
+            entity.HasOne(challenge => challenge.User)
+                .WithMany(user => user.AccountSecurityChallenges)
+                .HasForeignKey(challenge => challenge.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(challenge => challenge.TokenHash).IsUnique();
+            entity.HasIndex(challenge => new { challenge.UserId, challenge.Purpose, challenge.ExpiresAt });
         });
     }
 
@@ -320,6 +369,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasIndex(message => message.OrderId);
+            entity.HasIndex(message => new { message.OrderId, message.Id });
             entity.HasIndex(message => message.SenderId);
             entity.HasIndex(message => message.CreatedAt);
         });

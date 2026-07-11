@@ -5,6 +5,7 @@ import { ApiError } from "../api/apiClient";
 import { searchTeamAccounts, type TeamAccount, updateTeamAccountRole } from "../api/teamApi";
 import { useAuth } from "../auth/AuthContext";
 import { useLanguage } from "../i18n";
+import { EmailPrivacyToggle } from "./EmailPrivacyToggle";
 import { useAnimatedDialog } from "./useAnimatedDialog";
 
 type TeamRole = TeamAccount["role"];
@@ -48,7 +49,7 @@ export function TeamManagementDialog({ onClose }: { onClose: () => void }) {
           }
 
           setAccounts([]);
-          setMessage(error instanceof ApiError ? error.message : "Не удалось выполнить поиск.");
+          setMessage(error instanceof ApiError ? error.message : t("teamManagement.searchFailed"));
         })
         .finally(() => setIsSearching(false));
     }, 240);
@@ -57,7 +58,7 @@ export function TeamManagementDialog({ onClose }: { onClose: () => void }) {
       controller.abort();
       window.clearTimeout(timeoutId);
     };
-  }, [accessToken, query]);
+  }, [accessToken, query, t]);
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -92,41 +93,41 @@ export function TeamManagementDialog({ onClose }: { onClose: () => void }) {
         updateCurrentUser({ ...user, role: updated.role });
       }
 
-      setMessage(`Роль «${getRoleLabel(updated.role, updated.gender, t)}» сохранена.`);
+      setMessage(t("teamManagement.roleSaved", { role: getRoleLabel(updated.role, updated.gender, t) }));
     } catch (error) {
-      setMessage(error instanceof ApiError ? error.message : "Не удалось обновить роль.");
+      setMessage(error instanceof ApiError ? error.message : t("teamManagement.updateFailed"));
     } finally {
       setSavingAccountId(null);
     }
   }
 
   return createPortal(
-    <div className={`team-manager${isClosing ? " modal-layer--closing" : ""}`} role="dialog" aria-modal="true" aria-label="Управление командой">
+    <div className={`team-manager${isClosing ? " modal-layer--closing" : ""}`} role="dialog" aria-modal="true" aria-label={t("teamManagement.dialogLabel")}>
       <section className="team-manager__sheet">
         <header className="team-manager__head">
           <div>
-            <span className="team-manager__kicker"><ShieldCheck size={15} aria-hidden="true" /> Команда сайта</span>
-            <h2>Управление ролями</h2>
-            <p>Меняйте статус своего или другого аккаунта.</p>
+            <span className="team-manager__kicker"><ShieldCheck size={15} aria-hidden="true" /> {t("teamManagement.kicker")}</span>
+            <h2>{t("teamManagement.title")}</h2>
+            <p>{t("teamManagement.subtitle")}</p>
           </div>
-          <button className="profile-icon-button" onClick={requestClose} type="button" aria-label="Закрыть">
+          <button className="profile-icon-button" onClick={requestClose} type="button" aria-label={t("teamManagement.close")}>
             <X size={20} aria-hidden="true" />
           </button>
         </header>
 
         <label className="team-manager__search">
-          <span>Поиск аккаунта</span>
+          <span>{t("teamManagement.searchLabel")}</span>
           <div>
             <Search size={18} aria-hidden="true" />
             <input
               autoFocus
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Ник или почта"
+              placeholder={t("teamManagement.searchPlaceholder")}
               type="search"
               value={query}
             />
           </div>
-          <small>Можно ввести любую часть ника или почты.</small>
+          <small>{t("teamManagement.searchHint")}</small>
         </label>
 
         <div className="team-manager__list" aria-live="polite">
@@ -139,8 +140,8 @@ export function TeamManagementDialog({ onClose }: { onClose: () => void }) {
               roles={availableRoles}
             />
           ))}
-          {isSearching ? <p className="team-manager__state">Ищем аккаунты…</p> : null}
-          {!isSearching && query.trim().length > 0 && displayedAccounts.length === 0 && !message ? <p className="team-manager__state">Аккаунты не найдены.</p> : null}
+          {isSearching ? <p className="team-manager__state">{t("teamManagement.searching")}</p> : null}
+          {!isSearching && query.trim().length > 0 && displayedAccounts.length === 0 && !message ? <p className="team-manager__state">{t("teamManagement.notFound")}</p> : null}
         </div>
 
         {message ? <p className="team-manager__message">{message}</p> : null}
@@ -170,9 +171,12 @@ function TeamAccountRow({
       </span>
       <div className="team-manager__identity">
         <strong>{account.nick}</strong>
-          <small>{account.email} · ID {account.publicId}</small>
+        <div className="team-manager__identity-meta">
+          <EmailPrivacyToggle className="team-manager__email" email={account.email} />
+          <small>· ID {account.publicId}</small>
+        </div>
       </div>
-      <div className="team-manager__roles" aria-label={`Роль ${account.nick}`}>
+      <div className="team-manager__roles" aria-label={t("teamManagement.roleAria", { name: account.nick })}>
         {roles.map((role) => (
           <button
             className={account.role === role ? "is-active" : ""}

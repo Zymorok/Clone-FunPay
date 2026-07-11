@@ -22,6 +22,65 @@ namespace FunPay.Backend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("FunPay.Backend.Models.AccountSecurityChallenge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodeHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FailedAttempts")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PendingEmail")
+                        .HasMaxLength(254)
+                        .HasColumnType("character varying(254)");
+
+                    b.Property<string>("PendingPasswordHash")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool?>("PendingTwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTimeOffset?>("UsedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "Purpose", "ExpiresAt");
+
+                    b.ToTable("AccountSecurityChallenges", (string)null);
+                });
+
             modelBuilder.Entity("FunPay.Backend.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -94,6 +153,9 @@ namespace FunPay.Backend.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTimeOffset?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("SenderId")
                         .HasColumnType("integer");
 
@@ -109,6 +171,8 @@ namespace FunPay.Backend.Migrations
                     b.HasIndex("OrderId");
 
                     b.HasIndex("SenderId");
+
+                    b.HasIndex("OrderId", "Id");
 
                     b.ToTable("Messages", (string)null);
                 });
@@ -156,6 +220,54 @@ namespace FunPay.Backend.Migrations
                     b.HasIndex("Status");
 
                     b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("FunPay.Backend.Models.PasswordRecoveryCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodeHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FailedAttempts")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset?>("TicketExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TicketHash")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTimeOffset?>("UsedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset?>("VerifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "ExpiresAt");
+
+                    b.ToTable("PasswordRecoveryCodes", (string)null);
                 });
 
             modelBuilder.Entity("FunPay.Backend.Models.Product", b =>
@@ -314,7 +426,14 @@ namespace FunPay.Backend.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<string>("GoogleSubject")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
                     b.Property<bool>("IsBlocked")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEmailTwoFactorEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LastActiveAt")
@@ -377,6 +496,9 @@ namespace FunPay.Backend.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("GoogleSubject")
+                        .IsUnique();
+
                     b.HasIndex("LastSeenAt");
 
                     b.HasIndex("NormalizedNick")
@@ -436,6 +558,17 @@ namespace FunPay.Backend.Migrations
                     b.ToTable("UserSessions", (string)null);
                 });
 
+            modelBuilder.Entity("FunPay.Backend.Models.AccountSecurityChallenge", b =>
+                {
+                    b.HasOne("FunPay.Backend.Models.User", "User")
+                        .WithMany("AccountSecurityChallenges")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FunPay.Backend.Models.Message", b =>
                 {
                     b.HasOne("FunPay.Backend.Models.Order", "Order")
@@ -480,6 +613,17 @@ namespace FunPay.Backend.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("FunPay.Backend.Models.PasswordRecoveryCode", b =>
+                {
+                    b.HasOne("FunPay.Backend.Models.User", "User")
+                        .WithMany("PasswordRecoveryCodes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FunPay.Backend.Models.Product", b =>
@@ -553,9 +697,13 @@ namespace FunPay.Backend.Migrations
 
             modelBuilder.Entity("FunPay.Backend.Models.User", b =>
                 {
+                    b.Navigation("AccountSecurityChallenges");
+
                     b.Navigation("BuyerOrders");
 
                     b.Navigation("Messages");
+
+                    b.Navigation("PasswordRecoveryCodes");
 
                     b.Navigation("Products");
 

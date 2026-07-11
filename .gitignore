@@ -2,6 +2,8 @@ bin/
 obj/
 node_modules/
 dist/
+FunPay/frontend/build/
+ddg-cookie.txt
 .env
 .vscode/*
 !.vscode/

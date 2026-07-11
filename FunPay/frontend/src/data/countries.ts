@@ -29,13 +29,14 @@ export function countryFlag(code: string) {
     : "";
 }
 
-export function getCountryName(code: string, language: "uk" | "ru") {
+export function getCountryName(code: string, language: "uk" | "ru" | "en") {
   if (!code) {
     return "";
   }
 
   try {
-    return new Intl.DisplayNames([language === "uk" ? "uk-UA" : "ru-RU"], { type: "region" }).of(code) ?? code;
+    const locale = language === "uk" ? "uk-UA" : language === "ru" ? "ru-RU" : "en-US";
+    return new Intl.DisplayNames([locale], { type: "region" }).of(code) ?? code;
   } catch {
     return code;
   }

@@ -12,6 +12,7 @@ public class ProfileMapper(ProfileCosmeticsService cosmetics)
         Nick = user.Nick,
         NormalizedNick = user.NormalizedNick,
         Email = includePrivateData ? user.Email : string.Empty,
+        TwoFactorEnabled = includePrivateData && user.IsEmailTwoFactorEnabled,
         Role = user.Role.ToString(),
         PresenceStatus = PresenceService.ResolveStatus(user),
         CreatedAt = user.CreatedAt,

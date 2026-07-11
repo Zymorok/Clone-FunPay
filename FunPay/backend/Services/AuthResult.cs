@@ -12,6 +12,8 @@ public class AuthResult
 
     public AuthResponse? Session { get; init; }
 
+    public TwoFactorLoginRequiredResponse? TwoFactorChallenge { get; init; }
+
     public static AuthResult Success(AuthResponse session)
     {
         return new AuthResult
@@ -28,6 +30,19 @@ public class AuthResult
             IsSuccess = false,
             StatusCode = statusCode,
             Message = message
+        };
+    }
+
+    public static AuthResult TwoFactorRequired(SecurityChallengeResponse challenge)
+    {
+        return new AuthResult
+        {
+            IsSuccess = true,
+            TwoFactorChallenge = new TwoFactorLoginRequiredResponse
+            {
+                ChallengeToken = challenge.Token,
+                ExpiresAt = challenge.ExpiresAt
+            }
         };
     }
 }

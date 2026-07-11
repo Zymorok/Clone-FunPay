@@ -28,7 +28,7 @@ public class ProfileController(ProfileService profileService) : ControllerBase
         string identifier,
         CancellationToken cancellationToken)
     {
-        return ToActionResult(await profileService.GetPublicAsync(identifier, cancellationToken));
+        return ToActionResult(await profileService.GetPublicAsync(User, identifier, cancellationToken));
     }
 
     [HttpPut("me")]

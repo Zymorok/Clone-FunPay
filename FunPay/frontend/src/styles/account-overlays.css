@@ -1,4 +1,5 @@
-.team-manager {
+.team-manager,
+.account-settings {
   position: fixed;
   z-index: 120;
   inset: 0;
@@ -10,9 +11,128 @@
 }
 
 .team-manager.modal-layer--closing,
+.account-settings.modal-layer--closing,
 .profile-editor.modal-layer--closing {
   pointer-events: none;
   animation: modal-layer-fade-out 180ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.account-settings__sheet {
+  display: grid;
+  width: min(720px, 100%);
+  max-height: min(680px, calc(100vh - 40px));
+  gap: 22px;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 82% 0%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 42%),
+    var(--surface);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.52);
+  padding: 24px;
+}
+
+.account-settings__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.account-settings__head h2 {
+  margin: 5px 0 5px;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.account-settings__head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.account-settings__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.account-settings__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.account-settings__card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  min-height: 178px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  padding: 16px;
+}
+
+.account-settings__icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface-strong));
+  color: var(--accent-strong);
+}
+
+.account-settings__copy {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.account-settings__copy strong {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.account-settings__copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.account-settings__copy small {
+  color: var(--accent-strong);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.account-settings__card > button {
+  grid-column: 1 / -1;
+  justify-self: end;
+  align-self: end;
+}
+
+@media (max-width: 640px) {
+  .account-settings__sheet {
+    padding: 18px;
+  }
+
+  .account-settings__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-settings__card {
+    min-height: 148px;
+  }
 }
 
 @keyframes modal-layer-fade-in {
@@ -150,6 +270,21 @@
 
 .team-manager__identity strong { color: var(--text); font-size: 14px; font-weight: 900; }
 .team-manager__identity small { color: var(--muted); font-size: 11px; font-weight: 700; }
+
+.team-manager__identity-meta {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.team-manager__email {
+  flex: 0 1 auto;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
 
 .team-manager__roles {
   display: flex;

@@ -2,7 +2,8 @@ import { useLanguage, type Language } from "../i18n";
 
 const nextLanguage: Record<Language, Language> = {
   uk: "ru",
-  ru: "uk"
+  ru: "en",
+  en: "uk"
 };
 
 export function LanguageToggle() {
@@ -14,7 +15,7 @@ export function LanguageToggle() {
       aria-label={`${t("language.switchTo")}: ${tFor(targetLanguage, "language.name")}`}
       className="language-toggle"
       onClick={toggleLanguage}
-      title={tFor(language, "language.name")}
+      title={`${t("language.switchTo")}: ${tFor(targetLanguage, "language.name")}`}
       type="button"
     >
       <span aria-hidden="true" className={`language-toggle__flag language-toggle__flag--${language}`} />

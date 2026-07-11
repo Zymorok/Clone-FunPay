@@ -152,6 +152,7 @@ function AnimatedCosmeticPreview({ avatar, avatarUrl = "", item, frame, hoverOnl
 }
 
 export function AvatarBorderEditor({ profile, form, onChange }: { profile: ProfileData; form: ProfilePayload; onChange: <Key extends keyof ProfilePayload>(key: Key, value: ProfilePayload[Key]) => void }) {
+  const { t } = useLanguage();
   const [colorInput, setColorInput] = useState(() => getAvatarBorderColor(form.avatarStyle, form.frameStyle));
   const [showAvatar, setShowAvatar] = useState(true);
   const [showFrame, setShowFrame] = useState(true);
@@ -176,21 +177,21 @@ export function AvatarBorderEditor({ profile, form, onChange }: { profile: Profi
 
   return (
     <details className="avatar-border-editor">
-      <summary><span>Цвет обводки</span><small>Палитра и предпросмотр</small></summary>
+      <summary><span>{t("borderEditor.title")}</span><small>{t("borderEditor.subtitle")}</small></summary>
       <div className="avatar-border-editor__content">
         <div className="avatar-border-editor__preview">
           <Avatar profile={{ ...profile, ...form }} showAvatar={showAvatar} showFrame={showFrame} />
-          <div><strong>{currentColor}</strong><small>Так будет выглядеть обводка профиля.</small></div>
+          <div><strong>{currentColor}</strong><small>{t("borderEditor.previewHint")}</small></div>
         </div>
         <div className="avatar-border-editor__controls">
-          <label className="avatar-border-editor__enabled"><input checked={isBorderEnabled} onChange={(event) => onChange("avatarStyle", event.target.checked ? (parsedColor ?? currentColor) : `none:${parsedColor ?? currentColor}`)} type="checkbox" /> Показывать обводку</label>
-          <label className="avatar-border-editor__rainbow"><input checked={isRainbowEnabled} disabled={!isBorderEnabled} onChange={(event) => onChange("avatarStyle", event.target.checked ? `rainbow:shift:${parsedColor ?? currentColor}` : (parsedColor ?? currentColor))} type="checkbox" /> Режим радуги</label>
-          {isRainbowEnabled && <label className="avatar-border-editor__rainbow-mode"><span>Вариант радуги</span><select onChange={(event) => onChange("avatarStyle", `rainbow:${event.target.value}:${parsedColor ?? currentColor}`)} value={rainbowMode}><option value="shift">Перелив цвета</option><option value="spectrum">Спектр по кольцу</option></select></label>}
-          <label className="avatar-border-editor__picker"><span>Палитра</span><input aria-label="Выберите цвет обводки" disabled={!isBorderEnabled || isRainbowEnabled} onChange={(event) => updateColor(event.target.value)} type="color" value={currentColor} /></label>
-          <label className="avatar-border-editor__value"><span>HEX или RGB</span><input aria-invalid={Boolean(colorInput) && !parsedColor} disabled={!isBorderEnabled || isRainbowEnabled} onChange={(event) => updateColor(event.target.value)} placeholder="#E32636 или RGB: 227,38,54" value={colorInput} /><small>{isRainbowEnabled ? "Отключите режим радуги, чтобы изменить цвет." : "Поддерживаются #E32636 и RGB: 227,38,54"}</small></label>
+          <label className="avatar-border-editor__enabled"><input checked={isBorderEnabled} onChange={(event) => onChange("avatarStyle", event.target.checked ? (parsedColor ?? currentColor) : `none:${parsedColor ?? currentColor}`)} type="checkbox" /> {t("borderEditor.showBorder")}</label>
+          <label className="avatar-border-editor__rainbow"><input checked={isRainbowEnabled} disabled={!isBorderEnabled} onChange={(event) => onChange("avatarStyle", event.target.checked ? `rainbow:shift:${parsedColor ?? currentColor}` : (parsedColor ?? currentColor))} type="checkbox" /> {t("borderEditor.rainbowMode")}</label>
+          {isRainbowEnabled && <label className="avatar-border-editor__rainbow-mode"><span>{t("borderEditor.rainbowVariant")}</span><select onChange={(event) => onChange("avatarStyle", `rainbow:${event.target.value}:${parsedColor ?? currentColor}`)} value={rainbowMode}><option value="shift">{t("borderEditor.colorShift")}</option><option value="spectrum">{t("borderEditor.colorSpectrum")}</option></select></label>}
+          <label className="avatar-border-editor__picker"><span>{t("borderEditor.palette")}</span><input aria-label={t("borderEditor.paletteAria")} disabled={!isBorderEnabled || isRainbowEnabled} onChange={(event) => updateColor(event.target.value)} type="color" value={currentColor} /></label>
+          <label className="avatar-border-editor__value"><span>{t("borderEditor.valueLabel")}</span><input aria-invalid={Boolean(colorInput) && !parsedColor} disabled={!isBorderEnabled || isRainbowEnabled} onChange={(event) => updateColor(event.target.value)} placeholder={t("borderEditor.valuePlaceholder")} value={colorInput} /><small>{t(isRainbowEnabled ? "borderEditor.disableRainbowHint" : "borderEditor.supportedFormats")}</small></label>
           <div className="avatar-border-editor__visibility">
-            <label><input checked={showAvatar} onChange={(event) => setShowAvatar(event.target.checked)} type="checkbox" /> Показывать аватарку</label>
-            <label><input checked={showFrame} disabled={!form.selectedFrameAsset} onChange={(event) => setShowFrame(event.target.checked)} type="checkbox" /> Показывать рамку</label>
+            <label><input checked={showAvatar} onChange={(event) => setShowAvatar(event.target.checked)} type="checkbox" /> {t("borderEditor.showAvatar")}</label>
+            <label><input checked={showFrame} disabled={!form.selectedFrameAsset} onChange={(event) => setShowFrame(event.target.checked)} type="checkbox" /> {t("borderEditor.showFrame")}</label>
           </div>
         </div>
       </div>

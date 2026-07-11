@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import {
   AuthProvider,
   isProtectedRoute,
@@ -8,10 +8,14 @@ import {
 import { Navbar } from "../components/Navbar";
 import { PresenceTracker } from "../components/PresenceTracker";
 import { RouteTransition } from "../components/RouteTransition";
+import { MusicProvider } from "../features/music/MusicProvider";
 import { LanguageProvider, useLanguage } from "../i18n";
 import { Catalog } from "../pages/Catalog";
+import { Chat } from "../pages/Chat";
 import { Login } from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
+import { Orders } from "../pages/Orders";
+import { PasswordRecovery } from "../pages/PasswordRecovery";
 import { Profile } from "../pages/Profile";
 import { Register } from "../pages/Register";
 import { RouteStub } from "../pages/RouteStub";
@@ -33,11 +37,6 @@ const routeStubs: Record<string, RouteStubConfig> = {
     titleKey: "routes.orders.title",
     textKey: "routes.orders.text",
     video: `${routeVideoPath}/background_orders.webm`
-  },
-  "/chat": {
-    titleKey: "routes.chat.title",
-    textKey: "routes.chat.text",
-    video: `${routeVideoPath}/background_chat.webm`
   },
   "/support": {
     titleKey: "routes.support.title",
@@ -201,8 +200,14 @@ function AppShell({ theme, onThemeChange }: { theme: Theme; onThemeChange: (them
                 <Register />
               ) : displayedRoute === "/login" ? (
                 <Login />
+              ) : displayedRoute === "/recover" ? (
+                <PasswordRecovery />
               ) : displayedRoute === "/catalog" ? (
                 <Catalog />
+              ) : displayedRoute === "/orders" ? (
+                <Orders />
+              ) : displayedRoute === "/chat" ? (
+                <Chat />
               ) : displayedRoute === "/profile" ? (
                 <Profile />
               ) : profileIdentifier ? (
@@ -225,6 +230,20 @@ function AppShell({ theme, onThemeChange }: { theme: Theme; onThemeChange: (them
   );
 }
 
+function MusicOwnerBoundary({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
+
+  return (
+    <MusicProvider
+      canUseFavorites={Boolean(user)}
+      key={user?.id ?? "guest"}
+      ownerKey={user?.id ? `user-${user.id}` : "guest"}
+    >
+      {children}
+    </MusicProvider>
+  );
+}
+
 export default function App() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const changeTheme = useCallback((nextTheme: Theme) => {
@@ -243,7 +262,9 @@ export default function App() {
   return (
     <LanguageProvider>
       <AuthProvider>
-        <AppShell theme={theme} onThemeChange={changeTheme} />
+        <MusicOwnerBoundary>
+          <AppShell theme={theme} onThemeChange={changeTheme} />
+        </MusicOwnerBoundary>
       </AuthProvider>
     </LanguageProvider>
   );

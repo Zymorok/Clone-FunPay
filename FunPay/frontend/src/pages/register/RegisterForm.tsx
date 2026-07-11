@@ -1,5 +1,6 @@
 import { ArrowRight, Eye, EyeOff, Loader2, Lock, Mail, User } from "lucide-react";
 import { useLanguage } from "../../i18n";
+import { GoogleAuthButton } from "../../components/GoogleAuthButton";
 import { fieldClassName, getAvailabilityClass, getPasswordClass } from "./registerModel";
 import { useRegisterForm } from "./useRegisterForm";
 
@@ -199,6 +200,8 @@ export function RegisterForm() {
           {isSubmitting ? <Loader2 className="animate-spin" size={18} aria-hidden="true" /> : null}
           {t("register.submit")}
         </button>
+
+        <GoogleAuthButton mode="register" persist={remember} />
 
         <p className="px-6 text-center text-[11px] leading-5 text-[var(--muted)]">
           {t("register.termsPrefix")}{" "}

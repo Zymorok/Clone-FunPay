@@ -17,6 +17,7 @@ import type { PresenceStatus } from "../../api/presenceApi";
 import type { ProfileData } from "../../api/profileApi";
 import { getCountryName } from "../../data/countries";
 import { useLanguage } from "../../i18n";
+import { MusicFavoritesCard } from "../../features/music/MusicFavoritesCard";
 import { getServiceDefinition } from "./contactServices";
 import { formatMembershipDuration, isVideoAsset } from "./profileModel";
 import { Avatar, CountryFlag, ProfileBannerVideo } from "./ProfileAvatar";
@@ -25,12 +26,14 @@ type ProfileViewProps = {
   canEditProfile: boolean;
   editor: ReactNode;
   onEdit: () => void;
+  isOwnProfile: boolean;
   presenceStatus: PresenceStatus;
   profile: ProfileData;
   savedMessage: { id: number; text: string } | null;
+  showMusicFavorites: boolean;
 };
 
-export function ProfileView({ canEditProfile, editor, onEdit, presenceStatus, profile, savedMessage }: ProfileViewProps) {
+export function ProfileView({ canEditProfile, editor, isOwnProfile, onEdit, presenceStatus, profile, savedMessage, showMusicFavorites }: ProfileViewProps) {
   const { t, language } = useLanguage();
   const genderKey = `profile.page.gender${profile.gender ? profile.gender[0].toUpperCase() + profile.gender.slice(1) : "None"}`;
   const isFemale = profile.gender === "female";
@@ -65,12 +68,13 @@ export function ProfileView({ canEditProfile, editor, onEdit, presenceStatus, pr
               <span className="profile-status"><ShieldCheck size={14} aria-hidden="true" /> {t("profile.page.teamStatus")}: <span className={`profile-team-role profile-team-role--${teamRole.className}`}><teamRole.Icon size={13} aria-hidden="true" />{teamRole.title}</span></span>
             </div>
           </div>
-          {canEditProfile ? <button className="profile-edit-button" onClick={onEdit} type="button"><Pencil size={17} aria-hidden="true" /> {t("profile.page.edit")}</button> : null}
+          {canEditProfile ? <button className={`profile-edit-button${isOwnProfile ? "" : " profile-edit-button--managed"}`} onClick={onEdit} type="button"><Pencil size={17} aria-hidden="true" /> {t("profile.page.edit")}</button> : null}
         </div>
       </section>
       {savedMessage && <div className="profile-toast" key={savedMessage.id} role="status"><Check size={16} aria-hidden="true" /> <span>{savedMessage.text}</span></div>}
-      <div className="profile-content-grid"><section className="profile-card profile-card--about"><div className="profile-card__heading"><FileText size={19} aria-hidden="true" /><h2>{t("profile.page.about")}</h2></div><p className="profile-description">{profile.description || t("profile.page.notSpecified")}</p><dl className="profile-meta-grid"><div><dt><Globe2 size={15} aria-hidden="true" /> {t("profile.page.country")}</dt><dd>{profile.countryCode ? <><span className="profile-country-flag"><CountryFlag code={profile.countryCode} /></span> {getCountryName(profile.countryCode, language)}</> : t("profile.page.countryNone")}</dd></div><div><dt><CalendarDays size={15} aria-hidden="true" /> {t("profile.page.birthday")}</dt><dd>{profile.birthDate ? new Intl.DateTimeFormat(language === "uk" ? "uk-UA" : "ru-RU").format(new Date(`${profile.birthDate}T00:00:00`)) : t("profile.page.notSpecified")}</dd></div><div><dt><UsersRound size={15} aria-hidden="true" /> {t("profile.page.gender")}</dt><dd>{t(genderKey)}</dd></div></dl></section>
+      <div className="profile-content-grid"><section className="profile-card profile-card--about"><div className="profile-card__heading"><FileText size={19} aria-hidden="true" /><h2>{t("profile.page.about")}</h2></div><p className="profile-description">{profile.description || t("profile.page.notSpecified")}</p><dl className="profile-meta-grid"><div><dt><Globe2 size={15} aria-hidden="true" /> {t("profile.page.country")}</dt><dd>{profile.countryCode ? <><span className="profile-country-flag"><CountryFlag code={profile.countryCode} /></span> {getCountryName(profile.countryCode, language)}</> : t("profile.page.countryNone")}</dd></div><div><dt><CalendarDays size={15} aria-hidden="true" /> {t("profile.page.birthday")}</dt><dd>{profile.birthDate ? new Intl.DateTimeFormat(language === "uk" ? "uk-UA" : language === "ru" ? "ru-RU" : "en-US").format(new Date(`${profile.birthDate}T00:00:00`)) : t("profile.page.notSpecified")}</dd></div><div><dt><UsersRound size={15} aria-hidden="true" /> {t("profile.page.gender")}</dt><dd>{t(genderKey)}</dd></div></dl></section>
       <aside className="profile-card profile-card--contacts"><div className="profile-card__heading"><AtSign size={19} aria-hidden="true" /><h2>{t("profile.page.contacts")}</h2></div><div className="profile-contact-list">{profile.contacts.length ? profile.contacts.map((contact) => { const { Icon } = getServiceDefinition(contact.service); return <a className="profile-contact" href={contact.url} key={`${contact.service}-${contact.position}`} rel="noreferrer" target="_blank"><Icon size={18} aria-hidden="true" /><span><strong>{contact.title}</strong><small>{contact.url}</small></span><ExternalLink size={15} aria-hidden="true" /></a>; }) : <div className="profile-contact-empty"><CircleUserRound size={22} aria-hidden="true" /><p>{t("profile.page.noContacts")}</p>{canEditProfile ? <button className="profile-secondary-button" onClick={onEdit} type="button"><Plus size={16} aria-hidden="true" /> {t("profile.page.addContact")}</button> : null}</div>}</div></aside></div>
+      {showMusicFavorites ? <MusicFavoritesCard /> : null}
       {editor}
     </main>
   );

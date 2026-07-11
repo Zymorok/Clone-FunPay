@@ -183,7 +183,6 @@
     top: 16px;
   }
 }
-
 .corner-cat {
   position: fixed;
   right: clamp(16px, 3vw, 46px);
