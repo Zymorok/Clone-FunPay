@@ -230,7 +230,7 @@ export function Catalog() {
           </div>
         </div>
 
-        <div className="catalog-grid mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="catalog-grid mt-4">
           {games.map((game) => {
             const allowedCategories = getAllowedCategories(game);
             const quickCategories = getQuickCategories(game);

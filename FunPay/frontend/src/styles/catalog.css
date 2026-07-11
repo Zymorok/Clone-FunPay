@@ -42,13 +42,27 @@
 .catalog-grid {
   content-visibility: auto;
   contain-intrinsic-size: 900px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 272px), 272px));
+  justify-content: space-between;
 }
 
 .catalog-game-card {
+  width: min(100%, 272px);
+  max-width: 100%;
+  overflow: hidden;
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
+}
+
+.catalog-game-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .catalog-game-card:hover {
@@ -257,6 +271,15 @@
 @media (max-width: 900px) {
   .corner-cat {
     display: none;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    justify-content: start;
+  }
+
+  .catalog-game-card {
+    width: 100%;
   }
 
   .catalog-filter-panel {
