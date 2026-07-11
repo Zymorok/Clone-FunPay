@@ -2,6 +2,15 @@
   align-items: start;
 }
 
+/* ── Offer detail page cover ── */
+.offer-page-cover {
+  position: relative;
+  min-height: 280px;
+  background:
+    radial-gradient(circle at 72% 22%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 36%),
+    linear-gradient(135deg, #08111c, #172335 60%, #070b12);
+}
+
 .catalog-hero {
   position: relative;
   min-height: 310px;
