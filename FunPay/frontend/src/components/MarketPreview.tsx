@@ -1,5 +1,7 @@
 import { ArrowRight, Star } from "lucide-react";
 import { useLanguage } from "../i18n";
+import catalogDataRaw from "../data/catalogData.json";
+import type { CatalogData } from "../types/catalog";
 
 const animationAssets = "/assets/website/animations";
 
@@ -10,14 +12,7 @@ const featureAssets = {
   fast: `${animationAssets}/icons/fast-thunder-yellow.svg`
 };
 
-const offerImages = [
-  "/assets/website/offers/assets_counter_strike_2.png",
-  "/assets/website/offers/assets_valorant.png",
-  "/assets/website/offers/assets_rust.png",
-  "/assets/website/offers/assets_albion_online.jpeg",
-  "/assets/website/offers/assets_dota_2.jpg",
-  "/assets/website/offers/assets_gta_v.jpg"
-];
+const catalogData = catalogDataRaw as CatalogData;
 
 export function MarketPreview() {
   const { t } = useLanguage();
@@ -44,50 +39,28 @@ export function MarketPreview() {
     }
   ];
 
-  const offers = [
-    {
-      image: offerImages[0],
-      title: "Counter-Strike 2",
-      type: t("market.offerTypes.account"),
-      price: "499 ₽",
-      rating: "4.9 · 128"
-    },
-    {
-      image: offerImages[1],
-      title: "Valorant",
-      type: t("market.offerTypes.account"),
-      price: "299 ₽",
-      rating: "4.8 · 95"
-    },
-    {
-      image: offerImages[2],
-      title: "RUST",
-      type: t("market.offerTypes.key"),
-      price: "799 ₽",
-      rating: "4.7 · 67"
-    },
-    {
-      image: offerImages[3],
-      title: "Albion Online",
-      type: t("market.offerTypes.silver"),
-      price: "1 250 ₽",
-      rating: "4.9 · 142"
-    },
-    {
-      image: offerImages[4],
-      title: "Dota 2",
-      type: t("market.offerTypes.calibration"),
-      price: "890 ₽",
-      rating: "4.8 · 101"
-    },
-    {
-      image: offerImages[5],
-      title: "GTA V",
-      type: t("market.offerTypes.account"),
-      price: "699 ₽",
-      rating: "4.7 · 74"
-    }
-  ];
+  const gamesById = new Map(catalogData.games.map((game) => [game.id, game]));
+  const categoriesById = new Map(catalogData.categories.map((category) => [category.id, category]));
+
+  const offers = catalogData.products
+    .filter((product) => product.status === "Active")
+    .slice(0, 6)
+    .map((product) => {
+      const game = gamesById.get(product.gameId);
+      const category = categoriesById.get(product.categoryId);
+      const image = game?.imageUrl ?? "/assets/website/offers/assets_counter_strike_2.png";
+      const price = `${new Intl.NumberFormat("ru-RU").format(product.price)} ₽`;
+      const rating = `4.${(product.id % 3) + 7} · ${(product.id % 90) + 40}`;
+
+      return {
+        image,
+        title: product.title,
+        type: `${game?.name ?? t("market.popularOffers")} · ${category?.name ?? "Offer"}`,
+        price,
+        rating
+      };
+    });
+
   const carouselOffers = [...offers, ...offers];
 
   return (
