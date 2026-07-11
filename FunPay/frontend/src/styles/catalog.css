@@ -233,16 +233,6 @@
   }
 }
 
-@keyframes offers-scroll {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(calc(-200% - (var(--offer-gap) * 2)));
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .nav-ring-link,
   .nav-ring-link::before,
@@ -252,10 +242,6 @@
 
   .nav-ring-link:hover::before,
   .nav-ring-link:focus-visible::before {
-    animation: none;
-  }
-
-  .offer-track {
     animation: none;
   }
 

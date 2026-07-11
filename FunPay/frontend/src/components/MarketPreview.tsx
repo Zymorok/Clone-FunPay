@@ -45,7 +45,7 @@ export function MarketPreview() {
 
   const offers = catalogData.products
     .filter((product) => product.status === "Active")
-    .slice(0, 6)
+    .slice(0, 4)
     .map((product) => {
       const game = gamesById.get(product.gameId);
       const category = categoriesById.get(product.categoryId);
@@ -62,8 +62,6 @@ export function MarketPreview() {
         rating
       };
     });
-
-  const carouselOffers = [...offers, ...offers];
 
   return (
     <section className="hidden rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow)] lg:block">
@@ -93,10 +91,9 @@ export function MarketPreview() {
 
       <div className="mt-6 border-t border-[var(--border)] pt-5">
         <h2 className="text-lg font-extrabold text-[var(--text)]">{t("market.popularOffers")}</h2>
-        <div className="offer-carousel mt-4" aria-label={t("market.popularOffers")}>
-          <div className="offer-track">
-            {carouselOffers.map((offer, index) => (
-              <Link className="block" key={`${offer.id}-${index}`} to={`/offer/${offer.id}`}>
+        <div className="offer-grid mt-4" aria-label={t("market.popularOffers")}>
+            {offers.map((offer) => (
+              <Link className="offer-link" key={offer.id} to={`/offer/${offer.id}`}>
                 <article
                   className="offer-card relative flex aspect-[1.35] min-h-[134px] flex-col justify-end overflow-hidden rounded-lg border border-[var(--border)] p-3 text-white shadow-sm"
                 >
@@ -119,7 +116,6 @@ export function MarketPreview() {
                 </article>
               </Link>
             ))}
-          </div>
         </div>
       </div>
 
