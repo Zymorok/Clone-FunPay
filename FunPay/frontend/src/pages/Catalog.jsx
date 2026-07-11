@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   ArrowLeft,
   ArrowUpDown,
   ChevronRight,
   Gamepad2,
+  PackageSearch,
   RotateCcw,
   Search,
   SlidersHorizontal,
@@ -162,10 +163,35 @@ export function Catalog() {
   const [panelMode, setPanelMode] = useState("filters");
   const [selectedGame, setSelectedGame] = useState(null);
   const [selectedCategorySlug, setSelectedCategorySlug] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortMode, setSortMode] = useState("popular"); // "popular" | "az"
 
-  const visibleGames = selectedCategorySlug
-    ? games.filter((game) => game.allowedCategorySlugs.includes(selectedCategorySlug))
-    : games;
+  const visibleGames = useMemo(() => {
+    let result = games;
+
+    if (selectedCategorySlug) {
+      result = result.filter((g) => g.allowedCategorySlugs.includes(selectedCategorySlug));
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      result = result.filter((g) => g.title.toLowerCase().includes(q));
+    }
+
+    if (sortMode === "az") {
+      result = [...result].sort((a, b) => a.title.localeCompare(b.title));
+    } else {
+      // "popular": sort by number of allowed categories desc (proxy for popularity)
+      result = [...result].sort((a, b) => b.allowedCategorySlugs.length - a.allowedCategorySlugs.length);
+    }
+
+    return result;
+  }, [selectedCategorySlug, searchQuery, sortMode]);
+
+  function resetAllFilters() {
+    setSelectedCategorySlug(null);
+    setSearchQuery("");
+  }
 
   function showDefaultFilters() {
     setSelectedGame(null);
@@ -219,14 +245,24 @@ export function Catalog() {
 
           <div className="flex flex-wrap gap-2">
             <button
-              className="inline-flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 text-sm font-extrabold text-[var(--text)] shadow-sm"
+              className={`inline-flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-extrabold shadow-sm transition ${
+                sortMode === "popular"
+                  ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_12%,var(--surface))] text-[var(--accent-strong)]"
+                  : "border-[var(--border)] bg-[var(--surface)] text-[var(--text)]"
+              }`}
+              onClick={() => setSortMode("popular")}
               type="button"
             >
               <Star size={16} aria-hidden="true" />
               {t("catalog.popular")}
             </button>
             <button
-              className="inline-flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 text-sm font-extrabold text-[var(--text)] shadow-sm"
+              className={`inline-flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-extrabold shadow-sm transition ${
+                sortMode === "az"
+                  ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_12%,var(--surface))] text-[var(--accent-strong)]"
+                  : "border-[var(--border)] bg-[var(--surface)] text-[var(--text)]"
+              }`}
+              onClick={() => setSortMode("az")}
               type="button"
             >
               <ArrowUpDown size={16} aria-hidden="true" />
@@ -236,6 +272,25 @@ export function Catalog() {
         </div>
 
         <div className="catalog-grid mt-4">
+          {visibleGames.length === 0 && (
+            <div className="catalog-empty-state">
+              <span className="catalog-empty-state__icon">
+                <PackageSearch size={32} aria-hidden="true" />
+              </span>
+              <p className="catalog-empty-state__title">Нічого не знайдено</p>
+              <p className="catalog-empty-state__text">
+                Спробуй змінити фільтри або очистити пошуковий запит.
+              </p>
+              <button
+                className="catalog-empty-state__reset"
+                onClick={resetAllFilters}
+                type="button"
+              >
+                <RotateCcw size={14} aria-hidden="true" />
+                Скинути фільтри
+              </button>
+            </div>
+          )}
           {visibleGames.map((game) => {
             const allowedCategories = getAllowedCategories(game);
             const quickCategories = getQuickCategories(game);
@@ -305,6 +360,9 @@ export function Catalog() {
           <DefaultFilterPanel
             onOpenCategories={showAllCategories}
             onSelectCategory={setSelectedCategorySlug}
+            onReset={resetAllFilters}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
             selectedCategorySlug={selectedCategorySlug}
           />
         )}
@@ -313,7 +371,7 @@ export function Catalog() {
   );
 }
 
-function DefaultFilterPanel({ onOpenCategories, onSelectCategory, selectedCategorySlug }) {
+function DefaultFilterPanel({ onOpenCategories, onSelectCategory, onReset, searchQuery, onSearchChange, selectedCategorySlug }) {
   const { t } = useLanguage();
 
   return (
@@ -328,8 +386,8 @@ function DefaultFilterPanel({ onOpenCategories, onSelectCategory, selectedCatego
 
         <button
           className="inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-xs font-extrabold text-[var(--muted)] disabled:opacity-40"
-          disabled={!selectedCategorySlug}
-          onClick={() => onSelectCategory(null)}
+          disabled={!selectedCategorySlug && !searchQuery}
+          onClick={onReset}
           type="button"
         >
           <RotateCcw size={14} aria-hidden="true" />
@@ -345,7 +403,13 @@ function DefaultFilterPanel({ onOpenCategories, onSelectCategory, selectedCatego
             size={18}
             aria-hidden="true"
           />
-          <input className="field" placeholder={t("catalog.searchPlaceholder")} type="search" />
+          <input
+            className="field"
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder={t("catalog.searchPlaceholder")}
+            type="search"
+            value={searchQuery}
+          />
         </span>
       </label>
 
