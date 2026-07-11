@@ -54,11 +54,11 @@ function getCategoriesBySlugs(slugs) {
 }
 
 function getAllowedCategories(game) {
-  return getCategoriesBySlugs(game.allowedCategorySlugs);
+  return getCategoriesBySlugs(game.allowedCategorySlugs ?? []);
 }
 
 function getQuickCategories(game) {
-  const allowedSlugSet = new Set(game.allowedCategorySlugs);
+  const allowedSlugSet = new Set(game.allowedCategorySlugs ?? []);
 
   return quickCategorySlugs
     .filter((slug) => allowedSlugSet.has(slug))
@@ -67,7 +67,7 @@ function getQuickCategories(game) {
 }
 
 function getCategoryHref(game, category) {
-  return `/catalog/${game.slug}/${category.slug}`;
+  return `/catalog/${game.slug ?? game.id}/${category.slug}`;
 }
 
 function getCategoryLabel(t, category) {
@@ -269,7 +269,7 @@ export function Catalog() {
                 className="catalog-game-card group overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow)]"
                 key={game.id}
               >
-                <div className={`relative aspect-[1.54] overflow-hidden bg-gradient-to-br ${game.accent}`}>
+                <div className={`relative aspect-[1.54] overflow-hidden bg-gradient-to-br ${game.accent ?? "from-[#111827] to-[#111827]"}`}>
                   <img
                     alt=""
                     className="absolute inset-0 size-full object-cover opacity-78 transition duration-300 group-hover:scale-105 group-hover:opacity-88"
