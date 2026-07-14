@@ -41,7 +41,7 @@ const saleCategoryBySlug = new Map(
 const quickCategorySlugs = ["accounts", "services", "currency", "items"];
 const filterPreviewSlugs = ["accounts", "services", "currency", "items", "training", "subscription"];
 
-const games = catalogDataRaw.games;
+const games = Array.isArray(catalogDataRaw.games) ? catalogDataRaw.games : [];
 
 const filterPreviewCategories = filterPreviewSlugs
   .map((slug) => saleCategoryBySlug.get(slug))
@@ -53,12 +53,20 @@ function getCategoriesBySlugs(slugs) {
   return slugs.map((slug) => saleCategoryBySlug.get(slug)).filter(Boolean);
 }
 
+function getGameName(game) {
+  return typeof game?.name === "string" ? game.name : "";
+}
+
+function getGameCategorySlugs(game) {
+  return Array.isArray(game?.allowedCategorySlugs) ? game.allowedCategorySlugs : [];
+}
+
 function getAllowedCategories(game) {
-  return getCategoriesBySlugs(game.allowedCategorySlugs ?? []);
+  return getCategoriesBySlugs(getGameCategorySlugs(game));
 }
 
 function getQuickCategories(game) {
-  const allowedSlugSet = new Set(game.allowedCategorySlugs ?? []);
+  const allowedSlugSet = new Set(getGameCategorySlugs(game));
 
   return quickCategorySlugs
     .filter((slug) => allowedSlugSet.has(slug))
@@ -66,20 +74,18 @@ function getQuickCategories(game) {
     .filter(Boolean);
 }
 
-function getCategoryHref(game, category) {
-  return `/catalog/${game.slug ?? game.id}/${category.slug}`;
-}
-
 function getCategoryLabel(t, category) {
   return t(`catalog.categories.${category.slug}`);
 }
 
 export function Catalog() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [panelMode, setPanelMode] = useState("filters");
   const [selectedGame, setSelectedGame] = useState(null);
   const [selectedCategorySlug, setSelectedCategorySlug] = useState(null);
+  const [selectedInitial, setSelectedInitial] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [categorySearchQuery, setCategorySearchQuery] = useState("");
   const [sortMode, setSortMode] = useState("popular"); // "popular" | "az"
   const [isLoading, setIsLoading] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -89,31 +95,46 @@ export function Catalog() {
     return () => clearTimeout(timer);
   }, []);
 
+  const collator = useMemo(
+    () => new Intl.Collator(language, { sensitivity: "base" }),
+    [language]
+  );
+
   const visibleGames = useMemo(() => {
     let result = games;
 
     if (selectedCategorySlug) {
-      result = result.filter((g) => g.allowedCategorySlugs.includes(selectedCategorySlug));
+      result = result.filter((game) => getGameCategorySlugs(game).includes(selectedCategorySlug));
     }
 
     if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
-      result = result.filter((g) => g.title.toLowerCase().includes(q));
+      const query = searchQuery.trim().toLocaleLowerCase(language);
+      result = result.filter((game) => getGameName(game).toLocaleLowerCase(language).includes(query));
+    }
+
+    if (selectedInitial) {
+      result = result.filter((game) =>
+        getGameName(game).toLocaleUpperCase(language).startsWith(selectedInitial)
+      );
     }
 
     if (sortMode === "az") {
-      result = [...result].sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+      result = [...result].sort((left, right) => collator.compare(getGameName(left), getGameName(right)));
     } else {
       // "popular": sort by number of allowed categories desc (proxy for popularity)
-      result = [...result].sort((a, b) => b.allowedCategorySlugs.length - a.allowedCategorySlugs.length);
+      result = [...result].sort(
+        (left, right) => getGameCategorySlugs(right).length - getGameCategorySlugs(left).length
+      );
     }
 
     return result;
-  }, [selectedCategorySlug, searchQuery, sortMode]);
+  }, [collator, language, selectedCategorySlug, selectedInitial, searchQuery, sortMode]);
 
   function resetAllFilters() {
     setSelectedCategorySlug(null);
+    setSelectedInitial(null);
     setSearchQuery("");
+    setCategorySearchQuery("");
   }
 
   function showDefaultFilters() {
@@ -123,12 +144,24 @@ export function Catalog() {
 
   function showGameCategories(game) {
     setSelectedGame(game);
+    setCategorySearchQuery("");
     setPanelMode("game-categories");
   }
 
   function showAllCategories() {
     setSelectedGame(null);
+    setCategorySearchQuery("");
     setPanelMode("all-categories");
+  }
+
+  function applyCategoryFilter(categorySlug) {
+    setSelectedCategorySlug(categorySlug);
+    showDefaultFilters();
+  }
+
+  function resetAndShowDefaultFilters() {
+    resetAllFilters();
+    showDefaultFilters();
   }
 
   return (
@@ -174,7 +207,7 @@ export function Catalog() {
             >
               <SlidersHorizontal size={16} aria-hidden="true" />
               {t("catalog.filters")}
-              {(selectedCategorySlug || searchQuery) && (
+              {(selectedCategorySlug || selectedInitial || searchQuery) && (
                 <span className="catalog-filter-badge" aria-label="active filters" />
               )}
             </button>
@@ -212,17 +245,31 @@ export function Catalog() {
                 categories={getAllowedCategories(selectedGame)}
                 game={selectedGame}
                 onBack={showDefaultFilters}
+                onCategorySearchChange={setCategorySearchQuery}
+                onReset={resetAndShowDefaultFilters}
+                onSelectCategory={applyCategoryFilter}
+                categorySearchQuery={categorySearchQuery}
+                selectedCategorySlug={selectedCategorySlug}
               />
             ) : panelMode === "all-categories" ? (
-              <AllCategoriesPanel onBack={showDefaultFilters} />
+              <AllCategoriesPanel
+                onBack={showDefaultFilters}
+                onCategorySearchChange={setCategorySearchQuery}
+                onReset={resetAndShowDefaultFilters}
+                onSelectCategory={applyCategoryFilter}
+                categorySearchQuery={categorySearchQuery}
+                selectedCategorySlug={selectedCategorySlug}
+              />
             ) : (
               <DefaultFilterPanel
                 onOpenCategories={showAllCategories}
                 onSelectCategory={setSelectedCategorySlug}
+                onSelectInitial={setSelectedInitial}
                 onReset={resetAllFilters}
                 searchQuery={searchQuery}
                 onSearchChange={setSearchQuery}
                 selectedCategorySlug={selectedCategorySlug}
+                selectedInitial={selectedInitial}
               />
             )}
           </div>
@@ -246,9 +293,9 @@ export function Catalog() {
               <span className="catalog-empty-state__icon">
                 <PackageSearch size={32} aria-hidden="true" />
               </span>
-              <p className="catalog-empty-state__title">Нічого не знайдено</p>
+              <p className="catalog-empty-state__title">{t("catalog.emptyTitle")}</p>
               <p className="catalog-empty-state__text">
-                Спробуй змінити фільтри або очистити пошуковий запит.
+                {t("catalog.emptyDescription")}
               </p>
               <button
                 className="catalog-empty-state__reset"
@@ -256,13 +303,14 @@ export function Catalog() {
                 type="button"
               >
                 <RotateCcw size={14} aria-hidden="true" />
-                Скинути фільтри
+                {t("catalog.reset")}
               </button>
             </div>
           )}
           {!isLoading && visibleGames.map((game) => {
             const allowedCategories = getAllowedCategories(game);
             const quickCategories = getQuickCategories(game);
+            const gameName = getGameName(game);
 
             return (
               <article
@@ -284,24 +332,25 @@ export function Catalog() {
 
                 <div className="grid min-h-[138px] gap-4 p-4">
                   <h3 className="truncate text-lg font-black tracking-normal text-[var(--text)]">
-                    {game.name}
+                    {gameName}
                   </h3>
 
                   <div className="flex items-end justify-between gap-3">
-                    <div className="catalog-card-links" aria-label={t("catalog.quickCategoriesAria", { game: game.name })}>
+                    <div className="catalog-card-links" aria-label={t("catalog.quickCategoriesAria", { game: gameName })}>
                       {quickCategories.map((category) => (
-                        <a
+                        <button
                           className="catalog-category-link"
-                          href={getCategoryHref(game, category)}
                           key={category.slug}
+                          onClick={() => applyCategoryFilter(category.slug)}
+                          type="button"
                         >
                           {getCategoryLabel(t, category)}
-                        </a>
+                        </button>
                       ))}
                     </div>
 
                     <button
-                      aria-label={t("catalog.showAllowedCategories", { game: game.name })}
+                      aria-label={t("catalog.showAllowedCategories", { game: gameName })}
                       className="catalog-category-arrow grid size-10 shrink-0 place-items-center rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--muted)] transition group-hover:border-[var(--accent)] group-hover:text-[var(--accent-strong)]"
                       onClick={() => showGameCategories(game)}
                       type="button"
@@ -322,17 +371,31 @@ export function Catalog() {
             categories={getAllowedCategories(selectedGame)}
             game={selectedGame}
             onBack={showDefaultFilters}
+            onCategorySearchChange={setCategorySearchQuery}
+            onReset={resetAndShowDefaultFilters}
+            onSelectCategory={applyCategoryFilter}
+            categorySearchQuery={categorySearchQuery}
+            selectedCategorySlug={selectedCategorySlug}
           />
         ) : panelMode === "all-categories" ? (
-          <AllCategoriesPanel onBack={showDefaultFilters} />
+          <AllCategoriesPanel
+            onBack={showDefaultFilters}
+            onCategorySearchChange={setCategorySearchQuery}
+            onReset={resetAndShowDefaultFilters}
+            onSelectCategory={applyCategoryFilter}
+            categorySearchQuery={categorySearchQuery}
+            selectedCategorySlug={selectedCategorySlug}
+          />
         ) : (
           <DefaultFilterPanel
             onOpenCategories={showAllCategories}
             onSelectCategory={setSelectedCategorySlug}
+            onSelectInitial={setSelectedInitial}
             onReset={resetAllFilters}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             selectedCategorySlug={selectedCategorySlug}
+            selectedInitial={selectedInitial}
           />
         )}
       </aside>
@@ -340,7 +403,16 @@ export function Catalog() {
   );
 }
 
-function DefaultFilterPanel({ onOpenCategories, onSelectCategory, onReset, searchQuery, onSearchChange, selectedCategorySlug }) {
+function DefaultFilterPanel({
+  onOpenCategories,
+  onSelectCategory,
+  onSelectInitial,
+  onReset,
+  searchQuery,
+  onSearchChange,
+  selectedCategorySlug,
+  selectedInitial
+}) {
   const { t } = useLanguage();
 
   return (
@@ -355,7 +427,7 @@ function DefaultFilterPanel({ onOpenCategories, onSelectCategory, onReset, searc
 
         <button
           className="inline-flex h-9 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-xs font-extrabold text-[var(--muted)] disabled:opacity-40"
-          disabled={!selectedCategorySlug && !searchQuery}
+          disabled={!selectedCategorySlug && !selectedInitial && !searchQuery}
           onClick={onReset}
           type="button"
         >
@@ -390,8 +462,10 @@ function DefaultFilterPanel({ onOpenCategories, onSelectCategory, onReset, searc
         <div className="grid grid-cols-6 gap-2">
           {alphabet.map((letter) => (
             <button
-              className="grid h-9 place-items-center rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] text-xs font-black text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent-strong)]"
+              aria-pressed={selectedInitial === letter}
+              className={`catalog-alphabet-button${selectedInitial === letter ? " catalog-alphabet-button--active" : ""}`}
               key={letter}
+              onClick={() => onSelectInitial(selectedInitial === letter ? null : letter)}
               type="button"
             >
               {letter}
@@ -433,8 +507,19 @@ function DefaultFilterPanel({ onOpenCategories, onSelectCategory, onReset, searc
   );
 }
 
-function AllCategoriesPanel({ onBack }) {
-  const { t } = useLanguage();
+function AllCategoriesPanel({
+  onBack,
+  onCategorySearchChange,
+  onReset,
+  onSelectCategory,
+  categorySearchQuery,
+  selectedCategorySlug
+}) {
+  const { t, language } = useLanguage();
+  const normalizedQuery = categorySearchQuery.trim().toLocaleLowerCase(language);
+  const visibleCategories = saleCategories.filter((category) =>
+    getCategoryLabel(t, category).toLocaleLowerCase(language).includes(normalizedQuery)
+  );
 
   return (
     <>
@@ -443,41 +528,78 @@ function AllCategoriesPanel({ onBack }) {
         subtitle={t("catalog.allCategoriesSubtitle")}
         title={t("catalog.saleCategories")}
       />
-      <PanelActions onBack={onBack} />
-      <CategorySearch placeholder={t("catalog.categorySearchPlaceholder")} />
+      <PanelActions onBack={onBack} onReset={onReset} />
+      <CategorySearch
+        onChange={onCategorySearchChange}
+        placeholder={t("catalog.categorySearchPlaceholder")}
+        value={categorySearchQuery}
+      />
 
       <div className="mt-5 grid gap-2">
-        {saleCategories.map((category) => (
-          <button className="catalog-full-category-link" key={category.slug} type="button">
+        {visibleCategories.map((category) => (
+          <button
+            className={`catalog-full-category-link${category.slug === selectedCategorySlug ? " catalog-full-category-link--active" : ""}`}
+            key={category.slug}
+            onClick={() => onSelectCategory(category.slug)}
+            type="button"
+          >
             <span>{getCategoryLabel(t, category)}</span>
             <ChevronRight size={16} aria-hidden="true" />
           </button>
         ))}
+        {visibleCategories.length === 0 && (
+          <p className="catalog-empty-categories">{t("catalog.noCategories")}</p>
+        )}
       </div>
     </>
   );
 }
 
-function GameCategoryPanel({ categories, game, onBack }) {
-  const { t } = useLanguage();
+function GameCategoryPanel({
+  categories,
+  game,
+  onBack,
+  onCategorySearchChange,
+  onReset,
+  onSelectCategory,
+  categorySearchQuery,
+  selectedCategorySlug
+}) {
+  const { t, language } = useLanguage();
+  const normalizedQuery = categorySearchQuery.trim().toLocaleLowerCase(language);
+  const visibleCategories = categories.filter((category) =>
+    getCategoryLabel(t, category).toLocaleLowerCase(language).includes(normalizedQuery)
+  );
 
   return (
     <>
       <PanelTitle
         icon={<Tags size={18} aria-hidden="true" />}
         subtitle={t("catalog.allowedCategoriesSubtitle")}
-        title={game.title}
+        title={getGameName(game)}
       />
-      <PanelActions onBack={onBack} />
-      <CategorySearch placeholder={t("catalog.categorySearchPlaceholder")} />
+      <PanelActions onBack={onBack} onReset={onReset} />
+      <CategorySearch
+        onChange={onCategorySearchChange}
+        placeholder={t("catalog.categorySearchPlaceholder")}
+        value={categorySearchQuery}
+      />
 
       <div className="mt-5 grid gap-2">
-        {categories.map((category) => (
-          <a className="catalog-full-category-link" href={getCategoryHref(game, category)} key={category.slug}>
+        {visibleCategories.map((category) => (
+          <button
+            className={`catalog-full-category-link${category.slug === selectedCategorySlug ? " catalog-full-category-link--active" : ""}`}
+            key={category.slug}
+            onClick={() => onSelectCategory(category.slug)}
+            type="button"
+          >
             <span>{getCategoryLabel(t, category)}</span>
             <ChevronRight size={16} aria-hidden="true" />
-          </a>
+          </button>
         ))}
+        {visibleCategories.length === 0 && (
+          <p className="catalog-empty-categories">{t("catalog.noCategories")}</p>
+        )}
       </div>
     </>
   );
@@ -499,7 +621,7 @@ function PanelTitle({ icon, subtitle, title }) {
   );
 }
 
-function PanelActions({ onBack }) {
+function PanelActions({ onBack, onReset }) {
   const { t } = useLanguage();
 
   return (
@@ -514,7 +636,7 @@ function PanelActions({ onBack }) {
       </button>
       <button
         className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 text-sm font-extrabold text-[var(--muted)] transition hover:border-[var(--accent)] hover:text-[var(--accent-strong)] active:scale-95"
-        onClick={onBack}
+        onClick={onReset}
         type="button"
       >
         <RotateCcw size={14} aria-hidden="true" />
@@ -524,7 +646,7 @@ function PanelActions({ onBack }) {
   );
 }
 
-function CategorySearch({ placeholder }) {
+function CategorySearch({ onChange, placeholder, value }) {
   const { t } = useLanguage();
 
   return (
@@ -536,7 +658,13 @@ function CategorySearch({ placeholder }) {
           size={18}
           aria-hidden="true"
         />
-        <input className="field" placeholder={placeholder} type="search" />
+        <input
+          className="field"
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          type="search"
+          value={value}
+        />
       </span>
     </label>
   );

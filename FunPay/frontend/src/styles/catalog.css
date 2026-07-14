@@ -11,6 +11,13 @@
     linear-gradient(135deg, #08111c, #172335 60%, #070b12);
 }
 
+.offer-page-action:focus-visible,
+.offer-page-link:focus-visible,
+.offer-page-buy:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
 .catalog-hero {
   position: relative;
   min-height: 310px;
@@ -114,6 +121,11 @@
   color: var(--accent-strong);
 }
 
+.catalog-empty-state__reset:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
 .catalog-game-card {
   width: min(100%, 272px);
   max-width: 100%;
@@ -156,6 +168,7 @@
 }
 
 .catalog-category-link {
+  appearance: none;
   display: inline-flex;
   min-height: 30px;
   align-items: center;
@@ -166,6 +179,7 @@
   font-size: 13px;
   font-weight: 800;
   line-height: 1.1;
+  cursor: pointer;
   transition:
     border-color 160ms ease,
     color 160ms ease,
@@ -249,6 +263,19 @@
   background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface-soft));
   color: var(--accent-strong);
   transform: translateX(2px);
+}
+
+.catalog-full-category-link--active {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface-soft));
+  color: var(--accent-strong);
+}
+
+.catalog-empty-categories {
+  padding: 16px 8px;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
 }
 
 .catalog-filter-panel {
@@ -418,6 +445,37 @@
 .catalog-sort-btn:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.catalog-alphabet-button {
+  display: grid;
+  height: 36px;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease, transform 100ms ease;
+}
+
+.catalog-alphabet-button:hover,
+.catalog-alphabet-button:focus-visible,
+.catalog-alphabet-button--active {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface-soft));
+  color: var(--accent-strong);
+}
+
+.catalog-alphabet-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.catalog-alphabet-button:active {
+  transform: scale(0.94);
 }
 
 /* ── Game card active state ── */

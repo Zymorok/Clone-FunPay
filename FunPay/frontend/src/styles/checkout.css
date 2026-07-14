@@ -69,6 +69,12 @@
   color: var(--accent-strong);
 }
 
+.checkout-modal__close:focus-visible,
+.checkout-modal__actions button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
 .checkout-modal__body {
   padding: 16px 20px;
 }
@@ -95,4 +101,14 @@
   font-size: 14px;
   font-weight: 700;
   animation: checkout-fade-in 240ms ease;
+}
+
+@media (max-width: 420px) {
+  .checkout-modal__actions {
+    flex-direction: column-reverse;
+  }
+
+  .checkout-modal__actions button {
+    width: 100%;
+  }
 }
